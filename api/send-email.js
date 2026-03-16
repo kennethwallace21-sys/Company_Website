@@ -1,4 +1,6 @@
 import { Resend } from "resend";
+import connectToDatabase from "../src/lib/mongodb.js";
+import Contact from "../src/models/Contact.js";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -28,6 +30,21 @@ export default async function handler(req, res) {
           "Missing required fields: name, email, and message are required.",
       });
       return;
+    }
+
+    // Save to MongoDB
+    try {
+      await connectToDatabase();
+      await Contact.create({
+        name,
+        email,
+        company: company || "",
+        message
+      });
+      console.log("Contact saved to MongoDB");
+    } catch (dbError) {
+      console.error("MongoDB Save Error:", dbError);
+      // We continue even if DB save fails to at least try sending the email
     }
 
     const { data, error } = await resend.emails.send({
