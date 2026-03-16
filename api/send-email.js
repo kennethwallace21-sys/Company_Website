@@ -83,24 +83,58 @@ export default async function handler(req, res) {
       </html>
     `;
 
+    // 1. Save to MongoDB
+    let dbSuccess = false;
+    try {
+      console.log("Attempting to connect to MongoDB...");
+      const conn = await connectToDatabase();
+      console.log("Connected to MongoDB. Saving lead...");
+      
+      const newContact = await Contact.create({
+        name,
+        email,
+        company: company || "",
+        message
+      });
+      
+      console.log("Leaf saved to MongoDB successfully:", newContact._id);
+      dbSuccess = true;
+    } catch (dbError) {
+      console.error("CRITICAL: MongoDB Save Error:", {
+        message: dbError.message,
+        stack: dbError.stack,
+        uri: process.env.MONGODB_URI ? "MDB_URI is set" : "MDB_URI is MISSING"
+      });
+      // We continue to send email even if DB fails, but we logged the error.
+    }
+
+    // 2. Send Email via Resend
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: [TO_EMAIL],
       replyTo: email,
-      subject: `[v1.0.4] New Lead: ${name} ${company ? `[${company}]` : ""}`,
+      subject: `[v1.0.5] New Lead: ${name} ${company ? `[${company}]` : ""}`,
       html: emailHtml,
     });
 
     if (error) {
-      console.error("Resend error:", error);
-      res.status(500).json({ error: error.message || "Failed to send email" });
+      console.error("Resend delivery error:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: error.message || "Failed to send email",
+        dbSaved: dbSuccess 
+      });
       return;
     }
 
-    res.status(200).json({ success: true, id: data?.id });
+    res.status(200).json({ 
+      success: true, 
+      id: data?.id,
+      dbSaved: dbSuccess 
+    });
   } catch (err) {
-    console.error("Send email error:", err);
-    res.status(500).json({ error: err.message || "Failed to send email" });
+    console.error("Global API error:", err);
+    res.status(500).json({ success: false, error: err.message || "Internal server error" });
   }
 }
 
