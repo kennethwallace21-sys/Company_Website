@@ -87,7 +87,7 @@ export default async function handler(req, res) {
       from: FROM_EMAIL,
       to: [TO_EMAIL],
       replyTo: email,
-      subject: `New Lead: ${name} ${company ? `[${company}]` : ""}`,
+      subject: `[v1.0.4] New Lead: ${name} ${company ? `[${company}]` : ""}`,
       html: emailHtml,
     });
 
