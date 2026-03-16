@@ -14,75 +14,63 @@ const allFaqs = [
         category: "General",
         items: [
             {
-                question: "What services do you offer?",
-                answer: "We offer AI Discovery & Diagnostic, Custom AI Solutions, Workflow Automation, Data Engineering, AI Tools Implementation, and Training & Enablement services."
+                question: "What exactly does Catalyst Applied AI do?",
+                answer: "We are a practical AI partner. We help businesses cut through the hype to find, design, and build AI tools that actually solve problems—whether that's automating a tedious document review process or building a custom platform to manage your company's internal knowledge."
             },
             {
-                question: "What makes Catalyst Applied AI different?",
-                answer: "We focus on practical, ROI-driven AI solutions rather than hype. Our team has hands-on experience implementing AI at scale, and we prioritize your specific business outcomes."
+                question: "What makes you different from a generic software agency?",
+                answer: "We focus exclusively on Applied AI. Unlike general agencies, we understand the specific nuances of 'grounded' AI—ensuring your models don't hallucinate, your data stays private, and every tool we build has a measurable Return on Investment (ROI)."
             },
             {
                 question: "Do you work with small businesses?",
-                answer: "Yes! We work with businesses of all sizes, from startups to large enterprises. Our solutions are tailored to fit your specific needs, budget, and scale."
-            },
-            {
-                question: "Where are you located?",
-                answer: "We are based in Kentucky, USA, but we work with clients globally. Our team is equipped to work remotely or on-site depending on the project scope."
+                answer: "Yes. While we work with larger enterprises, we also help growing businesses implement AI 'starter' projects that provide immediate value without requiring a multi-million dollar budget."
             }
         ]
     },
     {
-        category: "Process & Timeline",
+        category: "Services",
         items: [
             {
-                question: "How do you determine which AI solutions are best for my business?",
-                answer: "We begin with our proprietary Discovery & Diagnostic process. We analyze your existing workflows, identify manual bottlenecks, and assess your data readiness before recommending a clear ROI-centered roadmap."
+                question: "What is the 'Discovery & Diagnostic' service?",
+                answer: "It is our high-impact audit. We look at your current manual workflows, identify where humans are slowed down by repetitive data tasks, and give you a prioritized roadmap of which AI features will give you the most 'bang for your buck' first."
             },
             {
-                question: "How long does a typical project take?",
-                answer: "Timeline varies by scope. Discovery projects typically take a few weeks, while full custom AI integrations can range over several months depending on complexity."
+                question: "How do your Custom AI Solutions work?",
+                answer: "We build bespoke tools from the ground up tailored to your specific business logic. This isn't just a basic wrapper around ChatGPT; it's a secure, integrated system that understands your unique documents and decision-making processes."
             },
             {
-                question: "What if AI isn't the right fit for our use case?",
-                answer: "We assessment feasibility first. If AI isn't the right solution for your specific problem, we'll tell you honestly and suggest alternative optimizations."
-            },
-            {
-                question: "How do you measure project success?",
-                answer: "We define clear KPIs upfront—such as time saved, accuracy improvements, or revenue impact. We track these metrics throughout the engagement to ensure value delivery."
+                question: "What does Workflow Automation involve?",
+                answer: "We deploy AI agents that can handle end-to-end tasks like triaging emails, summarizing legal documents, or extracting data from invoices. This frees your human team to focus on high-value, creative work."
             }
         ]
     },
     {
-        category: "Security & Integration",
+        category: "Products",
         items: [
             {
-                question: "Is my company data secure with you?",
-                answer: "Security is our top priority. We sign NDAs, follow industry best practices, and implement enterprise-grade security. We ensure your data remains your property and is handled with strict confidentiality."
+                question: "What is the CAAi Command Center?",
+                answer: "It is a unified dashboard for the enterprise. It allows you to monitor, manage, and orchestrate all your custom AI agents in one place, giving you visibility into their performance and the data they are processing."
             },
             {
-                question: "Can you integrate AI with our existing systems?",
-                answer: "Yes! We specialize in integrating AI with your existing tech stack, including CRMs (like Salesforce or HubSpot), ERPs, and common business tools, ensuring seamless adoption."
+                question: "What is CAAi CLERK?",
+                answer: "CAAi CLERK (County Language Engine for Records and Knowledge) is our specialized product for government and large administrative offices. it helps triage FOIA requests, summarize public meetings, and review permit packets with high security."
             },
             {
-                question: "Is our data used to train public AI models?",
-                answer: "No. We implement private instances and architectures like RAG. Your company data is never used to train or inform external, public AI models."
+                question: "What are Catalyst Custom Models?",
+                answer: "These are fully managed AI deployments. We handle the infrastructure, the model tuning (using NVIDIA-powered technologies), and the security layers so you can have enterprise-grade AI that is grounded entirely in your company's own private data."
             }
         ]
     },
     {
-        category: "Pricing & Support",
+        category: "Security & Trust",
         items: [
             {
-                question: "What is your pricing model?",
-                answer: "We offer flexible models including project-based, retainer, and hourly. We recommend the best approach based on your specific requirements during the initial consultation."
+                question: "Is my data secure?",
+                answer: "Absolutely. We are NVIDIA Inception partners and follow enterprise-grade security standards. We use private cloud architectures and RAG (Retrieval-Augmented Generation) to ensure your data stays within your control and is never used to train public AI models."
             },
             {
-                question: "Do you offer ongoing support?",
-                answer: "Absolutely. We provide long-term partnerships through maintenance and optimization packages to help you scale and refine your AI solutions over time."
-            },
-            {
-                question: "Do you provide training for our team?",
-                answer: "Yes. Our Training & Enablement service includes workshops, hands-on labs, and coaching to ensure your team effectively uses and leads with your new AI tools."
+                question: "How do you prevent AI from 'hallucinating' (making things up)?",
+                answer: "We use our proprietary CAAi Trust Layer and Grounded AI techniques. By forcing the AI to reference only your specific verified documents, we ensure that every answer it provides is accurate and citeable."
             }
         ]
     }

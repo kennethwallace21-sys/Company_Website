@@ -4,68 +4,36 @@ import { MessageCircle, X, ChevronRight, Search, Send, RotateCcw } from 'lucide-
 
 const faqs = [
     {
-        question: "What services do you offer?",
-        answer: "We offer AI Discovery & Diagnostic, Custom AI Solutions, Workflow Automation, Data Engineering, AI Tools Implementation, and Training & Enablement services."
+        question: "What exactly does Catalyst Applied AI do?",
+        answer: "We help businesses build practical AI tools that solve real problems—like automating manual document reviews or extracting intelligence from internal records. We focus on ROI, not hype."
     },
     {
-        question: "How long does a typical project take?",
-        answer: "Project timelines vary based on scope. Discovery projects typically take 2-4 weeks, while custom AI solutions can range from 2-6 months depending on complexity."
+        question: "What is CAAi CLERK?",
+        answer: "CAAi CLERK is our specialized tool for government and administrative offices. It securely triages FOIA requests, summarizes public meetings, and reviews permit packets."
     },
     {
-        question: "Do you work with small businesses?",
-        answer: "Yes! We work with businesses of all sizes, from startups to Fortune 500 companies. Our solutions are tailored to fit your specific needs and budget."
+        question: "What is the CAAi Command Center?",
+        answer: "It is a unified dashboard that lets you monitor and manage all your different custom AI agents and their performance in one place."
     },
     {
-        question: "What industries do you serve?",
-        answer: "We serve healthcare, finance, retail, manufacturing, legal, and many other industries. Our AI solutions are adaptable to virtually any sector."
+        question: "Tell me about Catalyst Custom Models.",
+        answer: "We build fully managed AI deployments using techniques like RAG and restricted trust layers to ensure your AI only uses your private data and never makes things up."
+    },
+    {
+        question: "What is a 'Discovery & Diagnostic' audit?",
+        answer: "It's a high-impact review where we identify exactly where AI can save you the most time and money in your current workflows before you commit to building anything."
+    },
+    {
+        question: "Is my data used to train public models like ChatGPT?",
+        answer: "No. We implement private instances and secure trust layers so your data stays entirely within your control and is never shared with external models."
+    },
+    {
+        question: "Do you offer custom integrations?",
+        answer: "Yes. We specialize in connecting AI solutions directly into your existing systems like Salesforce, HubSpot, or custom internal databases."
     },
     {
         question: "How do I get started?",
-        answer: "Simply contact us through our website or email sales@catalystappliedai.com. We'll schedule a free consultation to discuss your needs."
-    },
-    {
-        question: "What makes you different from other AI consultants?",
-        answer: "We focus on practical, ROI-driven AI solutions rather than hype. Our team has hands-on experience implementing AI at scale, and we prioritize your business outcomes."
-    },
-    {
-        question: "Do you offer ongoing support?",
-        answer: "Yes, we provide ongoing support and maintenance packages. We believe in long-term partnerships and can help you continuously optimize and scale your AI solutions."
-    },
-    {
-        question: "What is your pricing model?",
-        answer: "We offer flexible pricing including project-based, retainer, and hourly models. We'll recommend the best approach based on your specific needs during our initial consultation."
-    },
-    {
-        question: "Do you provide training for our team?",
-        answer: "Absolutely! Our Training & Enablement service includes workshops, hands-on labs, and ongoing coaching to help your team confidently use and manage AI tools."
-    },
-    {
-        question: "Is my data secure with you?",
-        answer: "Security is our top priority. We follow industry best practices, sign NDAs, and implement enterprise-grade security measures. Your data remains yours and is handled with strict confidentiality."
-    },
-    {
-        question: "Can you integrate AI with our existing systems?",
-        answer: "Yes! We specialize in integrating AI solutions with your existing tech stack including CRMs, ERPs, databases, and other business tools without disrupting your operations."
-    },
-    {
-        question: "What if AI doesn't work for our use case?",
-        answer: "That's what our Discovery & Diagnostic phase is for. We assess feasibility first and only recommend AI where it makes sense. If AI isn't the right fit, we'll tell you honestly."
-    },
-    {
-        question: "Where are you located?",
-        answer: "We're based in Kentucky but work with clients globally. Our team can work remotely or on-site depending on your preferences and project requirements."
-    },
-    {
-        question: "Do you build chatbots and virtual assistants?",
-        answer: "Yes! We build custom conversational AI solutions including chatbots, virtual assistants, and AI-powered customer service tools tailored to your business needs."
-    },
-    {
-        question: "How do you measure AI project success?",
-        answer: "We define clear KPIs upfront—whether it's time saved, cost reduction, accuracy improvement, or revenue impact. We track and report on these metrics throughout the engagement."
-    },
-    {
-        question: "Can you help with AI strategy without building anything?",
-        answer: "Definitely! Our Discovery & Diagnostic service provides strategic guidance, roadmaps, and recommendations without any commitment to build. Many clients start here."
+        answer: "The best way is to book an ROI Assessment. You can email sales@catalystappliedai.com or use the 'Contact' page to message us directly."
     }
 ];
 
