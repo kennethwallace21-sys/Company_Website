@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { 
     Menu, X, ChevronDown, ChevronRight, 
@@ -92,6 +92,7 @@ export default function Navbar({ showNav }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [mobileExpanded, setMobileExpanded] = useState(null);
     const [activeItem, setActiveItem] = useState(null);
+    const location = useLocation();
     const timeoutRef = useRef(null);
 
     useEffect(() => {
@@ -102,20 +103,32 @@ export default function Navbar({ showNav }) {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const handleMouseEnter = (item) => {
+    const toggleDropdown = (item) => {
         if (!item.columns) return;
-        clearTimeout(timeoutRef.current);
-        setActiveItem(item);
+        if (activeItem?.label === item.label) {
+            setActiveItem(null);
+        } else {
+            setActiveItem(item);
+        }
     };
 
-    const handleMouseLeave = () => {
-        timeoutRef.current = setTimeout(() => setActiveItem(null), 200);
-    };
+    // Global click-outside listener to close menu
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (activeItem && !event.target.closest('nav') && !event.target.closest('[role="menu"]')) {
+                setActiveItem(null);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [activeItem]);
 
     const allMobileLinks = (item) => {
         if (!item.columns) return [];
         return item.columns.flatMap(col => col.links);
     };
+
+    const isLinkActive = (path) => location.pathname === path;
 
     return (
         <>
@@ -134,7 +147,14 @@ export default function Navbar({ showNav }) {
                         <div className="max-w-7xl mx-auto px-6">
                             <div className="flex items-center justify-between h-20">
                                 {/* Left — Logo */}
-                                <Link to="/" className="flex items-center gap-3 group" onClick={() => setActiveItem(null)}>
+                                <Link 
+                                    to="/" 
+                                    className="flex items-center gap-3 group" 
+                                    onClick={() => {
+                                        setActiveItem(null);
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    }}
+                                >
                                     <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform">
                                         <img src="/logo.jpg" alt="Catalyst Applied AI" className="w-full h-full object-cover" />
                                     </div>
@@ -149,30 +169,37 @@ export default function Navbar({ showNav }) {
                                         <div
                                             key={item.label}
                                             className="relative"
-                                            onMouseEnter={() => handleMouseEnter(item)}
-                                            onMouseLeave={handleMouseLeave}
                                         >
                                             {item.columns ? (
                                                 <button
-                                                    className={`flex items-center gap-1.5 text-sm font-medium py-2 px-4 rounded-full transition-all duration-200 relative z-10 ${activeItem?.label === item.label ? 'text-white' : 'text-slate-300 hover:text-white'}`}
+                                                    onClick={() => toggleDropdown(item)}
+                                                    className={`flex items-center gap-1.5 text-sm font-medium py-2 px-1 mx-3 transition-all duration-200 relative z-10 ${activeItem?.label === item.label ? 'text-white' : 'text-slate-300 hover:text-white'}`}
                                                 >
+                                                    {item.label}
+                                                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeItem?.label === item.label ? 'rotate-180' : ''}`} />
+                                                    
                                                     {activeItem?.label === item.label && (
                                                         <motion.div
-                                                            layoutId="nav-pill"
-                                                            className="absolute inset-0 bg-white/[0.08] rounded-full -z-10"
+                                                            layoutId="nav-underline"
+                                                            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-500 rounded-full"
                                                             transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                                         />
                                                     )}
-                                                    {item.label}
-                                                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeItem?.label === item.label ? 'rotate-180' : ''}`} />
                                                 </button>
                                             ) : (
                                                 <Link
                                                     to={item.path}
-                                                    className="relative text-slate-300 hover:text-white transition-colors text-sm font-medium py-2 px-4 rounded-full z-10 block"
+                                                    className={`relative text-sm font-medium py-2 px-1 mx-3 z-10 block transition-all duration-200 ${isLinkActive(item.path) ? 'text-white' : 'text-slate-300 hover:text-white'}`}
                                                     onClick={() => setActiveItem(null)}
                                                 >
                                                     {item.label}
+                                                    {isLinkActive(item.path) && (
+                                                        <motion.div
+                                                            layoutId="nav-underline"
+                                                            className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-500 rounded-full"
+                                                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                                        />
+                                                    )}
                                                 </Link>
                                             )}
                                         </div>
@@ -284,8 +311,7 @@ export default function Navbar({ showNav }) {
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
                         className="fixed top-0 left-0 right-0 w-screen h-screen z-[100] pointer-events-none"
-                        onMouseEnter={() => handleMouseEnter(activeItem)}
-                        onMouseLeave={handleMouseLeave}
+                        role="menu"
                     >
                         {/* Semi-transparent Backdrop */}
                         <motion.div 

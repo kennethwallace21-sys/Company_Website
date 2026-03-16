@@ -12,15 +12,21 @@ export default function ScrollToTop() {
                 const element = document.querySelector(hash);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth' });
-                } else if (retries < 10) {
+                } else if (retries < 15) {
                     retries++;
-                    setTimeout(scroll, 100);
+                    setTimeout(scroll, 50);
                 }
             };
-            setTimeout(scroll, 100);
+            setTimeout(scroll, 50);
             return;
         }
-        window.scrollTo(0, 0);
+
+        // For standard page changes, use a silky smooth scroll to the top
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
     }, [pathname, hash]);
 
     return null;

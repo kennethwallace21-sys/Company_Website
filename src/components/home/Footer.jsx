@@ -24,7 +24,11 @@ export default function Footer() {
                 >
                     {/* Logo & Description */}
                     <motion.div variants={staggerItem} className="md:col-span-1">
-                        <Link to={createPageUrl('Home')} className="flex items-center gap-3 hover:opacity-90 transition-opacity mb-4 group">
+                        <Link 
+                            to={createPageUrl('Home')} 
+                            className="flex items-center gap-3 hover:opacity-90 transition-opacity mb-4 group"
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        >
                             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                 <img src="/logo.jpg" alt="Catalyst Applied AI" className="w-full h-full object-cover" loading="lazy" />
                             </div>
