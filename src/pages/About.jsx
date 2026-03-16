@@ -7,6 +7,7 @@ import { createPageUrl } from '@/utils';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, fadeLeft, fadeRight, staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
+import SEOHead from '../components/SEOHead';
 
 const values = [
     {
@@ -108,6 +109,23 @@ export default function About() {
 
     return (
         <div className="min-h-screen bg-[#060a14]">
+            <SEOHead
+                title="About Us"
+                description="Meet the team behind Catalyst Applied AI. We're experts, engineers, and strategists dedicated to helping organizations harness AI to drive real business results."
+                path="/About"
+                jsonLd={{
+                    '@context': 'https://schema.org',
+                    '@type': 'AboutPage',
+                    name: 'About Catalyst Applied AI',
+                    description: 'Learn about our mission, vision, team, and values.',
+                    url: 'https://catalystappliedai.com/About',
+                    mainEntity: {
+                        '@type': 'Organization',
+                        name: 'Catalyst Applied AI',
+                        foundingDate: '2019',
+                    }
+                }}
+            />
             <Navbar showNav={showNav} />
 
             {/* Hero Section */}

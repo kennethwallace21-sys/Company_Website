@@ -1,3 +1,5 @@
+import React, { Suspense, lazy } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -8,8 +10,9 @@ import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import ScrollToTop from '@/components/ScrollToTop';
-import FaqChatbot from '@/components/FaqChatbot';
-import FluidWrapper from '@/components/FluidWrapper';
+
+// Lazy-load chatbot — not needed on first paint
+const FaqChatbot = lazy(() => import('@/components/FaqChatbot'));
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -19,71 +22,94 @@ const LayoutWrapper = ({ children, currentPageName }) => Layout ?
     <Layout currentPageName={currentPageName}>{children}</Layout>
     : <>{children}</>;
 
+// Minimal dark-themed loading spinner that matches the site
+const PageLoader = () => (
+    <div className="fixed inset-0 bg-[#060a14] flex items-center justify-center z-50">
+        <div className="flex flex-col items-center gap-4">
+            <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+        </div>
+    </div>
+);
+
+import { motion, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+
+const PageWrapper = ({ children }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
+        {children}
+    </motion.div>
+);
+
 const AuthenticatedApp = () => {
     const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+    const location = useLocation();
 
-    // Show loading spinner while checking app public settings or auth
     if (isLoadingPublicSettings || isLoadingAuth) {
-        return (
-            <div className="fixed inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-            </div>
-        );
+        return <PageLoader />;
     }
 
-    // Handle authentication errors
     if (authError) {
         if (authError.type === 'user_not_registered') {
             return <UserNotRegisteredError />;
         } else if (authError.type === 'auth_required') {
-            // Redirect to login automatically
             navigateToLogin();
             return null;
         }
     }
 
-    // Render the main app with fluid page transitions
     return (
-        <FluidWrapper>
-            <Routes>
-                <Route path="/" element={
-                    <LayoutWrapper currentPageName={mainPageKey}>
-                        <MainPage />
-                    </LayoutWrapper>
-                } />
-                {Object.entries(Pages).map(([path, Page]) => (
-                    <Route
-                        key={path}
-                        path={`/${path}`}
-                        element={
-                            <LayoutWrapper currentPageName={path}>
-                                <Page />
-                            </LayoutWrapper>
-                        }
-                    />
-                ))}
-                <Route path="*" element={<PageNotFound />} />
-            </Routes>
-        </FluidWrapper>
+        <Suspense fallback={<PageLoader />}>
+            <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname}>
+                    <Route path="/" element={
+                        <LayoutWrapper currentPageName={mainPageKey}>
+                            <PageWrapper>
+                                <MainPage />
+                            </PageWrapper>
+                        </LayoutWrapper>
+                    } />
+                    {Object.entries(Pages).map(([path, Page]) => (
+                        <Route
+                            key={path}
+                            path={`/${path}`}
+                            element={
+                                <LayoutWrapper currentPageName={path}>
+                                    <PageWrapper>
+                                        <Page />
+                                    </PageWrapper>
+                                </LayoutWrapper>
+                            }
+                        />
+                    ))}
+                    <Route path="*" element={<PageNotFound />} />
+                </Routes>
+            </AnimatePresence>
+        </Suspense>
     );
 };
 
-
-
 function App() {
-
     return (
-        <AuthProvider>
-            <QueryClientProvider client={queryClientInstance}>
-                <Router>
-                    <ScrollToTop />
-                    <NavigationTracker />
-                    <AuthenticatedApp />
-                    <FaqChatbot />
-                </Router>
-                <Toaster />
-            </QueryClientProvider>
-        </AuthProvider>
+        <HelmetProvider>
+            <AuthProvider>
+                <QueryClientProvider client={queryClientInstance}>
+                    <Router>
+                        <ScrollToTop />
+                        <NavigationTracker />
+                        <AuthenticatedApp />
+                        <Suspense fallback={null}>
+                            <FaqChatbot />
+                        </Suspense>
+                    </Router>
+                    <Toaster />
+                </QueryClientProvider>
+            </AuthProvider>
+        </HelmetProvider>
     )
 }
 

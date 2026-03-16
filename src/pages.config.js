@@ -7,53 +7,18 @@
  * THE ONLY EDITABLE VALUE: mainPage
  * This controls which page is the landing page (shown when users visit the app).
  * 
- * Example file structure:
- * 
- *   import HomePage from './pages/HomePage';
- *   import Dashboard from './pages/Dashboard';
- *   import Settings from './pages/Settings';
- *   
- *   export const PAGES = {
- *       "HomePage": HomePage,
- *       "Dashboard": Dashboard,
- *       "Settings": Settings,
- *   }
- *   
- *   export const pagesConfig = {
- *       mainPage: "HomePage",
- *       Pages: PAGES,
- *   };
- * 
- * Example with Layout (wraps all pages):
- *
- *   import Home from './pages/Home';
- *   import Settings from './pages/Settings';
- *   import __Layout from './Layout.jsx';
- *
- *   export const PAGES = {
- *       "Home": Home,
- *       "Settings": Settings,
- *   }
- *
- *   export const pagesConfig = {
- *       mainPage: "Home",
- *       Pages: PAGES,
- *       Layout: __Layout,
- *   };
- *
- * To change the main page from HomePage to Dashboard, use find_replace:
- *   Old: mainPage: "HomePage",
- *   New: mainPage: "Dashboard",
- *
- * The mainPage value must match a key in the PAGES object exactly.
+ * Performance: Non-home pages are lazy-loaded for faster initial load.
  */
-import About from './pages/About';
-import Contact from './pages/Contact';
+import { lazy } from 'react';
 import Home from './pages/Home';
-import Products from './pages/Products';
-import ServiceDetail from './pages/ServiceDetail';
-import TermsAndConditions from './pages/TermsAndConditions';
 
+// Lazy-load all non-home pages for code splitting
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Products = lazy(() => import('./pages/Products'));
+const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
+const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
+const FAQ = lazy(() => import('./pages/FAQ'));
 
 export const PAGES = {
     "About": About,
@@ -62,6 +27,7 @@ export const PAGES = {
     "Products": Products,
     "ServiceDetail": ServiceDetail,
     "TermsAndConditions": TermsAndConditions,
+    "FAQ": FAQ,
 }
 
 export const pagesConfig = {

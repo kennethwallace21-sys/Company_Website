@@ -1,10 +1,38 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ExternalLink, BarChart3, Building2, Server } from 'lucide-react';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
+import SEOHead from '../components/SEOHead';
+
+// Lazy iframe — only loads when scrolled into view
+function LazyIframe({ src, title }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: '200px' });
+    const [loaded, setLoaded] = useState(false);
+
+    return (
+        <div ref={ref} className="aspect-[16/10] w-full bg-slate-900 overflow-hidden relative">
+            {isInView && (
+                <iframe
+                    src={src}
+                    title={title}
+                    loading="lazy"
+                    className="w-full h-full scale-[0.4] origin-top-left"
+                    style={{ border: 'none', width: '250%', height: '250%', opacity: loaded ? 1 : 0, transition: 'opacity 0.5s ease' }}
+                    onLoad={() => setLoaded(true)}
+                />
+            )}
+            {(!isInView || !loaded) && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-6 h-6 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin" />
+                </div>
+            )}
+        </div>
+    );
+}
 
 const products = [
     {
@@ -42,6 +70,11 @@ const products = [
 export default function Products() {
     return (
         <div className="min-h-screen bg-[#060a14] overflow-hidden">
+            <SEOHead
+                title="AI Products"
+                description="Explore CAAi Command Center, CAAi CLERK, and Catalyst Custom Models — AI-powered products built for real business impact."
+                path="/Products"
+            />
             <Navbar showNav={true} />
 
             {/* Hero Section */}
@@ -166,14 +199,7 @@ export default function Products() {
                                     {/* Product Preview or Icon */}
                                     {product.hasPreview && product.url ? (
                                         <div className="relative">
-                                            <div className="aspect-[16/10] w-full bg-slate-900 overflow-hidden">
-                                                <iframe
-                                                    src={product.url}
-                                                    title={product.name}
-                                                    className="w-full h-full scale-[0.4] origin-top-left"
-                                                    style={{ border: 'none', width: '250%', height: '250%' }}
-                                                />
-                                            </div>
+                                            <LazyIframe src={product.url} title={product.name} />
                                             {/* Overlay to prevent interaction */}
                                             <div 
                                                 className="absolute inset-0 cursor-pointer"

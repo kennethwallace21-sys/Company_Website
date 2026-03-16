@@ -7,6 +7,7 @@ import { createPageUrl } from '@/utils';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, fadeLeft, fadeRight, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
+import SEOHead from '../components/SEOHead';
 
 const servicesData = {
     'discovery-diagnostic': {
@@ -162,6 +163,22 @@ export default function ServiceDetail() {
 
     return (
         <div className="min-h-screen bg-[#060a14]">
+            <SEOHead
+                title={service.title}
+                description={service.subtitle}
+                path={`/ServiceDetail?service=${serviceId}`}
+                jsonLd={{
+                    '@context': 'https://schema.org',
+                    '@type': 'Service',
+                    name: service.title,
+                    description: service.subtitle,
+                    provider: {
+                        '@type': 'Organization',
+                        name: 'Catalyst Applied AI'
+                    },
+                    url: `https://catalystappliedai.com/ServiceDetail?service=${serviceId}`
+                }}
+            />
             <Navbar showNav={true} />
 
             {/* Hero Section */}
@@ -170,6 +187,7 @@ export default function ServiceDetail() {
                     <motion.img
                         src={service.heroImage}
                         alt={service.title}
+                        loading="lazy"
                         className="w-full h-full object-cover"
                         initial={{ scale: 1.1, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}

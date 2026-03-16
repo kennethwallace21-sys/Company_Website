@@ -5,6 +5,7 @@ import { createPageUrl } from '@/utils';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
+import SEOHead from '../components/SEOHead';
 
 export default function TermsAndConditions() {
     const [showNav, setShowNav] = useState(false);
@@ -38,6 +39,12 @@ export default function TermsAndConditions() {
 
     return (
         <div className="min-h-screen bg-[#060a14]">
+            <SEOHead
+                title="Terms & Conditions"
+                description="Terms of service, privacy policy, and legal information for Catalyst Applied AI."
+                path="/TermsAndConditions"
+                noindex={true}
+            />
             <Navbar showNav={showNav} />
 
             {/* Hero */}

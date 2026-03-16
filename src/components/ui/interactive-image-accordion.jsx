@@ -20,6 +20,7 @@ const AccordionItem = ({ item, isActive, onMouseEnter, linkTo }) => {
             <img
                 src={item.imageUrl}
                 alt={item.title}
+                loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 style={{
                     transform: isActive ? 'scale(1)' : 'scale(1.15)',

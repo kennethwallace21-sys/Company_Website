@@ -3,8 +3,9 @@ import Navbar from '../components/home/Navbar';
 import HeroSection from '../components/home/HeroSection';
 import ServicesAccordion from '../components/home/ServicesAccordion';
 import AboutSection from '../components/home/AboutSection';
-import ContactSection from '../components/home/ContactSection';
+import CTASection from '../components/home/CTASection';
 import Footer from '../components/home/Footer';
+import SEOHead from '../components/SEOHead';
 
 export default function Home() {
     const [showNav, setShowNav] = useState(false);
@@ -17,6 +18,11 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-[#060a14]">
+            <SEOHead
+                title={null}
+                description="We help organizations identify, design, and implement practical AI solutions that drive real business value. AI consulting, workflow automation, custom AI tools, and data engineering."
+                path="/"
+            />
             {/* Navbar */}
             <Navbar showNav={showNav} />
 
@@ -31,8 +37,8 @@ export default function Home() {
                 <AboutSection />
             </div>
 
-            {/* Contact Section */}
-            <ContactSection />
+            {/* CTA Section */}
+            <CTASection />
 
             {/* Footer */}
             <Footer />

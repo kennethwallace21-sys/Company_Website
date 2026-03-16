@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, Linkedin, Phone } from 'lucide-react';
 import { fadeUp, staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
 
 export default function Footer() {
@@ -26,7 +26,7 @@ export default function Footer() {
                     <motion.div variants={staggerItem} className="md:col-span-1">
                         <Link to={createPageUrl('Home')} className="flex items-center gap-3 hover:opacity-90 transition-opacity mb-4 group">
                             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                                <img src="/logo.jpg" alt="Catalyst Applied AI" className="w-full h-full object-cover" />
+                                <img src="/logo.jpg" alt="Catalyst Applied AI" className="w-full h-full object-cover" loading="lazy" />
                             </div>
                             <span className="text-xl font-bold text-white">
                                 Catalyst Applied AI
@@ -68,6 +68,7 @@ export default function Footer() {
                             {[
                                 { label: 'Home', page: 'Home' },
                                 { label: 'Products', page: 'Products' },
+                                { label: 'FAQ', page: 'FAQ' },
                                 { label: 'Terms & Conditions', page: 'TermsAndConditions' },
                             ].map(item => (
                                 <li key={item.page}>
@@ -90,6 +91,18 @@ export default function Footer() {
                                 <a href="mailto:sales@catalystappliedai.com" className="text-slate-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
                                     <Mail className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                     sales@catalystappliedai.com
+                                </a>
+                            </li>
+                            <li>
+                                <a href="tel:+15024168342" className="text-slate-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                    +1-502-416-8342
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/company/catalyst-applied-ai/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
+                                    <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                    LinkedIn
                                 </a>
                             </li>
                             <li className="text-slate-400 text-sm flex items-start gap-2">
@@ -117,7 +130,7 @@ export default function Footer() {
                     >
                         {/* Company Logo Side */}
                         <div className="flex items-center justify-center px-4 py-3 bg-black">
-                            <img src="/logo.jpg" alt="Catalyst Applied AI" className="h-10 object-contain" />
+                            <img src="/logo.jpg" alt="Catalyst Applied AI" className="h-10 object-contain" loading="lazy" />
                         </div>
                         {/* NVIDIA Badge Side */}
                         <div className="bg-white px-4 py-3">
@@ -125,6 +138,7 @@ export default function Footer() {
                                 src="/nvidia-inception-badge.png" 
                                 alt="Member of NVIDIA Inception" 
                                 className="h-10 object-contain"
+                                loading="lazy"
                             />
                         </div>
                     </motion.div>

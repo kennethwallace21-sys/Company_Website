@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Send, ArrowRight, CheckCircle } from 'lucide-react';
+import { Mail, Send, ArrowRight, CheckCircle, Linkedin, Phone } from 'lucide-react';
 import { fadeUp, fadeLeft, fadeRight, scaleUp } from '@/hooks/useFluidReveal';
 
 export default function ContactSection() {
@@ -138,6 +138,48 @@ export default function ContactSection() {
                                     </div>
                                 </div>
                             </motion.a>
+
+                            <motion.a
+                                href="tel:+15024168342"
+                                className="flex items-center gap-4 p-4 rounded-xl bg-[#0d1425]/50 border border-blue-500/10 group"
+                                whileHover={{
+                                    y: -3,
+                                    borderColor: 'rgba(59, 130, 246, 0.35)',
+                                    transition: { duration: 0.25 },
+                                }}
+                            >
+                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                                    <Phone className="w-5 h-5 text-blue-400" />
+                                </div>
+                                <div>
+                                    <div className="text-sm text-slate-400">Call us at</div>
+                                    <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
+                                        +1-502-416-8342
+                                    </div>
+                                </div>
+                            </motion.a>
+
+                            <motion.a
+                                href="https://www.linkedin.com/company/catalyst-applied-ai/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-4 p-4 rounded-xl bg-[#0d1425]/50 border border-blue-500/10 group"
+                                whileHover={{
+                                    y: -3,
+                                    borderColor: 'rgba(59, 130, 246, 0.35)',
+                                    transition: { duration: 0.25 },
+                                }}
+                            >
+                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                                    <Linkedin className="w-5 h-5 text-blue-400" />
+                                </div>
+                                <div>
+                                    <div className="text-sm text-slate-400">Follow us on</div>
+                                    <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
+                                        LinkedIn
+                                    </div>
+                                </div>
+                            </motion.a>
                         </div>
                     </motion.div>
 
@@ -148,6 +190,7 @@ export default function ContactSection() {
                         whileInView="visible"
                         viewport={{ once: true, margin: '-80px' }}
                         custom={0.2}
+                        className="h-full"
                     >
                         {isSubmitted ? (
                             <motion.div
@@ -172,63 +215,63 @@ export default function ContactSection() {
                                 </div>
                             </motion.div>
                         ) : (
-                            <form onSubmit={handleSubmit} className="p-8 rounded-2xl bg-[#0d1425]/50 border border-blue-500/10 space-y-6">
-                                <div className="grid sm:grid-cols-2 gap-4">
+                            <form onSubmit={handleSubmit} className="h-full p-8 rounded-2xl bg-[#0d1425]/50 border border-blue-500/10 flex flex-col gap-6">
+                                <div className="grid sm:grid-cols-2 gap-4 flex-shrink-0">
                                     <div>
-                                        <label className="text-sm text-slate-400 mb-2 block">Name</label>
+                                        <label className="text-sm text-slate-400 mb-2 block font-medium">Name</label>
                                         <Input
                                             placeholder="Your name"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                            className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300"
+                                            className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300 h-12"
                                             required
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-sm text-slate-400 mb-2 block">Email</label>
+                                        <label className="text-sm text-slate-400 mb-2 block font-medium">Email</label>
                                         <Input
                                             type="email"
                                             placeholder="you@company.com"
                                             value={formData.email}
                                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                            className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300"
+                                            className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300 h-12"
                                             required
                                         />
                                     </div>
                                 </div>
-                                <div>
-                                    <label className="text-sm text-slate-400 mb-2 block">Company</label>
+                                <div className="flex-shrink-0">
+                                    <label className="text-sm text-slate-400 mb-2 block font-medium">Company</label>
                                     <Input
                                         placeholder="Your company name"
                                         value={formData.company}
                                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                                        className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300"
+                                        className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300 h-12"
                                     />
                                 </div>
-                                <div>
-                                    <label className="text-sm text-slate-400 mb-2 block">Message</label>
+                                <div className="flex-grow flex flex-col min-h-[160px]">
+                                    <label className="text-sm text-slate-400 mb-2 block font-medium">Message</label>
                                     <Textarea
                                         placeholder="Tell us about your project and how we can help..."
                                         value={formData.message}
                                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                                        className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 min-h-[120px] transition-all duration-300"
+                                        className="flex-grow bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300 resize-none p-4"
                                         required
                                     />
                                 </div>
                                 {error && (
                                     <motion.p
-                                        className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3"
+                                        className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 flex-shrink-0"
                                         initial={{ opacity: 0, y: -8 }}
                                         animate={{ opacity: 1, y: 0 }}
                                     >
                                         {error}
                                     </motion.p>
                                 )}
-                                <motion.div whileHover={{ scale: 1.015 }} whileTap={{ scale: 0.97 }}>
+                                <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} className="flex-shrink-0">
                                     <Button
                                         type="submit"
                                         disabled={isLoading}
-                                        className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white py-6 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
+                                        className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white py-6 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-all text-base font-semibold"
                                     >
                                         {isLoading ? (
                                             <span className="flex items-center gap-2">
@@ -238,7 +281,7 @@ export default function ContactSection() {
                                         ) : (
                                             <span className="flex items-center gap-2">
                                                 Send Message
-                                                <Send className="w-4 h-4" />
+                                                <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                                             </span>
                                         )}
                                     </Button>
