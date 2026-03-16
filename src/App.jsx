@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { Analytics } from "@vercel/analytics/react"
 import ScrollToTop from '@/components/ScrollToTop';
 
 // Lazy-load chatbot — not needed on first paint
@@ -105,6 +106,7 @@ function App() {
                         <ScrollToTop />
                         <NavigationTracker />
                         <AuthenticatedApp />
+                        <Analytics />
                         <Suspense fallback={null}>
                             <FaqChatbot />
                         </Suspense>
