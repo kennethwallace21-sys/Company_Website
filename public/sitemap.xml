@@ -12,14 +12,6 @@
     <priority>1.0</priority>
   </url>
 
-  <!-- About -->
-  <url>
-    <loc>https://catalystappliedai.com/About</loc>
-    <lastmod>2026-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
   <!-- Products -->
   <url>
     <loc>https://catalystappliedai.com/Products</loc>

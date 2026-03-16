@@ -86,19 +86,7 @@ export default function AboutSection() {
                             ))}
                         </motion.div>
 
-                        {/* Learn More Button */}
-                        <Link to={createPageUrl('About')}>
-                            <motion.div
-                                whileHover={{ scale: 1.03 }}
-                                whileTap={{ scale: 0.97 }}
-                                className="inline-block"
-                            >
-                                <Button className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-shadow">
-                                    Learn More About Us
-                                    <ArrowRight className="ml-2 w-4 h-4" />
-                                </Button>
-                            </motion.div>
-                        </Link>
+// AboutSection simplified (Full About page removed)
                     </motion.div>
 
                     {/* Right Content - Capabilities */}

@@ -13,7 +13,6 @@ import { lazy } from 'react';
 import Home from './pages/Home';
 
 // Lazy-load all non-home pages for code splitting
-const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Products = lazy(() => import('./pages/Products'));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
@@ -21,7 +20,6 @@ const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 
 export const PAGES = {
-    "About": About,
     "Contact": Contact,
     "Home": Home,
     "Products": Products,

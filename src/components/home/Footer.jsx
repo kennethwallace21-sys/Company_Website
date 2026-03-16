@@ -159,9 +159,19 @@ export default function Footer() {
                     <p className="text-slate-400 text-sm">
                         Copyright © {new Date().getFullYear()} Catalyst Applied AI - All Rights Reserved.
                     </p>
-                    <p className="text-slate-500 text-xs mt-2">
-                        © {new Date().getFullYear()} NVIDIA, the NVIDIA logo, and NVIDIA Inception are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries.
-                    </p>
+                    <div className="flex justify-center gap-4 mt-2">
+                        <p className="text-slate-500 text-xs">
+                            © {new Date().getFullYear()} NVIDIA, the NVIDIA logo, and NVIDIA Inception are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries.
+                        </p>
+                        <a 
+                            href="/sitemap.xml" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-slate-600 hover:text-blue-500 transition-colors text-xs underline underline-offset-2"
+                        >
+                            Sitemap
+                        </a>
+                    </div>
                 </motion.div>
             </div>
         </motion.footer>
