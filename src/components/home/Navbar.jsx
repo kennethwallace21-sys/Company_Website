@@ -347,7 +347,7 @@ export default function Navbar({ showNav }) {
                                                         <li key={link.label}>
                                                             <Link
                                                                 to={link.path}
-                                                                className="group/link flex items-start gap-4 p-2 -m-2 rounded-xl hover:bg-white/[0.04] transition-all duration-300"
+                                                                className="group/link flex items-start gap-4 p-2 -m-2 rounded-xl transition-all duration-300"
                                                                 onClick={() => setActiveItem(null)}
                                                             >
                                                                 {/* Icon Container - Small Graphics */}
@@ -355,9 +355,10 @@ export default function Navbar({ showNav }) {
                                                                     {link.icon && <link.icon className="w-5 h-5 text-blue-400 group-hover/link:text-white transition-colors" />}
                                                                 </div>
 
-                                                                <div className="flex flex-col gap-0.5">
-                                                                    <span className="text-[16px] font-bold text-slate-200 group-hover/link:text-white transition-colors">
+                                                                <div className="flex flex-col gap-0.5 relative pr-4">
+                                                                    <span className="text-[16px] font-bold text-slate-200 group-hover/link:text-white transition-colors relative">
                                                                         {link.label}
+                                                                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover/link:w-full" />
                                                                     </span>
                                                                     {link.description && (
                                                                         <span className="text-[12px] text-slate-500 group-hover/link:text-slate-400 transition-colors">
