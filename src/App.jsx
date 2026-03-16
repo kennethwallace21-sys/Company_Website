@@ -78,17 +78,29 @@ const AuthenticatedApp = () => {
                         </LayoutWrapper>
                     } />
                     {Object.entries(Pages).map(([path, Page]) => (
-                        <Route
-                            key={path}
-                            path={`/${path}`}
-                            element={
-                                <LayoutWrapper currentPageName={path}>
-                                    <PageWrapper>
-                                        <Page />
-                                    </PageWrapper>
-                                </LayoutWrapper>
-                            }
-                        />
+                        <React.Fragment key={path}>
+                            <Route
+                                path={`/${path}`}
+                                element={
+                                    <LayoutWrapper currentPageName={path}>
+                                        <PageWrapper>
+                                            <Page />
+                                        </PageWrapper>
+                                    </LayoutWrapper>
+                                }
+                            />
+                            {/* Fallback for lowercase URLs */}
+                            <Route
+                                path={`/${path.toLowerCase()}`}
+                                element={
+                                    <LayoutWrapper currentPageName={path}>
+                                        <PageWrapper>
+                                            <Page />
+                                        </PageWrapper>
+                                    </LayoutWrapper>
+                                }
+                            />
+                        </React.Fragment>
                     ))}
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
