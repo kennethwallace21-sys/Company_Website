@@ -120,13 +120,16 @@ export default function Footer() {
 
                 {/* NVIDIA Inception Partner Badge */}
                 <motion.div
-                    className="flex justify-center my-8"
+                    className="flex flex-col items-center gap-3 my-8"
                     variants={scaleUp}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: '-40px' }}
                     custom={0}
                 >
+                    <p className="text-slate-400 text-xs sm:text-sm text-center max-w-xl">
+                        Catalyst Applied AI is a member of <span className="font-medium text-slate-200">NVIDIA Inception</span>.
+                    </p>
                     <motion.div
                         className="flex items-center bg-black rounded-lg overflow-hidden"
                         whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(118, 185, 0, 0.15)' }}
