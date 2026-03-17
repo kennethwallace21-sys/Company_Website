@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 
 const SITE_URL = 'https://catalystappliedai.com';
-const DEFAULT_IMAGE = `${SITE_URL}/logo.jpg`;
+const DEFAULT_IMAGE = `${SITE_URL}/logo1.png`;
 
 /**
  * SEOHead — Dynamic per-page SEO meta tags.

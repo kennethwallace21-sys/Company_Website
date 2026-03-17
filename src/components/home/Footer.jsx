@@ -30,7 +30,7 @@ export default function Footer() {
                             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                         >
                             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                                <img src="/logo.jpg" alt="Catalyst Applied AI" className="w-full h-full object-cover" loading="lazy" />
+                                <img src="/logo1.png" alt="Catalyst Applied AI" className="w-full h-full object-cover" loading="lazy" />
                             </div>
                             <span className="text-xl font-bold text-white">
                                 Catalyst Applied AI
@@ -134,7 +134,7 @@ export default function Footer() {
                     >
                         {/* Company Logo Side */}
                         <div className="flex items-center justify-center px-4 py-3 bg-black">
-                            <img src="/logo.jpg" alt="Catalyst Applied AI" className="h-10 object-contain" loading="lazy" />
+                            <img src="/logo1.png" alt="Catalyst Applied AI" className="h-10 object-contain" loading="lazy" />
                         </div>
                         {/* NVIDIA Badge Side */}
                         <div className="bg-white px-4 py-3">

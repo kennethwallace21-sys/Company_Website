@@ -317,7 +317,7 @@ export default function FaqChatbot() {
                         {/* Background logo watermark */}
                         {messages.length <= 1 && (
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none" style={{ top: '60px' }}>
-                                <img src="/logo.jpg" alt="" className="w-24 h-24 object-contain opacity-10 rounded-xl" loading="lazy" />
+                                <img src="/logo1.png" alt="" className="w-24 h-24 object-contain opacity-10 rounded-xl" loading="lazy" />
                             </div>
                         )}
                         {messages.map((msg, index) => (

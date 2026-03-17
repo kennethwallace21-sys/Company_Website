@@ -156,7 +156,7 @@ export default function Navbar({ showNav }) {
                                     }}
                                 >
                                     <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform">
-                                        <img src="/logo.jpg" alt="Catalyst Applied AI" className="w-full h-full object-cover" />
+                                        <img src="/logo1.png" alt="Catalyst Applied AI" className="w-full h-full object-cover" />
                                     </div>
                                     <span className="text-xl font-bold text-white hidden sm:block">
                                         Catalyst Applied AI
