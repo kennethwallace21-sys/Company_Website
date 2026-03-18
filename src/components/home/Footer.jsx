@@ -118,7 +118,7 @@ export default function Footer() {
                     </motion.div>
                 </motion.div>
 
-                {/* NVIDIA Inception Partner Badge */}
+                {/* NVIDIA Inception Member Badge */}
                 <motion.div
                     className="flex flex-col items-center gap-3 my-8"
                     variants={scaleUp}
@@ -131,23 +131,16 @@ export default function Footer() {
                         Catalyst Applied AI is a member of <span className="font-medium text-slate-200">NVIDIA Inception</span>.
                     </p>
                     <motion.div
-                        className="flex items-center bg-black rounded-lg overflow-hidden"
+                        className="flex items-center justify-center rounded-lg overflow-hidden"
                         whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(118, 185, 0, 0.15)' }}
                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
-                        {/* Company Logo Side */}
-                        <div className="flex items-center justify-center px-4 py-3 bg-black">
-                            <img src="/logo1.png" alt="Catalyst Applied AI" className="h-10 object-contain" loading="lazy" />
-                        </div>
-                        {/* NVIDIA Badge Side */}
-                        <div className="bg-white px-4 py-3">
-                            <img 
-                                src="/nvidia-inception-badge.png" 
-                                alt="Member of NVIDIA Inception" 
-                                className="h-10 object-contain"
-                                loading="lazy"
-                            />
-                        </div>
+                        <img 
+                            src="/nvidia-inception-badge.png" 
+                            alt="NVIDIA Inception Partner badge for dark backgrounds" 
+                            className="h-16 object-contain"
+                            loading="lazy"
+                        />
                     </motion.div>
                 </motion.div>
 
