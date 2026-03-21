@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
     Menu, X, ChevronDown, ChevronRight, 
     Search, GraduationCap, Cpu, Database, 
-    Wrench, Zap, Layout, Bot, Box 
+    Wrench, Zap, Layout, Bot, Box, Shield 
 } from 'lucide-react';
 
 const navItems = [
@@ -55,6 +55,7 @@ const navItems = [
                 heading: 'Platforms',
                 links: [
                     { label: 'CAAi Command Center', path: '/Products', description: 'Agent orchestration', icon: Layout },
+                    { label: 'SCCI', path: '/Products', description: 'Supply chain compliance', icon: Shield },
                     { label: 'CAAi CLERK', path: '/Products', description: 'Customer AI support', icon: Bot },
                     { label: 'CAAi AGENT', path: '/Products', description: 'Task-specific AI', icon: Cpu },
                 ]
