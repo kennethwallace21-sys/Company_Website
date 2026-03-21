@@ -1,17 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ExternalLink, BarChart3, Building2, Server } from 'lucide-react';
+import { ArrowRight, ExternalLink, BarChart3, Building2, Server, Shield } from 'lucide-react';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 import SEOHead from '../components/SEOHead';
 
-// Lazy iframe — only loads when scrolled into view
-function LazyIframe({ src, title }) {
+// Lazy iframe — only loads when scrolled into view, with error fallback
+function LazyIframe({ src, title, onError }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '200px' });
     const [loaded, setLoaded] = useState(false);
+    const [failed, setFailed] = useState(false);
+
+    useEffect(() => {
+        if (!isInView) return;
+        // Timeout fallback — if iframe hasn't loaded in 8s, mark as failed
+        const timer = setTimeout(() => {
+            if (!loaded) {
+                setFailed(true);
+                onError?.();
+            }
+        }, 8000);
+        return () => clearTimeout(timer);
+    }, [isInView, loaded]);
+
+    if (failed) return null; // parent will show icon fallback
 
     return (
         <div ref={ref} className="aspect-[16/10] w-full bg-slate-900 overflow-hidden relative">
@@ -23,6 +38,7 @@ function LazyIframe({ src, title }) {
                     className="w-full h-full scale-[0.4] origin-top-left"
                     style={{ border: 'none', width: '250%', height: '250%', opacity: loaded ? 1 : 0, transition: 'opacity 0.5s ease' }}
                     onLoad={() => setLoaded(true)}
+                    onError={() => { setFailed(true); onError?.(); }}
                 />
             )}
             {(!isInView || !loaded) && (
@@ -34,25 +50,28 @@ function LazyIframe({ src, title }) {
     );
 }
 
+// Featured product — shown as a full-width hero card
+const featuredProduct = {
+    id: 'command-center',
+    name: 'CAAi Command Center',
+    tagline: 'AI-Powered Business Intelligence Platform',
+    description: 'A comprehensive command center that brings all your AI tools, analytics, and workflows into one unified dashboard. Cross-store briefing, fast routing, and manager summaries — all powered by the CAAi Trust Layer.',
+    status: 'In Development',
+    url: 'https://commandcenter.catalystappliedai.com/',
+    icon: BarChart3,
+    hasPreview: true
+};
+
+// Remaining products — displayed in a 3-column grid
 const products = [
     {
-        id: 'command-center',
-        name: 'CAAi Command Center',
-        tagline: 'AI-Powered Business Intelligence Platform',
-        description: 'A comprehensive command center that brings all your AI tools, analytics, and workflows into one unified dashboard.',
-        status: 'In Development',
-        url: 'https://commandcenter.catalystappliedai.com/',
-        icon: BarChart3,
-        hasPreview: true
-    },
-    {
-        id: 'caai-clerk',
-        name: 'CAAi CLERK',
-        tagline: 'County Language Engine for Records and Knowledge',
-        description: 'Government document workflows with secure RAG and trust-layer controls. Helps county offices triage FOIA requests, summarize meetings, and review permit packets.',
-        status: 'Preview Release',
-        url: 'https://gov-products.catalystappliedai.com/',
-        icon: Building2,
+        id: 'scci',
+        name: 'SCCI',
+        tagline: 'Supply Chain Compliance Intelligence',
+        description: 'AI-driven supply chain compliance platform that streamlines auditing, risk assessment, and regulatory adherence across your entire supply chain network.',
+        status: 'Live',
+        url: 'https://scci.catalystappliedai.com/login',
+        icon: Shield,
         hasPreview: true
     },
     {
@@ -64,15 +83,157 @@ const products = [
         url: 'https://custom-models.catalystappliedai.com/',
         icon: Server,
         hasPreview: true
+    },
+    {
+        id: 'caai-clerk',
+        name: 'CAAi CLERK',
+        tagline: 'County Language Engine for Records and Knowledge',
+        description: 'Government document workflows with secure RAG and trust-layer controls. Helps county offices triage FOIA requests, summarize meetings, and review permit packets.',
+        status: 'Preview Release',
+        url: 'https://gov-products.catalystappliedai.com/',
+        icon: Building2,
+        hasPreview: true
     }
 ];
+
+// Shared product card component
+function ProductCard({ product, featured = false }) {
+    const [iframeFailed, setIframeFailed] = useState(false);
+    const showPreview = product.hasPreview && product.url && !iframeFailed;
+
+    return (
+        <motion.div
+            variants={staggerItem}
+            whileHover={{ 
+                y: -8,
+                transition: { type: "spring", stiffness: 300, damping: 20 }
+            }}
+            className="group"
+        >
+            <div className={`relative bg-gradient-to-b from-[#0d1425]/80 to-[#080e1c]/80 rounded-xl border border-blue-500/10 overflow-hidden h-full flex flex-col transition-all duration-500 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/10 ${featured ? 'md:flex-row' : ''}`}>
+                {/* Glow Effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                {/* Product Preview or Icon */}
+                {showPreview ? (
+                    <div className={`relative ${featured ? 'md:w-3/5' : ''}`}>
+                        <LazyIframe src={product.url} title={product.name} onError={() => setIframeFailed(true)} />
+                        {/* Overlay to prevent interaction */}
+                        <div 
+                            className="absolute inset-0 cursor-pointer"
+                            onClick={() => window.open(product.url, '_blank')}
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 bg-white text-slate-900 px-4 py-2 rounded-lg font-semibold flex items-center gap-1.5 text-sm shadow-lg">
+                                    <ExternalLink className="w-4 h-4" />
+                                    View Live Demo
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className={`${featured ? 'aspect-[16/8]' : 'aspect-[16/10]'} w-full bg-gradient-to-br from-slate-800/60 via-[#0c1222] to-slate-900/60 flex items-center justify-center relative overflow-hidden ${featured ? 'md:w-3/5' : ''}`}>
+                        <div className="absolute inset-0 opacity-10">
+                            <div className="absolute inset-0" style={{
+                                backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
+                                backgroundSize: '24px 24px'
+                            }} />
+                        </div>
+                        {/* Animated accent rings */}
+                        <motion.div
+                            className={`absolute ${featured ? 'w-64 h-64' : 'w-40 h-40'} rounded-full border border-blue-500/10`}
+                            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.15, 0.3] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                        <motion.div
+                            className={`absolute ${featured ? 'w-44 h-44' : 'w-28 h-28'} rounded-full border border-blue-400/8`}
+                            animate={{ scale: [1.1, 1, 1.1], opacity: [0.2, 0.3, 0.2] }}
+                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                        <div className="relative">
+                            <motion.div
+                                className={`${featured ? 'w-28 h-28' : 'w-20 h-20'} rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-blue-500/15 flex items-center justify-center group-hover:border-blue-400/30 transition-all duration-500`}
+                                whileHover={{ scale: 1.1 }}
+                            >
+                                <product.icon className={`${featured ? 'w-14 h-14' : 'w-10 h-10'} text-slate-500 group-hover:text-blue-400 transition-colors duration-500`} />
+                            </motion.div>
+                            <div className="absolute inset-0 bg-blue-500/15 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
+                        </div>
+                    </div>
+                )}
+
+                {/* Product Details */}
+                <div className={`relative ${featured ? 'p-8 md:w-2/5 flex flex-col justify-center' : 'p-5'} flex-1 flex flex-col`}>
+                    {/* Status Badge */}
+                    <div className="mb-3">
+                        <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold inline-flex items-center gap-1.5 ${
+                            product.status === 'Live' 
+                                ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 text-green-400'
+                                : product.status === 'Preview Release'
+                                ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-400'
+                                : product.status === 'In Development'
+                                ? 'bg-gradient-to-r from-blue-500/20 to-blue-600/20 border border-blue-500/30 text-blue-400'
+                                : 'bg-slate-800/80 border border-slate-600/50 text-slate-400'
+                        }`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${
+                                product.status === 'Live' ? 'bg-green-400 animate-pulse' 
+                                : product.status === 'Preview Release' ? 'bg-purple-400 animate-pulse'
+                                : product.status === 'In Development' ? 'bg-blue-400 animate-pulse' 
+                                : 'bg-slate-500'
+                            }`} />
+                            {product.status}
+                        </span>
+                    </div>
+
+                    <h3 className={`${featured ? 'text-2xl md:text-3xl' : 'text-lg'} font-bold text-white mb-1 group-hover:text-blue-400 transition-colors duration-300`}>{product.name}</h3>
+                    <p className={`text-blue-400/70 ${featured ? 'text-sm' : 'text-xs'} font-medium mb-2`}>{product.tagline}</p>
+                    <p className={`text-slate-400 ${featured ? 'text-sm' : 'text-xs'} mb-6 flex-1 leading-relaxed`}>{product.description}</p>
+
+                    {/* CTA Buttons */}
+                    <div className="flex gap-2">
+                        {product.url ? (
+                            <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                                <Button
+                                    onClick={() => window.open(product.url, '_blank')}
+                                    size={featured ? 'default' : 'sm'}
+                                    className={`w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 ${featured ? 'text-sm h-11' : 'text-xs h-9'}`}
+                                >
+                                    Visit Product
+                                    <ExternalLink className={`ml-1.5 ${featured ? 'w-4 h-4' : 'w-3.5 h-3.5'}`} />
+                                </Button>
+                            </motion.div>
+                        ) : (
+                            <Button
+                                disabled
+                                size="sm"
+                                className="bg-slate-800 text-slate-500 flex-1 cursor-not-allowed border border-slate-700 text-xs h-9"
+                            >
+                                Coming Soon
+                            </Button>
+                        )}
+                        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                            <Button
+                                onClick={() => window.location.href = `mailto:sales@catalystappliedai.com?subject=${encodeURIComponent(product.name)} Inquiry`}
+                                size={featured ? 'default' : 'sm'}
+                                className={`bg-gradient-to-b from-slate-700 to-slate-800 border border-slate-600 text-slate-100 hover:from-slate-600 hover:to-slate-700 hover:border-slate-500 transition-all duration-300 ${featured ? 'text-sm h-11' : 'text-xs h-9'}`}
+                            >
+                                Inquire
+                            </Button>
+                        </motion.div>
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+}
 
 export default function Products() {
     return (
         <div className="min-h-screen bg-[#060a14] overflow-hidden">
             <SEOHead
                 title="AI Products"
-                description="Explore CAAi Command Center, CAAi CLERK, and Catalyst Custom Models — AI-powered products built for real business impact."
+                description="Explore CAAi Command Center, SCCI, CAAi CLERK, and Catalyst Custom Models — AI-powered products built for real business impact."
                 path="/Products"
             />
             <Navbar showNav={true} />
@@ -159,7 +320,7 @@ export default function Products() {
                 </div>
             </section>
 
-            {/* Products Grid */}
+            {/* Products Section */}
             <section className="py-20 px-4 relative">
                 {/* Floating background elements */}
                 <motion.div 
@@ -173,129 +334,27 @@ export default function Products() {
                     transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 />
 
-                <div className="max-w-6xl mx-auto relative z-10">
+                <div className="max-w-6xl mx-auto relative z-10 space-y-8">
+                    {/* Featured Product — Full Width */}
+                    <motion.div
+                        variants={staggerContainer}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, margin: "-100px" }}
+                    >
+                        <ProductCard product={featuredProduct} featured={true} />
+                    </motion.div>
+
+                    {/* Remaining Products — 3-Column Grid */}
                     <motion.div 
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+                        className="grid md:grid-cols-3 gap-6"
                         variants={staggerContainer}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, margin: "-100px" }}
                     >
                         {products.map((product) => (
-                            <motion.div
-                                key={product.id}
-                                variants={staggerItem}
-                                whileHover={{ 
-                                    y: -12,
-                                    transition: { type: "spring", stiffness: 300, damping: 20 }
-                                }}
-                                className="group"
-                            >
-                                {/* Product Card */}
-                                <div className="relative bg-gradient-to-b from-[#0d1425]/80 to-[#080e1c]/80 rounded-xl border border-blue-500/10 overflow-hidden h-full flex flex-col transition-all duration-500 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/10">
-                                    {/* Glow Effect */}
-                                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                    
-                                    {/* Product Preview or Icon */}
-                                    {product.hasPreview && product.url ? (
-                                        <div className="relative">
-                                            <LazyIframe src={product.url} title={product.name} />
-                                            {/* Overlay to prevent interaction */}
-                                            <div 
-                                                className="absolute inset-0 cursor-pointer"
-                                                onClick={() => window.open(product.url, '_blank')}
-                                            >
-                                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
-                                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                                                    <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 bg-white text-slate-900 px-4 py-2 rounded-lg font-semibold flex items-center gap-1.5 text-xs shadow-lg">
-                                                        <ExternalLink className="w-3.5 h-3.5" />
-                                                        View Live Demo
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="aspect-[16/10] w-full bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900 flex items-center justify-center relative overflow-hidden">
-                                            <div className="absolute inset-0 opacity-10">
-                                                <div className="absolute inset-0" style={{
-                                                    backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
-                                                    backgroundSize: '24px 24px'
-                                                }} />
-                                            </div>
-                                            <div className="relative">
-                                                <motion.div
-                                                    className="w-24 h-24 rounded-2xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-blue-500/15 flex items-center justify-center group-hover:border-blue-400/30 transition-all duration-500"
-                                                    whileHover={{ scale: 1.1 }}
-                                                >
-                                                    <product.icon className="w-12 h-12 text-slate-500 group-hover:text-blue-400 transition-colors duration-500" />
-                                                </motion.div>
-                                                <div className="absolute inset-0 bg-blue-500/15 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Product Details */}
-                                    <div className="relative p-5 flex-1 flex flex-col">
-                                        {/* Status Badge */}
-                                        <div className="mb-3">
-                                            <span className={`px-2.5 py-1 rounded-full text-[11px] font-semibold inline-flex items-center gap-1.5 ${
-                                                product.status === 'Live' 
-                                                    ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 text-green-400'
-                                                    : product.status === 'Preview Release'
-                                                    ? 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 text-purple-400'
-                                                    : product.status === 'In Development'
-                                                    ? 'bg-gradient-to-r from-blue-500/20 to-blue-600/20 border border-blue-500/30 text-blue-400'
-                                                    : 'bg-slate-800/80 border border-slate-600/50 text-slate-400'
-                                            }`}>
-                                                <span className={`w-1.5 h-1.5 rounded-full ${
-                                                    product.status === 'Live' ? 'bg-green-400 animate-pulse' 
-                                                    : product.status === 'Preview Release' ? 'bg-purple-400 animate-pulse'
-                                                    : product.status === 'In Development' ? 'bg-blue-400 animate-pulse' 
-                                                    : 'bg-slate-500'
-                                                }`} />
-                                                {product.status}
-                                            </span>
-                                        </div>
-
-                                        <h3 className="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors duration-300">{product.name}</h3>
-                                        <p className="text-blue-400/70 text-xs font-medium mb-2">{product.tagline}</p>
-                                        <p className="text-slate-400 text-xs mb-4 flex-1 leading-relaxed">{product.description}</p>
-
-                                        {/* CTA Buttons */}
-                                        <div className="flex gap-2">
-                                            {product.url ? (
-                                                <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                                                    <Button
-                                                        onClick={() => window.open(product.url, '_blank')}
-                                                        size="sm"
-                                                        className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 text-xs h-9"
-                                                    >
-                                                        Visit Product
-                                                        <ExternalLink className="ml-1.5 w-3.5 h-3.5" />
-                                                    </Button>
-                                                </motion.div>
-                                            ) : (
-                                                <Button
-                                                    disabled
-                                                    size="sm"
-                                                    className="bg-slate-800 text-slate-500 flex-1 cursor-not-allowed border border-slate-700 text-xs h-9"
-                                                >
-                                                    Coming Soon
-                                                </Button>
-                                            )}
-                                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                                                <Button
-                                                    onClick={() => window.location.href = `mailto:sales@catalystappliedai.com?subject=${encodeURIComponent(product.name)} Inquiry`}
-                                                    size="sm"
-                                                    className="bg-gradient-to-b from-slate-700 to-slate-800 border border-slate-600 text-slate-100 hover:from-slate-600 hover:to-slate-700 hover:border-slate-500 transition-all duration-300 text-xs h-9"
-                                                >
-                                                    Inquire
-                                                </Button>
-                                            </motion.div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </motion.div>
+                            <ProductCard key={product.id} product={product} />
                         ))}
                     </motion.div>
                 </div>
