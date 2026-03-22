@@ -58,7 +58,7 @@ const navItems = [
                     { label: 'CAAi Command Center', href: 'https://commandcenter.catalystappliedai.com/', description: 'AI-Powered Business Intelligence', icon: Layout },
                     { label: 'Catalyst Custom Models', href: 'https://custom-models.catalystappliedai.com/', description: 'Managed Enterprise AI Deployments', icon: Box },
                     { label: 'CAAi CLERK', href: 'https://gov-products.catalystappliedai.com/', description: 'Government document workflows', icon: Bot },
-                    { label: 'Voice Agent', path: '/Products', description: 'AI-powered voice assistant', icon: Mic, upcoming: true },
+                    { label: 'Voice Agent', description: 'AI-powered voice assistant', icon: Mic, upcoming: true },
                 ]
             }
         ]
@@ -349,7 +349,7 @@ export default function Navbar({ showNav }) {
                                                                 )}
                                                             </div>
                                                         </a>
-                                                    ) : (
+                                                    ) : link.path ? (
                                                         <Link
                                                             to={link.path}
                                                             className={`group/link flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-white/[0.04] ${link.upcoming ? 'opacity-60' : ''}`}
@@ -374,6 +374,27 @@ export default function Navbar({ showNav }) {
                                                                 )}
                                                             </div>
                                                         </Link>
+                                                    ) : (
+                                                        <div className="flex items-center gap-3 px-3 py-2.5 rounded-xl opacity-60 cursor-default">
+                                                            <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/5 border border-blue-500/10 flex items-center justify-center">
+                                                                {link.icon && <link.icon className="w-4 h-4 text-blue-400" />}
+                                                            </div>
+                                                            <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                                                                <span className="text-[14px] font-semibold text-slate-200 flex items-center gap-2">
+                                                                    {link.label}
+                                                                    {link.upcoming && (
+                                                                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/20 text-blue-400">
+                                                                            Coming Soon
+                                                                        </span>
+                                                                    )}
+                                                                </span>
+                                                                {link.description && (
+                                                                    <span className="text-[11px] text-slate-500">
+                                                                        {link.description}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </div>
                                                     )}
                                                 </li>
                                             ))}
