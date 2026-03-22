@@ -55,9 +55,9 @@ const navItems = [
             {
                 heading: 'Our Products',
                 links: [
-                    { label: 'CAAi Command Center', path: '/Products', description: 'AI-Powered Business Intelligence', icon: Layout },
-                    { label: 'Catalyst Custom Models', path: '/Products', description: 'Managed Enterprise AI Deployments', icon: Box },
-                    { label: 'CAAi CLERK', path: '/Products', description: 'Government document workflows', icon: Bot },
+                    { label: 'CAAi Command Center', href: 'https://commandcenter.catalystappliedai.com/', description: 'AI-Powered Business Intelligence', icon: Layout },
+                    { label: 'Catalyst Custom Models', href: 'https://custom-models.catalystappliedai.com/', description: 'Managed Enterprise AI Deployments', icon: Box },
+                    { label: 'CAAi CLERK', href: 'https://gov-products.catalystappliedai.com/', description: 'Government document workflows', icon: Bot },
                     { label: 'Voice Agent', path: '/Products', description: 'AI-powered voice assistant', icon: Mic, upcoming: true },
                 ]
             }
@@ -242,14 +242,27 @@ export default function Navbar({ showNav }) {
                                                                 >
                                                                     <div className="pl-4 pb-2 space-y-1 border-l border-blue-500/15 ml-2">
                                                                         {allMobileLinks(item).map((link) => (
-                                                                            <Link
-                                                                                key={link.label}
-                                                                                to={link.path}
-                                                                                className="block text-slate-400 hover:text-blue-400 transition-colors py-2 text-sm"
-                                                                                onClick={() => setIsMobileMenuOpen(false)}
-                                                                            >
-                                                                                {link.label}
-                                                                            </Link>
+                                                                            link.href ? (
+                                                                                <a
+                                                                                    key={link.label}
+                                                                                    href={link.href}
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                    className="block text-slate-400 hover:text-blue-400 transition-colors py-2 text-sm"
+                                                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                                                >
+                                                                                    {link.label}
+                                                                                </a>
+                                                                            ) : (
+                                                                                <Link
+                                                                                    key={link.label}
+                                                                                    to={link.path}
+                                                                                    className="block text-slate-400 hover:text-blue-400 transition-colors py-2 text-sm"
+                                                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                                                >
+                                                                                    {link.label}{link.upcoming ? ' (Coming Soon)' : ''}
+                                                                                </Link>
+                                                                            )
                                                                         ))}
                                                                     </div>
                                                                 </motion.div>
@@ -314,30 +327,54 @@ export default function Navbar({ showNav }) {
                                         <ul className="space-y-1">
                                             {activeItem.columns[0].links.map((link) => (
                                                 <li key={link.label}>
-                                                    <Link
-                                                        to={link.path}
-                                                        className={`group/link flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-white/[0.04] ${link.upcoming ? 'opacity-60' : ''}`}
-                                                        onClick={() => setActiveItem(null)}
-                                                    >
-                                                        <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/5 border border-blue-500/10 flex items-center justify-center group-hover/link:bg-blue-600 group-hover/link:border-blue-400 transition-all duration-300">
-                                                            {link.icon && <link.icon className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />}
-                                                        </div>
-                                                        <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                                                            <span className="text-[14px] font-semibold text-slate-200 group-hover/link:text-white transition-colors flex items-center gap-2">
-                                                                {link.label}
-                                                                {link.upcoming && (
-                                                                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/20 text-blue-400">
-                                                                        Coming Soon
+                                                    {link.href ? (
+                                                        <a
+                                                            href={link.href}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="group/link flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-white/[0.04]"
+                                                            onClick={() => setActiveItem(null)}
+                                                        >
+                                                            <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/5 border border-blue-500/10 flex items-center justify-center group-hover/link:bg-blue-600 group-hover/link:border-blue-400 transition-all duration-300">
+                                                                {link.icon && <link.icon className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />}
+                                                            </div>
+                                                            <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                                                                <span className="text-[14px] font-semibold text-slate-200 group-hover/link:text-white transition-colors">
+                                                                    {link.label}
+                                                                </span>
+                                                                {link.description && (
+                                                                    <span className="text-[11px] text-slate-500 group-hover/link:text-slate-400 transition-colors">
+                                                                        {link.description}
                                                                     </span>
                                                                 )}
-                                                            </span>
-                                                            {link.description && (
-                                                                <span className="text-[11px] text-slate-500 group-hover/link:text-slate-400 transition-colors">
-                                                                    {link.description}
+                                                            </div>
+                                                        </a>
+                                                    ) : (
+                                                        <Link
+                                                            to={link.path}
+                                                            className={`group/link flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-white/[0.04] ${link.upcoming ? 'opacity-60' : ''}`}
+                                                            onClick={() => setActiveItem(null)}
+                                                        >
+                                                            <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/5 border border-blue-500/10 flex items-center justify-center group-hover/link:bg-blue-600 group-hover/link:border-blue-400 transition-all duration-300">
+                                                                {link.icon && <link.icon className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />}
+                                                            </div>
+                                                            <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                                                                <span className="text-[14px] font-semibold text-slate-200 group-hover/link:text-white transition-colors flex items-center gap-2">
+                                                                    {link.label}
+                                                                    {link.upcoming && (
+                                                                        <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/20 text-blue-400">
+                                                                            Coming Soon
+                                                                        </span>
+                                                                    )}
                                                                 </span>
-                                                            )}
-                                                        </div>
-                                                    </Link>
+                                                                {link.description && (
+                                                                    <span className="text-[11px] text-slate-500 group-hover/link:text-slate-400 transition-colors">
+                                                                        {link.description}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </Link>
+                                                    )}
                                                 </li>
                                             ))}
                                         </ul>
