@@ -4,8 +4,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { 
     Menu, X, ChevronDown, ChevronRight, 
-    Search, GraduationCap, Cpu, Database, 
-    Wrench, Zap, Layout, Bot, Box, Shield 
+    Search, GraduationCap, Cpu, Database,
+    Zap, Layout, Bot, Box, Mic
 } from 'lucide-react';
 
 const navItems = [
@@ -50,35 +50,15 @@ const navItems = [
     {
         label: 'Products',
         featured: { label: 'Products overview', path: '/Products' },
+        compact: true,
         columns: [
             {
-                heading: 'Platforms',
+                heading: 'Our Products',
                 links: [
-                    { label: 'CAAi Command Center', path: '/Products', description: 'Agent orchestration', icon: Layout },
-                    { label: 'SCCI', path: '/Products', description: 'Supply chain compliance', icon: Shield },
-                    { label: 'CAAi CLERK', path: '/Products', description: 'Customer AI support', icon: Bot },
-                    { label: 'CAAi AGENT', path: '/Products', description: 'Task-specific AI', icon: Cpu },
-                ]
-            },
-            {
-                heading: 'Models',
-                links: [
-                    { label: 'Catalyst Base Models', path: '/Products', description: 'Foundation intelligence', icon: Box },
-                    { label: 'Domain Adapters', path: '/Products', description: 'Specialized tuning', icon: Database },
-                ]
-            },
-            {
-                heading: 'Safety',
-                links: [
-                    { label: 'AI Guardrails', path: '/Products', description: 'Ethics & safety rules', icon: Search },
-                    { label: 'Compliance Monitoring', path: '/Products', description: 'Regulatory tracking', icon: Layout },
-                ]
-            },
-            {
-                heading: 'Integration',
-                links: [
-                    { label: 'API Gateway', path: '/Products', description: 'Seamless connectivity', icon: Zap },
-                    { label: 'SDKs & Tools', path: '/Products', description: 'Developer resource', icon: Wrench },
+                    { label: 'CAAi Command Center', path: '/Products', description: 'AI-Powered Business Intelligence', icon: Layout },
+                    { label: 'Catalyst Custom Models', path: '/Products', description: 'Managed Enterprise AI Deployments', icon: Box },
+                    { label: 'CAAi CLERK', path: '/Products', description: 'Government document workflows', icon: Bot },
+                    { label: 'Voice Agent', path: '/Products', description: 'AI-powered voice assistant', icon: Mic, upcoming: true },
                 ]
             }
         ]
@@ -323,8 +303,60 @@ export default function Navbar({ showNav }) {
                         />
 
                         {/* Menu Content */}
-                        <div className="absolute top-[80px] left-0 right-0 bg-[#0b0f1a] border-t border-white/[0.05] shadow-[0_50px_100px_rgba(0,0,0,0.9)] pointer-events-auto">
-                            <div className="w-full px-12 lg:px-24 py-16 pb-24">
+                        <div className={`absolute top-[80px] left-0 right-0 ${activeItem.compact ? '' : 'bg-[#0b0f1a] border-t border-white/[0.05] shadow-[0_50px_100px_rgba(0,0,0,0.9)]'} pointer-events-auto`}>
+                            {activeItem.compact ? (
+                                /* Compact dropdown for Products */
+                                <div className="max-w-7xl mx-auto px-4 flex justify-end">
+                                    <div className="w-[360px] bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2">
+                                        <h4 className="text-[11px] uppercase tracking-[0.25em] font-extrabold text-blue-500/80 mb-4 pb-2 border-b border-white/[0.05]">
+                                            {activeItem.columns[0].heading}
+                                        </h4>
+                                        <ul className="space-y-1">
+                                            {activeItem.columns[0].links.map((link) => (
+                                                <li key={link.label}>
+                                                    <Link
+                                                        to={link.path}
+                                                        className={`group/link flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 hover:bg-white/[0.04] ${link.upcoming ? 'opacity-60' : ''}`}
+                                                        onClick={() => setActiveItem(null)}
+                                                    >
+                                                        <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-blue-500/5 border border-blue-500/10 flex items-center justify-center group-hover/link:bg-blue-600 group-hover/link:border-blue-400 transition-all duration-300">
+                                                            {link.icon && <link.icon className="w-4 h-4 text-blue-400 group-hover/link:text-white transition-colors" />}
+                                                        </div>
+                                                        <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                                                            <span className="text-[14px] font-semibold text-slate-200 group-hover/link:text-white transition-colors flex items-center gap-2">
+                                                                {link.label}
+                                                                {link.upcoming && (
+                                                                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-blue-500/15 border border-blue-500/20 text-blue-400">
+                                                                        Coming Soon
+                                                                    </span>
+                                                                )}
+                                                            </span>
+                                                            {link.description && (
+                                                                <span className="text-[11px] text-slate-500 group-hover/link:text-slate-400 transition-colors">
+                                                                    {link.description}
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="mt-3 pt-3 border-t border-white/[0.05]">
+                                            <Link
+                                                to="/Products"
+                                                className="flex items-center justify-center gap-2 text-[13px] font-medium text-blue-400 hover:text-blue-300 transition-colors py-1.5"
+                                                onClick={() => setActiveItem(null)}
+                                            >
+                                                View all products
+                                                <ChevronRight className="w-3.5 h-3.5" />
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                /* Full-width mega menu for Services */
+                                <div className="bg-[#0b0f1a] border-t border-white/[0.05] shadow-[0_50px_100px_rgba(0,0,0,0.9)]">
+                                <div className="w-full px-12 lg:px-24 py-16 pb-24">
                                 <div className="max-w-[1800px] mx-auto">
                                     {/* Brand Header */}
                                     <div className="flex items-center gap-4 mb-16 group/title cursor-default w-fit">
@@ -375,7 +407,9 @@ export default function Navbar({ showNav }) {
                                         ))}
                                     </div>
                                 </div>
-                            </div>
+                                </div>
+                                </div>
+                            )}
                         </div>
                     </motion.div>
                 )}

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ExternalLink, BarChart3, Building2, Server, Shield } from 'lucide-react';
+import { ArrowRight, ExternalLink, BarChart3, Building2, Server } from 'lucide-react';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
@@ -50,28 +50,15 @@ function LazyIframe({ src, title, onError }) {
     );
 }
 
-// Featured product — shown as a full-width hero card
-const featuredProduct = {
-    id: 'command-center',
-    name: 'CAAi Command Center',
-    tagline: 'AI-Powered Business Intelligence Platform',
-    description: 'A comprehensive command center that brings all your AI tools, analytics, and workflows into one unified dashboard. Cross-store briefing, fast routing, and manager summaries — all powered by the CAAi Trust Layer.',
-    status: 'In Development',
-    url: 'https://commandcenter.catalystappliedai.com/',
-    icon: BarChart3,
-    hasPreview: true
-};
-
-// Remaining products — displayed in a 3-column grid
 const products = [
     {
-        id: 'scci',
-        name: 'SCCI',
-        tagline: 'Supply Chain Compliance Intelligence',
-        description: 'AI-driven supply chain compliance platform that streamlines auditing, risk assessment, and regulatory adherence across your entire supply chain network.',
-        status: 'Live',
-        url: 'https://scci.catalystappliedai.com/login',
-        icon: Shield,
+        id: 'command-center',
+        name: 'CAAi Command Center',
+        tagline: 'AI-Powered Business Intelligence Platform',
+        description: 'A comprehensive command center that brings all your AI tools, analytics, and workflows into one unified dashboard. Cross-store briefing, fast routing, and manager summaries — all powered by the CAAi Trust Layer.',
+        status: 'In Development',
+        url: 'https://commandcenter.catalystappliedai.com/',
+        icon: BarChart3,
         hasPreview: true
     },
     {
@@ -233,7 +220,7 @@ export default function Products() {
         <div className="min-h-screen bg-[#060a14] overflow-hidden">
             <SEOHead
                 title="AI Products"
-                description="Explore CAAi Command Center, SCCI, CAAi CLERK, and Catalyst Custom Models — AI-powered products built for real business impact."
+                description="Explore CAAi Command Center, CAAi CLERK, and Catalyst Custom Models — AI-powered products built for real business impact."
                 path="/Products"
             />
             <Navbar showNav={true} />
@@ -334,19 +321,8 @@ export default function Products() {
                     transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
                 />
 
-                <div className="max-w-6xl mx-auto relative z-10 space-y-8">
-                    {/* Featured Product — Full Width */}
+                <div className="max-w-6xl mx-auto relative z-10">
                     <motion.div
-                        variants={staggerContainer}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-100px" }}
-                    >
-                        <ProductCard product={featuredProduct} featured={true} />
-                    </motion.div>
-
-                    {/* Remaining Products — 3-Column Grid */}
-                    <motion.div 
                         className="grid md:grid-cols-3 gap-6"
                         variants={staggerContainer}
                         initial="hidden"
