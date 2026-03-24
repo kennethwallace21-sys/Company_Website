@@ -264,6 +264,16 @@ export default function Navbar({ showNav }) {
                                                                                 </Link>
                                                                             )
                                                                         ))}
+                                                                        {item.featured && (
+                                                                            <Link
+                                                                                to={item.featured.path}
+                                                                                className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors py-2 text-sm font-medium mt-1 border-t border-white/[0.05] pt-3"
+                                                                                onClick={() => setIsMobileMenuOpen(false)}
+                                                                            >
+                                                                                View all {item.label.toLowerCase()}
+                                                                                <ChevronRight className="w-3.5 h-3.5" />
+                                                                            </Link>
+                                                                        )}
                                                                     </div>
                                                                 </motion.div>
                                                             )}
