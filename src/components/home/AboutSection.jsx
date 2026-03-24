@@ -65,7 +65,7 @@ export default function AboutSection() {
 
                         {/* Values */}
                         <motion.div
-                            className="grid grid-cols-3 gap-6 mb-8"
+                            className="grid grid-cols-3 gap-3 sm:gap-6 mb-8"
                             variants={staggerContainer}
                             initial="hidden"
                             whileInView="visible"
@@ -76,10 +76,10 @@ export default function AboutSection() {
                                     key={val}
                                     variants={staggerItem}
                                     whileHover={{ y: -4, borderColor: 'rgba(59, 130, 246, 0.3)' }}
-                                    className="text-center p-4 rounded-xl bg-[#0d1425]/60 border border-blue-500/10 transition-all duration-300"
+                                    className="text-center p-3 sm:p-4 rounded-xl bg-[#0d1425]/60 border border-blue-500/10 transition-all duration-300"
                                 >
-                                    <div className="text-2xl font-bold text-blue-400">{val}</div>
-                                    <div className="text-sm text-slate-400 mt-1">
+                                    <div className="text-lg sm:text-2xl font-bold text-blue-400">{val}</div>
+                                    <div className="text-xs sm:text-sm text-slate-400 mt-1">
                                         {val === 'Innovation' ? 'Cutting-Edge Solutions' : val === 'Quality' ? 'Excellence in Delivery' : 'Client-Focused Approach'}
                                     </div>
                                 </motion.div>
