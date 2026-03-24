@@ -147,7 +147,7 @@ export default function TermsAndConditions() {
                         <p className="text-slate-400 text-sm mb-6">Last Updated: February 2, 2026</p>
 
                         <SubSection title="1. Who We Are">
-                            <p>Catalyst Applied AI, LLC ("we," "us," or "our") provides AI consulting and workflow automation services. This Privacy Policy explains how we collect, use, and protect information when you visit our website catalystappliedai.com (the "Site").</p>
+                            <p>Catalyst Applied AI, LLC ("we," "us," or "our") provides AI solutions and workflow automation services. This Privacy Policy explains how we collect, use, and protect information when you visit our website catalystappliedai.com (the "Site").</p>
                         </SubSection>
 
                         <SubSection title="2. Information We Collect">

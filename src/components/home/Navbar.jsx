@@ -14,7 +14,7 @@ const navItems = [
         featured: { label: 'All Services', path: '/#services' },
         columns: [
             {
-                heading: 'Consulting',
+                heading: 'Strategy',
                 links: [
                     { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', description: 'AI opportunity audit', icon: Search },
                     { label: 'AI Strategy & Roadmap', path: '/ServiceDetail?service=discovery-diagnostic', description: 'Implementation path', icon: Layout },

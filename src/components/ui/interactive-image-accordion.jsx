@@ -2,7 +2,31 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-// --- Accordion Item Component ---
+// --- Mobile Card Component ---
+const MobileCard = ({ item, linkTo }) => {
+    const content = (
+        <div className="relative h-48 rounded-2xl overflow-hidden">
+            <img
+                src={item.imageUrl}
+                alt={item.title}
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/40" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
+            <span className="absolute bottom-4 left-4 text-white text-lg font-semibold">
+                {item.title}
+            </span>
+        </div>
+    );
+
+    if (linkTo) {
+        return <Link to={linkTo}>{content}</Link>;
+    }
+    return content;
+};
+
+// --- Accordion Item Component (Desktop) ---
 const AccordionItem = ({ item, isActive, onMouseEnter, linkTo }) => {
     const content = (
         <div
@@ -129,8 +153,28 @@ export function InteractiveImageAccordion({
                     </motion.div>
 
                     {/* Right Side: Image Accordion */}
+                    {/* Mobile: Grid of cards */}
                     <motion.div
-                        className="w-full lg:w-1/2"
+                        className="w-full lg:hidden"
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: '-80px' }}
+                        transition={{ duration: 0.7, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <div className="grid grid-cols-2 gap-3">
+                            {items.map((item) => (
+                                <MobileCard
+                                    key={item.id}
+                                    item={item}
+                                    linkTo={item.linkTo}
+                                />
+                            ))}
+                        </div>
+                    </motion.div>
+
+                    {/* Desktop: Accordion */}
+                    <motion.div
+                        className="hidden lg:block w-full lg:w-1/2"
                         initial={{ opacity: 0, x: 40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, margin: '-80px' }}

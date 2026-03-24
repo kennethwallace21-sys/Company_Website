@@ -77,7 +77,7 @@ function findBestMatch(userMessage) {
         { keywords: ['location', 'located', 'based', 'where are you', 'office', 'remote', 'kentucky', 'onsite', 'on-site'], index: 12 },
         { keywords: ['chatbot', 'virtual assistant', 'conversational', 'chat bot', 'bot'], index: 13 },
         { keywords: ['measure', 'success', 'kpi', 'metric', 'roi', 'results', 'track'], index: 14 },
-        { keywords: ['strategy', 'roadmap', 'consulting', 'advisory', 'guidance', 'plan', 'without building'], index: 15 },
+        { keywords: ['strategy', 'roadmap', 'advisory', 'guidance', 'plan', 'without building'], index: 15 },
     ];
 
     // Check keyword map first (highest priority)
@@ -133,7 +133,7 @@ function findBestMatch(userMessage) {
     }
 
     // Fallback
-    return "Great question! I don't have a specific answer for that, but our team would love to help. You can reach us at **sales@catalystappliedai.com** or call **502-416-8342** for a free consultation. You can also browse the suggested questions below! 👇";
+    return "Great question! I don't have a specific answer for that, but our team would love to help. You can reach us at **sales@catalystappliedai.com** or call **502-416-8342** for a free discovery call. You can also browse the suggested questions below! 👇";
 }
 
 export default function FaqChatbot() {

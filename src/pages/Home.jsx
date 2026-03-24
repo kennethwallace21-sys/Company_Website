@@ -20,7 +20,7 @@ export default function Home() {
         <div className="min-h-screen bg-[#060a14]">
             <SEOHead
                 title={null}
-                description="We help organizations identify, design, and implement practical AI solutions that drive real business value. AI consulting, workflow automation, custom AI tools, and data engineering."
+                description="We help organizations identify, design, and implement practical AI solutions that drive real business value. Workflow automation, custom AI tools, and data engineering."
                 path="/"
             />
             {/* Navbar */}

@@ -337,14 +337,14 @@ export default function ServiceDetail() {
                         Ready to Get Started with {service.title}?
                     </h2>
                     <p className="text-slate-300 text-lg mb-8">
-                        Book a free consultation to discuss how we can help transform your business with AI.
+                        Book a free discovery call to discuss how we can help transform your business with AI.
                     </p>
                     <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-block">
                         <Button
                             onClick={() => window.location.href = `mailto:sales@catalystappliedai.com?subject=${encodeURIComponent(service.title)} Inquiry`}
                             className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-10 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
                         >
-                            Schedule a Consultation
+                            Schedule a Discovery Call
                             <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                     </motion.div>

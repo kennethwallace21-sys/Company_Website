@@ -15,7 +15,7 @@ export default function Contact() {
                     '@context': 'https://schema.org',
                     '@type': 'ContactPage',
                     name: 'Contact Catalyst Applied AI',
-                    description: 'Get in touch for AI consulting and solutions.',
+                    description: 'Get in touch for AI solutions and services.',
                     url: 'https://catalystappliedai.com/Contact',
                     mainEntity: {
                         '@type': 'Organization',
