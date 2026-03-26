@@ -12,33 +12,32 @@ const navItems = [
     {
         label: 'Services',
         featured: { label: 'All Services', path: '/#services' },
+        compact: true,
         columns: [
             {
                 heading: 'Strategy',
                 links: [
-                    { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', description: 'AI opportunity audit', icon: Search },
-                    { label: 'Training & Enablement', path: '/ServiceDetail?service=training-support', description: 'Team upskilling', icon: GraduationCap },
-                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', description: 'Deploy enterprise-grade AI safely', icon: Layout },
+                    { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', icon: Search },
+                    { label: 'Training & Enablement', path: '/ServiceDetail?service=training-support', icon: GraduationCap },
+                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', icon: Layout },
                 ]
             },
             {
                 heading: 'Engineering',
                 links: [
-                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Bespoke AI models', icon: Cpu },
-                    { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', description: 'Data pipeline design', icon: Database },
+                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', icon: Cpu },
+                    { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', icon: Database },
                 ]
             },
             {
                 heading: 'Automation',
                 links: [
-                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Process streamlining', icon: Zap },
+                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', icon: Zap },
                 ]
             },
             {
                 heading: 'Intelligence',
-                links: [
-                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Efficiency analysis', icon: Box },
-                ]
+                links: []
             }
         ]
     },
@@ -68,8 +67,10 @@ export default function Navbar({ showNav }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [mobileExpanded, setMobileExpanded] = useState(null);
     const [activeItem, setActiveItem] = useState(null);
+    const [compactMenuPos, setCompactMenuPos] = useState(null);
     const location = useLocation();
     const timeoutRef = useRef(null);
+    const servicesButtonRef = useRef(null);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -83,7 +84,18 @@ export default function Navbar({ showNav }) {
         if (!item.columns) return;
         if (activeItem?.label === item.label) {
             setActiveItem(null);
+            setCompactMenuPos(null);
         } else {
+            if (item.label === 'Services' && servicesButtonRef.current) {
+                const rect = servicesButtonRef.current.getBoundingClientRect();
+                // Anchor dropdown under the "Services" pill button.
+                setCompactMenuPos({
+                    top: rect.bottom + 8,
+                    left: Math.min(rect.left, window.innerWidth - 380) // keep inside viewport (approx menu width)
+                });
+            } else {
+                setCompactMenuPos(null);
+            }
             setActiveItem(item);
         }
     };
@@ -149,6 +161,7 @@ export default function Navbar({ showNav }) {
                                             {item.columns ? (
                                                 <button
                                                     onClick={() => toggleDropdown(item)}
+                                                    ref={item.label === 'Services' ? servicesButtonRef : null}
                                                     className={`flex items-center gap-1.5 text-sm font-medium py-2 px-1 mx-3 transition-all duration-200 relative z-10 ${activeItem?.label === item.label ? 'text-white' : 'text-slate-300 hover:text-white'}`}
                                                 >
                                                     {item.label}
@@ -325,12 +338,19 @@ export default function Navbar({ showNav }) {
                             {activeItem.compact ? (
                                 /* Compact dropdown for Products */
                                 <div className="max-w-7xl mx-auto px-4 flex justify-end">
-                                    <div className="w-[360px] bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2">
+                                    <div
+                                        className="w-[360px] bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2"
+                                        style={
+                                            activeItem.label === 'Services' && compactMenuPos
+                                                ? { position: 'fixed', top: compactMenuPos.top, left: compactMenuPos.left }
+                                                : undefined
+                                        }
+                                    >
                                         <h4 className="text-[11px] uppercase tracking-[0.25em] font-extrabold text-blue-500/80 mb-4 pb-2 border-b border-white/[0.05]">
-                                            {activeItem.columns[0].heading}
+                                            {activeItem.label === 'Services' ? 'Services' : activeItem.columns[0].heading}
                                         </h4>
                                         <ul className="space-y-1">
-                                            {activeItem.columns[0].links.map((link) => (
+                                            {activeItem.columns.flatMap((col) => col.links).map((link) => (
                                                 <li key={link.label}>
                                                     {link.href ? (
                                                         <a
@@ -404,16 +424,18 @@ export default function Navbar({ showNav }) {
                                                 </li>
                                             ))}
                                         </ul>
-                                        <div className="mt-3 pt-3 border-t border-white/[0.05]">
-                                            <Link
-                                                to="/Products"
-                                                className="flex items-center justify-center gap-2 text-[13px] font-medium text-blue-400 hover:text-blue-300 transition-colors py-1.5"
-                                                onClick={() => setActiveItem(null)}
-                                            >
-                                                View all products
-                                                <ChevronRight className="w-3.5 h-3.5" />
-                                            </Link>
-                                        </div>
+                                        {activeItem.label === 'Products' && (
+                                            <div className="mt-3 pt-3 border-t border-white/[0.05]">
+                                                <Link
+                                                    to="/Products"
+                                                    className="flex items-center justify-center gap-2 text-[13px] font-medium text-blue-400 hover:text-blue-300 transition-colors py-1.5"
+                                                    onClick={() => setActiveItem(null)}
+                                                >
+                                                    View all products
+                                                    <ChevronRight className="w-3.5 h-3.5" />
+                                                </Link>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             ) : (
