@@ -192,10 +192,20 @@ export default function Team() {
                                         {member.role}
                                     </p>
 
+                                    {/* Intro label */}
+                                    <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/[0.08] border border-blue-500/15">
+                                        <span className="w-2 h-2 rounded-full bg-blue-400" />
+                                        <span className="text-[11px] font-semibold text-blue-200/90">
+                                            Team expertise built for enterprise delivery
+                                        </span>
+                                    </div>
+
                                     {/* Bio */}
-                                    <p className="text-slate-400 text-sm leading-relaxed mt-4">
-                                        {member.bio}
-                                    </p>
+                                    <div className="mt-3 p-4 rounded-xl bg-[#0d1425]/60 border border-white/[0.06]">
+                                        <p className="text-slate-300 text-sm leading-relaxed">
+                                            {member.bio}
+                                        </p>
+                                    </div>
 
                                     {/* Responsibilities */}
                                     <div className={`${member.responsibilitiesGrid ? 'grid grid-cols-2' : 'flex flex-wrap justify-center'} gap-1.5 mt-4`}>
