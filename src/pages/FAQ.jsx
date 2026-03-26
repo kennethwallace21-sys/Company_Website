@@ -41,6 +41,22 @@ const allFaqs = [
             {
                 question: "What does Workflow Automation involve?",
                 answer: "We deploy AI agents that can handle end-to-end tasks like triaging emails, summarizing legal documents, or extracting data from invoices. This frees your human team to focus on high-value, creative work."
+            },
+            {
+                question: "What is Enterprise Model Deployment?",
+                answer: "We fine-tune, host, and manage custom LLMs on your own infrastructure — on-prem, hybrid, or cloud. Using our CAAi Trust Layer, we ensure every model is governed with safety guardrails, compliance controls, and full MLOps (monitoring, versioning, scaling). Think of it as having your own private AI model, fully managed by us."
+            },
+            {
+                question: "What is Voice & Conversational AI?",
+                answer: "We build and deploy AI-powered voice agents that handle real phone calls — inbound and outbound. Whether you need to replace a legacy IVR, automate appointment scheduling, or stand up a 24/7 multilingual support line, we deliver natural-sounding voice AI integrated with your CRM, calendar, and ticketing systems."
+            },
+            {
+                question: "What kinds of calls can a voice agent handle?",
+                answer: "Our voice agents handle a wide range: tier-1 support (order tracking, password resets, billing), appointment booking and reminders, FAQ resolution, outbound campaigns (surveys, payment follow-ups, lead qualification), and internal helpdesk queries like IT tickets and PTO balances."
+            },
+            {
+                question: "Can I use Enterprise Model Deployment with my own data?",
+                answer: "Yes — that's the entire point. We fine-tune open-source LLMs on your proprietary documents and workflows so the model understands your domain. Your data never leaves your environment, and you retain full ownership and control."
             }
         ]
     },
