@@ -26,7 +26,7 @@ const teamMembers = [
         photoPosition: 'object-[50%_8%]',
         email: 'harsha@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/harsha-kolla-357a211a8/',
-        bio: 'Harsha leads engineering at CAAi, turning product ideas into production-ready platforms. He brings hands-on experience building microservices and AI-assisted systems for multi-national engineering environments—driving the technical architecture behind Command Center and Custom Models with a focus on security, reliability, and scale.',
+        bio: 'Harsha leads engineering at CAAi and turns ideas into production-ready AI platforms. He builds secure microservices and AI-assisted systems for multi-national engineering environments—architecting Command Center and Custom Models for reliability and scale.',
         responsibilities: ['Platform architecture', 'Full-stack development', 'AI/ML pipelines', 'DevOps & infrastructure'],
         gradient: 'from-blue-600 to-blue-400',
     },
@@ -37,7 +37,7 @@ const teamMembers = [
         photo: '/michael-deason.png',
         email: 'mikedeason@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/michael-deason-coss-804352143/',
-        bio: 'Mike keeps CAAi moving. With global people-operations and organizational development experience from working with large multi-national organizations, he owns project delivery and operations—making sure client work ships on time, teams have what they need, and nothing falls through the cracks. As the company grows, he\'s the one building the systems to scale with it.',
+        bio: 'Mike keeps CAAi moving. With global people-operations experience across large multi-national organizations, he owns delivery and operations—ensuring client work ships on time and teams scale smoothly.',
         responsibilities: ['Project delivery', 'Resource planning', 'Process optimization', 'Client success'],
         gradient: 'from-sky-500 to-blue-500',
     },
@@ -48,7 +48,7 @@ const teamMembers = [
         photo: '/jessa-sailor.jpg',
         email: 'jessa.sailor@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/jessasailor/',
-        bio: 'Jessa is CAAi\'s bridge to government. She works directly with public sector and large organizations to identify where AI can cut through bureaucratic bottlenecks—and led the strategy behind CAAi CLERK, our document automation platform built for compliance-heavy environments.',
+        bio: 'Jessa drives CAAi\'s public-sector strategy. She identifies where AI reduces bureaucratic bottlenecks—and led the work behind CAAi CLERK for compliance-heavy document automation.',
         responsibilities: ['Public sector strategy', 'Government partnerships', 'Compliance & security', 'CAAi CLERK product'],
         responsibilitiesGrid: true,
         gradient: 'from-blue-400 to-sky-400',
@@ -76,7 +76,7 @@ export default function Team() {
                         initial="hidden"
                         animate="visible"
                         custom={0}
-                        className="text-center mb-12"
+                        className="text-center mb-16"
                     >
                         <span className="text-blue-400 text-sm font-semibold tracking-widest uppercase">
                             Who We Are
@@ -87,8 +87,8 @@ export default function Team() {
                                 Team
                             </span>
                         </h1>
-                        <p className="text-slate-400 max-w-2xl mx-auto text-sm sm:text-base">
-                            A focused team with expertise from multi-national environments—building AI that solves real problems.
+                        <p className="text-slate-400 max-w-2xl mx-auto text-base sm:text-lg">
+                            A focused team of operators, engineers, and strategists with expertise built through work with multi-national companies—building AI products that solve real problems.
                         </p>
                     </motion.div>
 
@@ -193,7 +193,7 @@ export default function Team() {
                                     </p>
 
                                     {/* Bio */}
-                                    <p className="text-slate-400 text-sm leading-relaxed mt-4">
+                                    <p className="text-slate-400 text-[13px] leading-snug mt-3 max-h-32 overflow-hidden">
                                         {member.bio}
                                     </p>
 
