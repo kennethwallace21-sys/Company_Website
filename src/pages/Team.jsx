@@ -14,7 +14,7 @@ const teamMembers = [
         photo: '/kenny-wallace.png',
         email: 'KennyWallace@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/kennethwallace21/',
-        bio: 'Kenny started CAAi because he saw too many businesses getting sold on AI that never delivered. He sets the company\'s direction, closes the deals, and makes sure every product and engagement ties back to one thing — real, measurable results for the client.',
+        bio: 'Kenny started CAAi because he saw too many businesses being sold on AI that never delivered. With over a decade of experience supporting multi-national teams through complex people and change environments, he sets the company\'s direction, closes the deals, and makes sure every product and engagement ties back to one thing — real, measurable results for the client.',
         responsibilities: ['Company vision & strategy', 'Client partnerships', 'Product roadmap', 'Business development'],
         gradient: 'from-blue-500 to-cyan-500',
     },
@@ -23,10 +23,10 @@ const teamMembers = [
         role: 'Director, Software Engineering',
         initials: 'HK',
         photo: '/harshakolla.jpg',
-        photoPosition: 'object-[50%_15%]',
+        photoPosition: 'object-[50%_8%]',
         email: 'harsha@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/harsha-kolla-357a211a8/',
-        bio: 'Harsha leads engineering at CAAi, turning product ideas into production-ready platforms. He drives the technical architecture behind Command Center and Custom Models — focused on building systems that are fast, secure, and built to scale.',
+        bio: 'Harsha leads engineering at CAAi, turning product ideas into production-ready platforms. He brings hands-on experience building microservices and AI-assisted systems for multi-national engineering environments—driving the technical architecture behind Command Center and Custom Models with a focus on security, reliability, and scale.',
         responsibilities: ['Platform architecture', 'Full-stack development', 'AI/ML pipelines', 'DevOps & infrastructure'],
         gradient: 'from-blue-600 to-blue-400',
     },
@@ -37,7 +37,7 @@ const teamMembers = [
         photo: '/michael-deason.png',
         email: 'mikedeason@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/michael-deason-coss-804352143/',
-        bio: 'Mike keeps CAAi moving. He owns project delivery and operations — making sure client work ships on time, teams have what they need, and nothing falls through the cracks. As the company grows, he\'s the one building the systems to scale with it.',
+        bio: 'Mike keeps CAAi moving. With global people-operations and organizational development experience from working with large multi-national organizations, he owns project delivery and operations—making sure client work ships on time, teams have what they need, and nothing falls through the cracks. As the company grows, he\'s the one building the systems to scale with it.',
         responsibilities: ['Project delivery', 'Resource planning', 'Process optimization', 'Client success'],
         gradient: 'from-sky-500 to-blue-500',
     },
@@ -48,7 +48,7 @@ const teamMembers = [
         photo: '/jessa-sailor.jpg',
         email: 'jessa.sailor@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/jessasailor/',
-        bio: 'Jessa is CAAi\'s bridge to government. She works directly with public sector agencies to identify where AI can cut through bureaucratic bottlenecks — and led the strategy behind CAAi CLERK, our document automation platform built for compliance-heavy environments.',
+        bio: 'Jessa is CAAi\'s bridge to government. She works directly with public sector and large organizations to identify where AI can cut through bureaucratic bottlenecks—and led the strategy behind CAAi CLERK, our document automation platform built for compliance-heavy environments.',
         responsibilities: ['Public sector strategy', 'Government partnerships', 'Compliance & security', 'CAAi CLERK product'],
         responsibilitiesGrid: true,
         gradient: 'from-blue-400 to-sky-400',
@@ -88,7 +88,7 @@ export default function Team() {
                             </span>
                         </h1>
                         <p className="text-slate-400 max-w-2xl mx-auto text-base sm:text-lg">
-                            A focused team of operators, engineers, and strategists building AI products that solve real problems.
+                            A focused team of operators, engineers, and strategists with expertise built through work with multi-national companies—building AI products that solve real problems.
                         </p>
                     </motion.div>
 

@@ -86,6 +86,12 @@ export default function Footer() {
                                 </li>
                             ))}
                         </ul>
+                        <li className="pt-2">
+                            <span className="text-slate-400 text-sm inline-flex items-center gap-2">
+                                <span>Blogs</span>
+                                <span className="text-[11px] font-semibold text-blue-300/80">Soon</span>
+                            </span>
+                        </li>
                     </motion.div>
 
                     {/* Contact Info */}
