@@ -17,8 +17,8 @@ const navItems = [
                 heading: 'Strategy',
                 links: [
                     { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', description: 'AI opportunity audit', icon: Search },
-                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', description: 'Deploy enterprise-grade AI safely', icon: Layout },
                     { label: 'Training & Enablement', path: '/ServiceDetail?service=training-support', description: 'Team upskilling', icon: GraduationCap },
+                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', description: 'Deploy enterprise-grade AI safely', icon: Layout },
                 ]
             },
             {
@@ -26,23 +26,18 @@ const navItems = [
                 links: [
                     { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Bespoke AI models', icon: Cpu },
                     { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', description: 'Data pipeline design', icon: Database },
-                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', description: 'Integrate AI tools into your stack', icon: Zap },
                 ]
             },
             {
                 heading: 'Automation',
                 links: [
                     { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Process streamlining', icon: Zap },
-                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Task automation', icon: Bot },
-                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Efficiency analysis', icon: Box },
                 ]
             },
             {
                 heading: 'Intelligence',
                 links: [
-                    { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', description: 'Future-cast insights', icon: Database },
-                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Visual data processing', icon: Cpu },
-                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Textual tone audit', icon: Search },
+                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Efficiency analysis', icon: Box },
                 ]
             }
         ]
