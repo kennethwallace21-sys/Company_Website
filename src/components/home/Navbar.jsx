@@ -91,10 +91,16 @@ export default function Navbar({ showNav }) {
         } else {
             if (item.label === 'Services' && servicesButtonRef.current) {
                 const rect = servicesButtonRef.current.getBoundingClientRect();
-                // Anchor dropdown under the "Services" pill button.
+                const vw = window.innerWidth;
+                const padding = 16;
+                // Responsive menu width: shrink on smaller screens
+                const menuWidth = vw < 900 ? Math.min(vw - padding * 2, 520) : 560;
+                const idealLeft = rect.left + rect.width / 2 - menuWidth / 2;
+                const clampedLeft = Math.max(padding, Math.min(idealLeft, vw - menuWidth - padding));
                 setCompactMenuPos({
                     top: rect.bottom + 8,
-                    left: Math.min(rect.left, window.innerWidth - 580) // keep inside viewport (approx menu width)
+                    left: clampedLeft,
+                    width: menuWidth
                 });
             } else {
                 setCompactMenuPos(null);
@@ -342,10 +348,10 @@ export default function Navbar({ showNav }) {
                                 /* Compact dropdown for Products */
                                 <div className="max-w-7xl mx-auto px-4 flex justify-end">
                                     <div
-                                        className={`${activeItem.label === 'Services' ? 'w-[560px]' : 'w-[360px]'} bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2`}
+                                        className={`${activeItem.label === 'Services' ? 'max-w-[560px]' : 'w-[360px]'} bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2`}
                                         style={
                                             activeItem.label === 'Services' && compactMenuPos
-                                                ? { position: 'fixed', top: compactMenuPos.top, left: compactMenuPos.left }
+                                                ? { position: 'fixed', top: compactMenuPos.top, left: compactMenuPos.left, width: compactMenuPos.width }
                                                 : undefined
                                         }
                                     >
