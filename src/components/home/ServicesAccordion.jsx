@@ -38,6 +38,18 @@ const servicesData = [
     },
     {
         id: 6,
+        title: 'Enterprise Model Deployment',
+        imageUrl: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=800&q=80',
+        linkTo: createPageUrl('ServiceDetail') + '?service=custom-rag'
+    },
+    {
+        id: 7,
+        title: 'Voice & Conversational AI',
+        imageUrl: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=800&q=80',
+        linkTo: createPageUrl('ServiceDetail') + '?service=voice-ai'
+    },
+    {
+        id: 8,
         title: 'Training & Support',
         imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
         linkTo: createPageUrl('ServiceDetail') + '?service=training-support'

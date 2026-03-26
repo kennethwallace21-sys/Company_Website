@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { 
-    Menu, X, ChevronDown, ChevronRight, 
+    Menu, X, ChevronDown, ChevronRight,
     Search, GraduationCap, Cpu, Database,
-    Zap, Layout, Bot, Box, Mic
+    Zap, Layout, Bot, Box, Mic, FileSearch
 } from 'lucide-react';
 
 const navItems = [
@@ -33,11 +33,14 @@ const navItems = [
                 heading: 'Automation',
                 links: [
                     { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', icon: Zap },
+                    { label: 'Voice & Conversational AI', path: '/ServiceDetail?service=voice-ai', icon: Mic },
                 ]
             },
             {
                 heading: 'Intelligence',
-                links: []
+                links: [
+                    { label: 'Enterprise Model Deployment', path: '/ServiceDetail?service=custom-rag', icon: FileSearch },
+                ]
             }
         ]
     },
@@ -91,7 +94,7 @@ export default function Navbar({ showNav }) {
                 // Anchor dropdown under the "Services" pill button.
                 setCompactMenuPos({
                     top: rect.bottom + 8,
-                    left: Math.min(rect.left, window.innerWidth - 380) // keep inside viewport (approx menu width)
+                    left: Math.min(rect.left, window.innerWidth - 580) // keep inside viewport (approx menu width)
                 });
             } else {
                 setCompactMenuPos(null);
@@ -339,7 +342,7 @@ export default function Navbar({ showNav }) {
                                 /* Compact dropdown for Products */
                                 <div className="max-w-7xl mx-auto px-4 flex justify-end">
                                     <div
-                                        className="w-[360px] bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2"
+                                        className={`${activeItem.label === 'Services' ? 'w-[560px]' : 'w-[360px]'} bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2`}
                                         style={
                                             activeItem.label === 'Services' && compactMenuPos
                                                 ? { position: 'fixed', top: compactMenuPos.top, left: compactMenuPos.left }
@@ -349,7 +352,7 @@ export default function Navbar({ showNav }) {
                                         <h4 className="text-[11px] uppercase tracking-[0.25em] font-extrabold text-blue-500/80 mb-4 pb-2 border-b border-white/[0.05]">
                                             {activeItem.label === 'Services' ? 'Services' : activeItem.columns[0].heading}
                                         </h4>
-                                        <ul className="space-y-1">
+                                        <ul className={`${activeItem.label === 'Services' ? 'grid grid-cols-2 gap-1' : 'space-y-1'}`}>
                                             {activeItem.columns.flatMap((col) => col.links).map((link) => (
                                                 <li key={link.label}>
                                                     {link.href ? (

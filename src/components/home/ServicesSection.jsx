@@ -7,6 +7,8 @@ import {
     Database,
     Settings,
     GraduationCap,
+    FileSearch,
+    Mic,
     ArrowRight
 } from 'lucide-react';
 
@@ -70,6 +72,30 @@ const services = [
             "Ensure seamless adoption without disruption"
         ],
         gradient: "from-sky-500 to-blue-500"
+    },
+    {
+        icon: FileSearch,
+        title: "Enterprise Model Deployment",
+        description: "Fine-tune, host, and manage custom LLMs on your infrastructure with built-in trust and governance",
+        features: [
+            "Fine-tune LLMs on your proprietary data",
+            "Deploy on-prem, hybrid, or cloud",
+            "CAAi Trust Layer for governance and safety",
+            "Managed MLOps with continuous optimization"
+        ],
+        gradient: "from-blue-500 to-indigo-500"
+    },
+    {
+        icon: Mic,
+        title: "Voice & Conversational AI",
+        description: "Replace hold queues and rigid IVRs with intelligent voice agents that understand",
+        features: [
+            "Deploy voice agents that handle calls 24/7",
+            "Automate booking, order status, and FAQ calls",
+            "Integrate with CRM, calendar, and ticketing",
+            "Natural-sounding, sub-second responses"
+        ],
+        gradient: "from-indigo-500 to-blue-500"
     },
     {
         icon: GraduationCap,

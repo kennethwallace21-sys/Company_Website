@@ -51,6 +51,8 @@ export default function Footer() {
                                 { label: 'Workflow Automation', service: 'workflow-automation' },
                                 { label: 'Data Engineering', service: 'data-engineering' },
                                 { label: 'AI Tools Implementation', service: 'ai-implementation' },
+                                { label: 'Enterprise Model Deployment', service: 'custom-rag' },
+                                { label: 'Voice & Conversational AI', service: 'voice-ai' },
                                 { label: 'Training & Enablement', service: 'training-support' },
                             ].map(item => (
                                 <li key={item.service}>

@@ -125,6 +125,78 @@ const servicesData = {
             { value: 'Swift', label: 'Rapid deployment' }
         ]
     },
+    'custom-rag': {
+        title: 'Enterprise Model Deployment',
+        subtitle: 'Fine-tune, host, and manage custom LLMs on your infrastructure with built-in trust and governance',
+        heroImage: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=1920&q=80',
+        description: 'We deploy and manage enterprise-grade AI models tailored to your business — from fine-tuning open-source LLMs on your proprietary data to building production RAG pipelines with our CAAi Trust Layer. Whether on-prem, hybrid, or cloud, you get accurate, governed AI that stays under your control.',
+        benefits: [
+            'Fine-tune open-source LLMs on your proprietary data for domain-specific accuracy',
+            'Deploy on-prem, hybrid, or cloud with full infrastructure control',
+            'Built-in CAAi Trust Layer for governance, compliance, and safety guardrails',
+            'Managed MLOps — monitoring, versioning, scaling, and continuous improvement'
+        ],
+        process: [
+            { step: 1, title: 'Assessment', description: 'Evaluate your data, infrastructure, and model requirements' },
+            { step: 2, title: 'Model Selection & Tuning', description: 'Choose and fine-tune the right base model for your domain' },
+            { step: 3, title: 'Pipeline Build', description: 'Set up RAG, inference endpoints, Trust Layer, and integrations' },
+            { step: 4, title: 'Deploy & Manage', description: 'Production rollout with monitoring dashboards and ongoing optimization' }
+        ],
+        stats: [
+            { value: 'Governed', label: 'Trust Layer built in' },
+            { value: 'Flexible', label: 'On-prem, hybrid, or cloud' },
+            { value: 'Managed', label: 'Full MLOps included' }
+        ]
+    },
+    'voice-ai': {
+        title: 'Voice & Conversational AI',
+        subtitle: 'Replace hold queues and rigid IVRs with intelligent voice agents that actually understand',
+        heroImage: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=1920&q=80',
+        description: 'We design, build, and deploy AI-powered voice and conversational agents that handle real calls, answer complex questions, and take action — all while sounding natural. Whether you need to modernize a call center, automate appointment scheduling, or build a multilingual front-desk assistant, we deliver production-ready voice AI grounded in your business logic.',
+        benefits: [
+            'Deploy voice agents that handle inbound and outbound calls 24/7',
+            'Replace legacy IVR trees with natural language understanding',
+            'Automate appointment booking, order status, and FAQ resolution',
+            'Integrate with your CRM, calendar, and ticketing systems in real time'
+        ],
+        process: [
+            { step: 1, title: 'Use-Case Mapping', description: 'Identify call flows, intents, and integration points' },
+            { step: 2, title: 'Agent Design', description: 'Build conversation scripts, fallback logic, and persona tuning' },
+            { step: 3, title: 'Build & Test', description: 'Develop the voice pipeline with STT, LLM, and TTS components' },
+            { step: 4, title: 'Deploy & Optimize', description: 'Go live with monitoring, call analytics, and continuous improvement' }
+        ],
+        applications: [
+            {
+                title: 'Call Center Automation',
+                description: 'Handle tier-1 support calls — order tracking, password resets, billing inquiries — without human agents, escalating only when needed.'
+            },
+            {
+                title: 'Appointment Scheduling',
+                description: 'Patients, clients, or customers call in and book, reschedule, or cancel appointments through a natural voice conversation synced to your calendar.'
+            },
+            {
+                title: 'Front-Desk & Receptionist',
+                description: 'A virtual receptionist that greets callers, routes them to the right department, takes messages, and answers common questions about your business.'
+            },
+            {
+                title: 'Outbound Campaigns',
+                description: 'AI agents make outbound calls for appointment reminders, payment follow-ups, survey collection, and lead qualification at scale.'
+            },
+            {
+                title: 'Multilingual Support',
+                description: 'Serve customers in multiple languages without hiring multilingual staff — the voice agent detects and switches languages in real time.'
+            },
+            {
+                title: 'Internal Helpdesk',
+                description: 'Employees call an AI helpdesk to reset passwords, check PTO balances, submit IT tickets, or get answers from company policies — hands-free.'
+            }
+        ],
+        stats: [
+            { value: '24/7', label: 'Always-on availability' },
+            { value: 'Natural', label: 'Human-like conversations' },
+            { value: 'Fast', label: 'Sub-second response time' }
+        ]
+    },
     'training-support': {
         title: 'Training & Enablement',
         subtitle: 'Empower your team to use and lead with AI confidently',
