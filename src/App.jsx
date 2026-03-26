@@ -14,6 +14,7 @@ import ScrollToTop from '@/components/ScrollToTop';
 
 // Lazy-load chatbot — not needed on first paint
 const FaqChatbot = lazy(() => import('@/components/FaqChatbot'));
+const CookieConsent = lazy(() => import('@/components/CookieConsent'));
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -121,6 +122,7 @@ function App() {
                         <Analytics />
                         <Suspense fallback={null}>
                             <FaqChatbot />
+                            <CookieConsent />
                         </Suspense>
                     </Router>
                     <Toaster />
