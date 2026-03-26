@@ -17,7 +17,7 @@ const navItems = [
                 heading: 'Strategy',
                 links: [
                     { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', description: 'AI opportunity audit', icon: Search },
-                    { label: 'AI Strategy & Roadmap', path: '/ServiceDetail?service=discovery-diagnostic', description: 'Implementation path', icon: Layout },
+                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', description: 'Deploy enterprise-grade AI safely', icon: Layout },
                     { label: 'Training & Enablement', path: '/ServiceDetail?service=training-support', description: 'Team upskilling', icon: GraduationCap },
                 ]
             },
@@ -26,23 +26,23 @@ const navItems = [
                 links: [
                     { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Bespoke AI models', icon: Cpu },
                     { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', description: 'Data pipeline design', icon: Database },
-                    { label: 'LLM Fine-tuning', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Model optimization', icon: Zap },
+                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', description: 'Integrate AI tools into your stack', icon: Zap },
                 ]
             },
             {
                 heading: 'Automation',
                 links: [
                     { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Process streamlining', icon: Zap },
-                    { label: 'RPA Implementation', path: '/ServiceDetail?service=workflow-automation', description: 'Task automation', icon: Bot },
-                    { label: 'Process Mining', path: '/ServiceDetail?service=workflow-automation', description: 'Efficiency analysis', icon: Box },
+                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Task automation', icon: Bot },
+                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Efficiency analysis', icon: Box },
                 ]
             },
             {
                 heading: 'Intelligence',
                 links: [
-                    { label: 'Predictive Analytics', path: '/ServiceDetail?service=data-engineering', description: 'Future-cast insights', icon: Database },
-                    { label: 'Computer Vision', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Visual data processing', icon: Cpu },
-                    { label: 'Sentiment Analysis', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Textual tone audit', icon: Search },
+                    { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', description: 'Future-cast insights', icon: Database },
+                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Visual data processing', icon: Cpu },
+                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Textual tone audit', icon: Search },
                 ]
             }
         ]
