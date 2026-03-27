@@ -32,36 +32,37 @@ export default function CookieConsent() {
                     animate={{ y: 0, opacity: 1 }}
                     exit={{ y: 100, opacity: 0 }}
                     transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:bottom-6 md:max-w-md z-[200] bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5"
+                    className="fixed bottom-0 left-0 right-0 z-[200] bg-[#0b0f1a]/95 backdrop-blur-xl border-t border-white/[0.08] shadow-[0_-4px_30px_rgba(0,0,0,0.5)]"
                 >
-                    <button
-                        onClick={decline}
-                        className="absolute top-3 right-3 text-slate-500 hover:text-white transition-colors"
-                        aria-label="Close"
-                    >
-                        <X className="w-4 h-4" />
-                    </button>
+                    <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <p className="text-sm text-slate-300 text-center sm:text-left">
+                            We use cookies to customize experiences on our site. Additional information about data collection is available in our{' '}
+                            <Link to="/TermsAndConditions" className="text-blue-400 hover:text-blue-300 underline underline-offset-2">
+                                privacy policy
+                            </Link>.
+                        </p>
 
-                    <p className="text-sm text-slate-300 mb-4 pr-6">
-                        We use cookies and analytics to improve your experience. By continuing, you agree to our{' '}
-                        <Link to="/TermsAndConditions" className="text-blue-400 hover:text-blue-300 underline underline-offset-2">
-                            Privacy Policy
-                        </Link>.
-                    </p>
-
-                    <div className="flex gap-3">
-                        <button
-                            onClick={accept}
-                            className="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white text-sm font-medium py-2 px-4 rounded-xl transition-all"
-                        >
-                            Accept
-                        </button>
-                        <button
-                            onClick={decline}
-                            className="flex-1 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.08] text-slate-300 text-sm font-medium py-2 px-4 rounded-xl transition-all"
-                        >
-                            Decline
-                        </button>
+                        <div className="flex items-center gap-3 shrink-0">
+                            <button
+                                onClick={decline}
+                                className="bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-slate-200 text-sm font-medium py-2 px-5 rounded-lg transition-all whitespace-nowrap"
+                            >
+                                DO NOT SHARE MY INFORMATION
+                            </button>
+                            <button
+                                onClick={accept}
+                                className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white text-sm font-medium py-2 px-5 rounded-lg transition-all whitespace-nowrap"
+                            >
+                                ACCEPT COOKIES
+                            </button>
+                            <button
+                                onClick={decline}
+                                className="text-slate-500 hover:text-white transition-colors ml-1"
+                                aria-label="Close"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
                     </div>
                 </motion.div>
             )}
