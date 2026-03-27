@@ -63,7 +63,7 @@ void main(void) {
   O=vec4(col,1);
 }`;
 
-function useShaderBackground(containerRef) {
+function useShaderBackground(containerRef, setShaderFailed) {
     const canvasRef = useRef(null);
     const rendererRef = useRef(null);
     const animFrameRef = useRef(null);
@@ -73,9 +73,13 @@ function useShaderBackground(containerRef) {
         if (!canvas) return;
 
         const gl = canvas.getContext('webgl2');
-        if (!gl) return;
+        if (!gl) {
+            setShaderFailed(true);
+            return;
+        }
 
-        const dpr = Math.max(1, 0.5 * window.devicePixelRatio);
+        const isMobile = window.innerWidth < 768;
+        const dpr = isMobile ? 0.35 : Math.max(1, 0.5 * window.devicePixelRatio);
         
         const vertSrc = `#version 300 es
 precision highp float;
@@ -141,14 +145,15 @@ void main(){gl_Position=position;}`;
             gl.deleteShader(vs);
             gl.deleteShader(fs);
         };
-    }, [containerRef]);
+    }, [containerRef, setShaderFailed]);
 
     return canvasRef;
 }
 
 export default function HeroSection() {
     const sectionRef = useRef(null);
-    const canvasRef = useShaderBackground(sectionRef);
+    const [shaderFailed, setShaderFailed] = React.useState(false);
+    const canvasRef = useShaderBackground(sectionRef, setShaderFailed);
 
     const benefits = [
         "Save on operational costs",
@@ -159,11 +164,15 @@ export default function HeroSection() {
     return (
         <section ref={sectionRef} className="relative min-h-screen flex items-center overflow-hidden bg-black">
             {/* Shader Background */}
-            <canvas
-                ref={canvasRef}
-                className="absolute inset-0 w-full h-full touch-none"
-                style={{ background: 'black' }}
-            />
+            {shaderFailed ? (
+                <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-[#020617] via-[#0a1628] to-[#030a1a]" />
+            ) : (
+                <canvas
+                    ref={canvasRef}
+                    className="absolute inset-0 w-full h-full touch-none"
+                    style={{ background: 'black' }}
+                />
+            )}
 
             {/* Slight overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 z-[1]" />

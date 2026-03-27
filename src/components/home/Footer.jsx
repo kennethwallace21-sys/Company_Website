@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Mail, MapPin, Phone } from 'lucide-react';
-import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
+import { fadeUp, staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
 
 export default function Footer() {
     return (
@@ -121,6 +121,32 @@ export default function Footer() {
                     </motion.div>
                 </motion.div>
 
+                {/* NVIDIA Inception Member Badge */}
+                <motion.div
+                    className="flex flex-col items-center gap-3 my-8"
+                    variants={scaleUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-40px' }}
+                    custom={0}
+                >
+                    <p className="text-slate-400 text-xs sm:text-sm text-center max-w-xl">
+                        Catalyst Applied AI is a member of NVIDIA Inception.
+                    </p>
+                    <motion.div
+                        className="flex items-center justify-center rounded-lg overflow-hidden"
+                        whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(118, 185, 0, 0.15)' }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    >
+                        <img
+                            src="/nvidia-inception-badge.png"
+                            alt="NVIDIA Inception Partner badge for dark backgrounds"
+                            className="h-16 object-contain"
+                            loading="lazy"
+                        />
+                    </motion.div>
+                </motion.div>
+
                 {/* Copyright & Legal */}
                 <motion.div
                     className="pt-8 border-t border-slate-800 text-center"
@@ -133,6 +159,9 @@ export default function Footer() {
                         Copyright © {new Date().getFullYear()} Catalyst Applied AI - All Rights Reserved.
                     </p>
                     <div className="flex justify-center gap-4 mt-2">
+                        <p className="text-slate-500 text-xs">
+                            © {new Date().getFullYear()} NVIDIA, the NVIDIA logo, and NVIDIA Inception are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries.
+                        </p>
                         <a
                             href="/sitemap.xml" 
                             target="_blank" 
