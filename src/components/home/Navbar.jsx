@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
     Menu, X, ChevronDown, ChevronRight,
     Search, GraduationCap, Cpu, Database,
-    Zap, Layout, Bot, Box, Mic, FileSearch
+    Zap, Layout, Mic, FileSearch
 } from 'lucide-react';
 
 const navItems = [
@@ -41,22 +41,7 @@ const navItems = [
             }
         ]
     },
-    {
-        label: 'Products',
-        featured: { label: 'Products overview', path: '/Products' },
-        compact: true,
-        columns: [
-            {
-                heading: 'Our Products',
-                links: [
-                    { label: 'CAAi Command Center', href: 'https://commandcenter.catalystappliedai.com/', description: 'AI-Powered Business Intelligence', icon: Layout },
-                    { label: 'Catalyst Custom Models', href: 'https://custom-models.catalystappliedai.com/', description: 'Managed Enterprise AI Deployments', icon: Box },
-                    { label: 'CAAi CLERK', href: 'https://gov-products.catalystappliedai.com/', description: 'Government document workflows', icon: Bot },
-                    { label: 'Voice Agent', description: 'AI-powered voice assistant', icon: Mic, upcoming: true },
-                ]
-            }
-        ]
-    },
+    { label: 'Products', path: '/Products' },
     { label: 'Contact', path: '/Contact' }
 ];
 
