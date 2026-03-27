@@ -4,42 +4,42 @@ import { InteractiveImageAccordion } from '../ui/interactive-image-accordion';
 import { createPageUrl } from '@/utils';
 import { fadeUp } from '@/hooks/useFluidReveal';
 
-// Catalyst Applied AI Services with relevant images and links
+// Premium solid / subtle gradient panels (no stock photos)
 const servicesData = [
     {
         id: 2,
         title: 'Custom AI Solutions',
-        imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
+        panelClass: 'bg-gradient-to-br from-[#0c1929] via-[#132f4c] to-[#0a1628]',
         linkTo: createPageUrl('ServiceDetail') + '?service=custom-ai-solutions'
     },
     {
         id: 3,
         title: 'Workflow Automation',
-        imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+        panelClass: 'bg-gradient-to-br from-[#0d3d38] via-[#0f766e] to-[#0a2e2a]',
         linkTo: createPageUrl('ServiceDetail') + '?service=workflow-automation'
     },
     {
         id: 4,
         title: 'Data Engineering',
-        imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+        panelClass: 'bg-gradient-to-br from-[#0f172a] via-[#1e3a5f] to-[#0c4a6e]',
         linkTo: createPageUrl('ServiceDetail') + '?service=data-engineering'
     },
     {
         id: 5,
         title: 'AI Implementation',
-        imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80',
+        panelClass: 'bg-gradient-to-br from-[#18181b] via-[#27272a] to-[#1c1917]',
         linkTo: createPageUrl('ServiceDetail') + '?service=ai-implementation'
     },
     {
         id: 6,
         title: 'Enterprise Model Deployment',
-        imageUrl: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=800&q=80',
+        panelClass: 'bg-gradient-to-br from-[#052e16] via-[#14532d] to-[#0f172a]',
         linkTo: createPageUrl('ServiceDetail') + '?service=custom-rag'
     },
     {
         id: 7,
         title: 'Voice & Conversational AI',
-        imageUrl: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=800&q=80',
+        panelClass: 'bg-gradient-to-br from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]',
         linkTo: createPageUrl('ServiceDetail') + '?service=voice-ai'
     },
 ];

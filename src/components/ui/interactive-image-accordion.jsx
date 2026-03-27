@@ -6,14 +6,21 @@ import { Link } from 'react-router-dom';
 const MobileCard = ({ item, linkTo }) => {
     const content = (
         <div className="relative h-48 rounded-2xl overflow-hidden">
-            <img
-                src={item.imageUrl}
-                alt={item.title}
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black/40" />
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent" />
+            {item.panelClass ? (
+                <div
+                    className={`absolute inset-0 ${item.panelClass}`}
+                    aria-hidden
+                />
+            ) : (
+                <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover"
+                />
+            )}
+            <div className="absolute inset-0 bg-black/25" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
             <span className="absolute bottom-4 left-4 text-white text-lg font-semibold">
                 {item.title}
             </span>
@@ -40,26 +47,36 @@ const AccordionItem = ({ item, isActive, onMouseEnter, linkTo }) => {
             }}
             onMouseEnter={onMouseEnter}
         >
-            {/* Background Image */}
-            <img
-                src={item.imageUrl}
-                alt={item.title}
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                style={{
-                    transform: isActive ? 'scale(1)' : 'scale(1.15)',
-                }}
-            />
-            {/* Dark overlay */}
+            {/* Background: premium solid / gradient panels, or image fallback */}
+            {item.panelClass ? (
+                <div
+                    className={`absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${item.panelClass}`}
+                    aria-hidden
+                    style={{
+                        transform: isActive ? 'scale(1)' : 'scale(1.06)',
+                    }}
+                />
+            ) : (
+                <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    style={{
+                        transform: isActive ? 'scale(1)' : 'scale(1.15)',
+                    }}
+                />
+            )}
+            {/* Depth overlay */}
             <div
                 className="absolute inset-0 transition-all duration-500"
                 style={{
-                    backgroundColor: isActive ? 'rgba(0,0,0,0.25)' : 'rgba(0,0,0,0.55)',
+                    backgroundColor: isActive ? 'rgba(0,0,0,0.12)' : 'rgba(0,0,0,0.35)',
                 }}
             />
 
             {/* Gradient overlay at bottom */}
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/80 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/50 to-transparent" />
 
             {/* Learn More indicator for active */}
             {isActive && linkTo && (
