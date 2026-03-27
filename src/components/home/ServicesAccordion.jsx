@@ -7,12 +7,6 @@ import { fadeUp } from '@/hooks/useFluidReveal';
 // Catalyst Applied AI Services with relevant images and links
 const servicesData = [
     {
-        id: 1,
-        title: 'Discovery & Diagnostic',
-        imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
-        linkTo: createPageUrl('ServiceDetail') + '?service=discovery-diagnostic'
-    },
-    {
         id: 2,
         title: 'Custom AI Solutions',
         imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
@@ -48,12 +42,6 @@ const servicesData = [
         imageUrl: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=800&q=80',
         linkTo: createPageUrl('ServiceDetail') + '?service=voice-ai'
     },
-    {
-        id: 8,
-        title: 'Training & Support',
-        imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
-        linkTo: createPageUrl('ServiceDetail') + '?service=training-support'
-    },
 ];
 
 export default function ServicesAccordion() {
@@ -77,7 +65,7 @@ export default function ServicesAccordion() {
                 subtitle="We bridge the gap between potential and performance. From discovery to deployment, our comprehensive services transform how you work with AI. Click any service to learn more."
                 ctaText="Book Your ROI Assessment"
                 ctaHref="mailto:sales@catalystappliedai.com?subject=Request%20for%20Information"
-                defaultActiveIndex={1}
+                defaultActiveIndex={0}
                 className="bg-[#060a14] text-white"
             />
         </motion.section>

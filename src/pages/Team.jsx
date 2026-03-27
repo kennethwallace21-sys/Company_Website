@@ -56,6 +56,10 @@ const teamMembers = [
 ];
 
 export default function Team() {
+    const visibleTeamMembers = teamMembers
+        .slice(1)
+        .filter((member) => member.name !== 'Jessa Sailor');
+
     return (
         <div className="min-h-screen bg-[#060a14]">
             <SEOHead
@@ -153,14 +157,16 @@ export default function Team() {
                         </motion.div>
                     </motion.div>
 
-                    {/* Rest of the team — 3-column grid */}
+                    {/* Rest of the team */}
                     <motion.div
-                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+                        className={`grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mx-auto ${
+                            visibleTeamMembers.length <= 2 ? 'max-w-4xl' : 'max-w-6xl'
+                        }`}
                         variants={staggerContainer}
                         initial="hidden"
                         animate="visible"
                     >
-                        {teamMembers.slice(1).map((member) => (
+                        {visibleTeamMembers.map((member) => (
                             <motion.div
                                 key={member.name}
                                 variants={staggerItem}

@@ -2,8 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Mail, MapPin, Linkedin, Phone } from 'lucide-react';
-import { fadeUp, staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
+import { Mail, MapPin, Phone } from 'lucide-react';
+import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 
 export default function Footer() {
     return (
@@ -37,7 +37,7 @@ export default function Footer() {
                             </span>
                         </Link>
                         <p className="text-slate-400 text-sm">
-                            Practical AI solutions that deliver real business results.
+                            Practical AI solutions that deliver real results.
                         </p>
                     </motion.div>
 
@@ -112,44 +112,12 @@ export default function Footer() {
                                     +1-502-416-8342
                                 </a>
                             </li>
-                            <li>
-                                <a href="https://www.linkedin.com/company/catalyst-applied-ai/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                    LinkedIn
-                                </a>
-                            </li>
                             <li className="text-slate-400 text-sm flex items-start gap-2">
                                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
                                 Kentucky, USA
                             </li>
                         </ul>
                         
-                    </motion.div>
-                </motion.div>
-
-                {/* NVIDIA Inception Member Badge */}
-                <motion.div
-                    className="flex flex-col items-center gap-3 my-8"
-                    variants={scaleUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: '-40px' }}
-                    custom={0}
-                >
-                    <p className="text-slate-400 text-xs sm:text-sm text-center max-w-xl">
-                        Catalyst Applied AI is a member of <span className="font-medium text-slate-200">NVIDIA Inception</span>.
-                    </p>
-                    <motion.div
-                        className="flex items-center justify-center rounded-lg overflow-hidden"
-                        whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(118, 185, 0, 0.15)' }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                        <img 
-                            src="/nvidia-inception-badge.png" 
-                            alt="NVIDIA Inception Partner badge for dark backgrounds" 
-                            className="h-16 object-contain"
-                            loading="lazy"
-                        />
                     </motion.div>
                 </motion.div>
 
@@ -165,10 +133,7 @@ export default function Footer() {
                         Copyright © {new Date().getFullYear()} Catalyst Applied AI - All Rights Reserved.
                     </p>
                     <div className="flex justify-center gap-4 mt-2">
-                        <p className="text-slate-500 text-xs">
-                            © {new Date().getFullYear()} NVIDIA, the NVIDIA logo, and NVIDIA Inception are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries.
-                        </p>
-                        <a 
+                        <a
                             href="/sitemap.xml" 
                             target="_blank" 
                             rel="noopener noreferrer"

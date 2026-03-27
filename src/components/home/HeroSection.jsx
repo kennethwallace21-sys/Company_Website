@@ -50,6 +50,7 @@ void main(void) {
   vec3 col=vec3(0);
   float bg=clouds(vec2(st.x+T*.5,-st.y));
   uv*=1.-.3*(sin(T*.2)*.5+.5);
+  uv.x-=.4;
   for (float i=1.; i<12.; i++) {
     uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
     vec2 p=uv;
@@ -196,8 +197,7 @@ export default function HeroSection() {
                             className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-sky-400"
                         >
                             AI
-                        </motion.span>{' '}
-                        for Your Business
+                        </motion.span>
                     </motion.h1>
 
                     {/* Subheadline */}
@@ -211,68 +211,44 @@ export default function HeroSection() {
                         that drive real business value. Save time. Cut costs. Stay focused.
                     </motion.p>
 
-                    {/* Benefits */}
+                    {/* CTA Buttons */}
                     <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            hidden: {},
-                            visible: { transition: { staggerChildren: 0.08, delayChildren: 0.32 } }
-                        }}
-                        className="flex flex-wrap gap-4 mb-10"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                        className="flex flex-col sm:flex-row gap-4 mb-10"
                     >
+                        <Button
+                            onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 group"
+                        >
+                            Explore Our Solutions
+                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                        <Button
+                            onClick={() => window.location.href = 'mailto:sales@catalystappliedai.com?subject=Talk%20to%20Our%20Team'}
+                            className="border border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/15 text-blue-300 hover:text-blue-200 px-8 py-6 text-lg rounded-xl backdrop-blur-sm transition-all"
+                        >
+                            Talk to Our Team
+                        </Button>
+                    </motion.div>
+
+                    {/* Benefits */}
+                    <div className="flex flex-wrap gap-4">
                         {benefits.map((benefit, index) => (
                             <motion.div
                                 key={index}
-                                variants={{
-                                    hidden: { opacity: 0, x: -16 },
-                                    visible: { opacity: 1, x: 0 }
-                                }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                                initial={{ opacity: 0, x: -16 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.5, delay: 0.6 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
                                 className="flex items-center gap-2 text-slate-300"
                             >
                                 <CheckCircle className="w-5 h-5 text-blue-400 shrink-0" />
                                 <span className="text-sm sm:text-base">{benefit}</span>
                             </motion.div>
                         ))}
-                    </motion.div>
+                    </div>
 
-                    {/* CTA Buttons */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="flex flex-col sm:flex-row gap-4"
-                    >
-                        <Button
-                            onClick={() => window.location.href = 'mailto:sales@catalystappliedai.com?subject=ROI%20Assessment%20Request'}
-                            className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 group"
-                        >
-                            Book Your Free ROI Assessment
-                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                        <Button
-                            onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-                            className="border border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/15 text-blue-300 hover:text-blue-200 px-8 py-6 text-lg rounded-xl backdrop-blur-sm transition-all"
-                        >
-                            Explore Our Services
-                        </Button>
-                    </motion.div>
-
-                    {/* Trust Indicators */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                        className="mt-12 pt-8 border-t border-white/10"
-                    >
-                        <p className="text-slate-500 text-sm mb-4">Trusted by forward-thinking companies</p>
-                        <div className="flex items-center gap-8 opacity-60">
-                            <div className="text-white font-semibold text-lg">Enterprise</div>
-                            <div className="text-white font-semibold text-lg">Startups</div>
-                            <div className="text-white font-semibold text-lg">SMBs</div>
-                        </div>
-                    </motion.div>
                 </div>
             </div>
 

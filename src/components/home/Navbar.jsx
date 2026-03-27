@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
 import { 
     Menu, X, ChevronDown, ChevronRight,
     Search, GraduationCap, Cpu, Database,
@@ -10,15 +9,13 @@ import {
 
 const navItems = [
     {
-        label: 'Services',
+        label: 'Solutions',
         featured: { label: 'All Services', path: '/#services' },
         compact: true,
         columns: [
             {
                 heading: 'Strategy',
                 links: [
-                    { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', icon: Search },
-                    { label: 'Training & Enablement', path: '/ServiceDetail?service=training-support', icon: GraduationCap },
                     { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', icon: Layout },
                 ]
             },
@@ -89,7 +86,7 @@ export default function Navbar({ showNav }) {
             setActiveItem(null);
             setCompactMenuPos(null);
         } else {
-            if (item.label === 'Services' && servicesButtonRef.current) {
+            if (item.label === 'Solutions' && servicesButtonRef.current) {
                 const rect = servicesButtonRef.current.getBoundingClientRect();
                 const vw = window.innerWidth;
                 const padding = 16;
@@ -170,7 +167,7 @@ export default function Navbar({ showNav }) {
                                             {item.columns ? (
                                                 <button
                                                     onClick={() => toggleDropdown(item)}
-                                                    ref={item.label === 'Services' ? servicesButtonRef : null}
+                                                    ref={item.label === 'Solutions' ? servicesButtonRef : null}
                                                     className={`flex items-center gap-1.5 text-sm font-medium py-2 px-1 mx-3 transition-all duration-200 relative z-10 ${activeItem?.label === item.label ? 'text-white' : 'text-slate-300 hover:text-white'}`}
                                                 >
                                                     {item.label}
@@ -202,20 +199,6 @@ export default function Navbar({ showNav }) {
                                             )}
                                         </div>
                                     ))}
-                                    <div className="w-px h-6 bg-white/10 mx-1" />
-                                    <motion.div
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        className="relative group/btn"
-                                    >
-                                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full blur opacity-0 group-hover/btn:opacity-40 transition-opacity duration-300" />
-                                        <Button
-                                            onClick={() => { window.location.href = 'mailto:sales@catalystappliedai.com?subject=Request%20for%20Information'; }}
-                                            className="relative bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-full px-5 py-2 text-sm shadow-xl shadow-blue-500/20"
-                                        >
-                                            Book ROI Assessment
-                                        </Button>
-                                    </motion.div>
                                 </div>
 
                                 {/* Mobile Menu Button */}
@@ -307,14 +290,6 @@ export default function Navbar({ showNav }) {
                                                 )}
                                             </div>
                                         ))}
-                                        <div className="pt-3">
-                                            <Button
-                                                onClick={() => { window.location.href = 'mailto:sales@catalystappliedai.com?subject=Request%20for%20Information'; }}
-                                                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl"
-                                            >
-                                                Book ROI Assessment
-                                            </Button>
-                                        </div>
                                     </div>
                                 </motion.div>
                             )}
@@ -348,17 +323,17 @@ export default function Navbar({ showNav }) {
                                 /* Compact dropdown for Products */
                                 <div className="max-w-7xl mx-auto px-4 flex justify-end">
                                     <div
-                                        className={`${activeItem.label === 'Services' ? 'max-w-[560px]' : 'w-[360px]'} bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2`}
+                                        className={`${activeItem.label === 'Solutions' ? 'max-w-[560px]' : 'w-[360px]'} bg-[#0b0f1a]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] p-5 mt-2`}
                                         style={
-                                            activeItem.label === 'Services' && compactMenuPos
+                                            activeItem.label === 'Solutions' && compactMenuPos
                                                 ? { position: 'fixed', top: compactMenuPos.top, left: compactMenuPos.left, width: compactMenuPos.width }
                                                 : undefined
                                         }
                                     >
                                         <h4 className="text-[11px] uppercase tracking-[0.25em] font-extrabold text-blue-500/80 mb-4 pb-2 border-b border-white/[0.05]">
-                                            {activeItem.label === 'Services' ? 'Services' : activeItem.columns[0].heading}
+                                            {activeItem.label === 'Solutions' ? 'Solutions' : activeItem.columns[0].heading}
                                         </h4>
-                                        <ul className={`${activeItem.label === 'Services' ? 'grid grid-cols-2 gap-1' : 'space-y-1'}`}>
+                                        <ul className={`${activeItem.label === 'Solutions' ? 'grid grid-cols-2 gap-1' : 'space-y-1'}`}>
                                             {activeItem.columns.flatMap((col) => col.links).map((link) => (
                                                 <li key={link.label}>
                                                     {link.href ? (
@@ -455,7 +430,7 @@ export default function Navbar({ showNav }) {
                                     {/* Brand Header */}
                                     <div className="flex items-center gap-4 mb-16 group/title cursor-default w-fit">
                                         <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight">
-                                            {activeItem.label === 'Services' ? 'What we do' : activeItem.label}
+                                            {activeItem.label === 'Solutions' ? 'What we do' : activeItem.label}
                                         </h2>
                                         <div className="w-10 h-10 rounded bg-blue-600 flex items-center justify-center">
                                             <ChevronRight className="w-6 h-6 text-white" />
