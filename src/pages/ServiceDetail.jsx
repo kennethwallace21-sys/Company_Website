@@ -13,7 +13,7 @@ const servicesData = {
     'discovery-diagnostic': {
         title: 'Discovery & Diagnostic',
         subtitle: 'Find your fastest ROI opportunities and build a roadmap that pays for itself',
-        heroImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#0b1d30] via-[#163a5f] to-[#0a1a2d]',
         description: 'Our Discovery & Diagnostic service helps you identify the highest-impact AI opportunities in your organization. We analyze your workflows, data, and processes to create a clear roadmap for AI implementation.',
         benefits: [
             'Identify top ROI opportunities in your workflows',
@@ -36,7 +36,7 @@ const servicesData = {
     'custom-ai-solutions': {
         title: 'Custom AI Solutions',
         subtitle: 'Turn complex problems into practical AI tools that work',
-        heroImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#0c1929] via-[#132f4c] to-[#0a1628]',
         description: 'We build bespoke AI solutions tailored to your specific business challenges. From generative AI applications to predictive models, we create tools that integrate seamlessly with your existing workflows.',
         benefits: [
             'Build generative AI apps for content & insights',
@@ -59,7 +59,7 @@ const servicesData = {
     'workflow-automation': {
         title: 'Workflow Automation',
         subtitle: 'Faster processes, fewer mistakes, and more time for growth',
-        heroImage: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#0d3d38] via-[#0f766e] to-[#0a2e2a]',
         description: 'Transform your business operations with intelligent workflow automation. We embed AI into your existing tools to eliminate manual tasks, reduce errors, and accelerate your processes.',
         benefits: [
             'Embed AI into CRM, ERP, and tools you use',
@@ -82,7 +82,7 @@ const servicesData = {
     'data-engineering': {
         title: 'Data Engineering',
         subtitle: 'Build the foundation for reliable, usable data powering every AI decision',
-        heroImage: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#0f172a] via-[#1e3a5f] to-[#0c4a6e]',
         description: 'Strong AI requires strong data foundations. We design and build the data infrastructure that enables reliable AI solutions, from secure architecture to real-time dashboards.',
         benefits: [
             'Design secure, scalable data architecture',
@@ -105,7 +105,7 @@ const servicesData = {
     'ai-implementation': {
         title: 'AI Tools Implementation',
         subtitle: 'Deploy safe, scalable enterprise-grade AI tools with confidence',
-        heroImage: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#18181b] via-[#27272a] to-[#1c1917]',
         description: 'Leverage leading AI platforms without the complexity. We implement enterprise AI tools with proper security, compliance, and governance guardrails built in from day one.',
         benefits: [
             'Integrate leading AI platforms into your stack',
@@ -128,7 +128,7 @@ const servicesData = {
     'custom-rag': {
         title: 'Enterprise Model Deployment',
         subtitle: 'Fine-tune, host, and manage custom LLMs on your infrastructure with built-in trust and governance',
-        heroImage: 'https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#052e16] via-[#14532d] to-[#0f172a]',
         description: 'We deploy and manage enterprise-grade AI models tailored to your business — from fine-tuning open-source LLMs on your proprietary data to building production RAG pipelines with our CAAi Trust Layer. Whether on-prem, hybrid, or cloud, you get accurate, governed AI that stays under your control.',
         benefits: [
             'Fine-tune open-source LLMs on your proprietary data for domain-specific accuracy',
@@ -151,7 +151,7 @@ const servicesData = {
     'voice-ai': {
         title: 'Voice & Conversational AI',
         subtitle: 'Replace hold queues and rigid IVRs with intelligent voice agents that actually understand',
-        heroImage: 'https://images.unsplash.com/photo-1589254065878-42c9da997008?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#1e1b4b] via-[#312e81] to-[#1e1b4b]',
         description: 'We design, build, and deploy AI-powered voice and conversational agents that handle real calls, answer complex questions, and take action — all while sounding natural. Whether you need to modernize a call center, automate appointment scheduling, or build a multilingual front-desk assistant, we deliver production-ready voice AI grounded in your business logic.',
         benefits: [
             'Deploy voice agents that handle inbound and outbound calls 24/7',
@@ -200,7 +200,7 @@ const servicesData = {
     'training-support': {
         title: 'Training & Enablement',
         subtitle: 'Empower your team to use and lead with AI confidently',
-        heroImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80',
+        heroPanelClass: 'bg-gradient-to-br from-[#1f2937] via-[#1e3a8a] to-[#0f172a]',
         description: 'Technology is only as good as the people using it. Our training programs demystify AI and give your team the skills and confidence to leverage AI in their daily work.',
         benefits: [
             'Plain-language training that demystifies AI',
@@ -256,16 +256,26 @@ export default function ServiceDetail() {
             {/* Hero Section */}
             <section className="relative pt-32 pb-20 overflow-hidden">
                 <div className="absolute inset-0 z-0">
-                    <motion.img
-                        src={service.heroImage}
-                        alt={service.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover"
-                        initial={{ scale: 1.1, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                        key={serviceId}
-                    />
+                    {service.heroPanelClass ? (
+                        <motion.div
+                            className={`w-full h-full ${service.heroPanelClass}`}
+                            initial={{ scale: 1.04, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                            key={serviceId}
+                        />
+                    ) : (
+                        <motion.img
+                            src={service.heroImage}
+                            alt={service.title}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                            initial={{ scale: 1.1, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                            key={serviceId}
+                        />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-r from-[#060a14] via-[#060a14]/95 to-[#060a14]/80" />
                 </div>
 
