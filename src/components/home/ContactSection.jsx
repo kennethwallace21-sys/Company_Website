@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Send, ArrowRight, CheckCircle, Linkedin, Phone } from 'lucide-react';
+import { Mail, Send, ArrowRight, CheckCircle, Phone } from 'lucide-react';
 import { fadeUp, fadeLeft, fadeRight, scaleUp } from '@/hooks/useFluidReveal';
 
 export default function ContactSection() {
@@ -159,27 +159,6 @@ export default function ContactSection() {
                                 </div>
                             </motion.a>
 
-                            <motion.a
-                                href="https://www.linkedin.com/company/catalyst-applied-ai/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-4 p-4 rounded-xl bg-[#0d1425]/50 border border-blue-500/10 group"
-                                whileHover={{
-                                    y: -3,
-                                    borderColor: 'rgba(59, 130, 246, 0.35)',
-                                    transition: { duration: 0.25 },
-                                }}
-                            >
-                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                                    <Linkedin className="w-5 h-5 text-blue-400" />
-                                </div>
-                                <div>
-                                    <div className="text-sm text-slate-400">Follow us on</div>
-                                    <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
-                                        LinkedIn
-                                    </div>
-                                </div>
-                            </motion.a>
                         </div>
                     </motion.div>
 

@@ -74,7 +74,6 @@ export default function Footer() {
                             {[
                                 { label: 'Home', page: 'Home' },
                                 { label: 'Products', page: 'Products' },
-                                { label: 'Team', page: 'Team' },
                                 { label: 'FAQ', page: 'FAQ' },
                                 { label: 'Terms & Conditions', page: 'TermsAndConditions' },
                             ].map(item => (
