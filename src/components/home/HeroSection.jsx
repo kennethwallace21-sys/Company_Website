@@ -156,9 +156,9 @@ export default function HeroSection() {
     const canvasRef = useShaderBackground(sectionRef, setShaderFailed);
 
     const benefits = [
-        "Save on operational costs",
-        "Automate repetitive workflows",
-        "Data-driven decision making"
+        "Deployed in your environment",
+        "Production-ready from day one",
+        "Government and enterprise ready"
     ];
 
     return (
@@ -188,7 +188,7 @@ export default function HeroSection() {
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 mb-8"
                     >
                         <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                        <span className="text-blue-300 text-sm font-medium">Where Intelligence Meets Execution</span>
+                        <span className="text-blue-300 text-sm font-medium">We Build AI That Runs</span>
                     </motion.div>
 
                     {/* Headline */}
@@ -198,7 +198,7 @@ export default function HeroSection() {
                         transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
                         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-6"
                     >
-                        Unlock the Power of{' '}
+                        Production AI Systems.{' '}
                         <motion.span
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -231,7 +231,7 @@ export default function HeroSection() {
                             onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
                             className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 group"
                         >
-                            Explore Our Solutions
+                            See What We Build
                             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </Button>
                         <Button
