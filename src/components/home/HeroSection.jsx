@@ -198,14 +198,14 @@ export default function HeroSection() {
                         transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
                         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-6"
                     >
-                        Production AI Systems.{' '}
+                        Unlock the Power of{' '}
                         <motion.span
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 0.5, delay: 0.5 }}
                             className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-blue-300 to-sky-400"
                         >
-                            AI
+                            Catalyst Applied AI
                         </motion.span>
                     </motion.h1>
 
@@ -216,8 +216,7 @@ export default function HeroSection() {
                         transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className="text-lg sm:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed"
                     >
-                        We help organizations identify, design, and implement practical AI solutions
-                        that drive real business value. Save time. Cut costs. Stay focused.
+                        We build production AI systems and deploy them in your environment. RAG, agentic workflows, workforce intelligence, signal analytics, and domain-trained AI agents.
                     </motion.p>
 
                     {/* CTA Buttons */}
