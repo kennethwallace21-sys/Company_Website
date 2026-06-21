@@ -1,0 +1,88 @@
+<svg width="2048" height="368" viewBox="0 0 2048 368" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="120" y1="0" x2="1928" y2="368" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#07111C"/>
+      <stop offset="0.45" stop-color="#081522"/>
+      <stop offset="1" stop-color="#05101A"/>
+    </linearGradient>
+    <radialGradient id="orbGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(460 170) rotate(90) scale(170 170)">
+      <stop stop-color="#63E8FF" stop-opacity="0.5"/>
+      <stop offset="0.48" stop-color="#1DB8FF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#225CFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="markStroke" x1="20" y1="24" x2="92" y2="96" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8EF3FF"/>
+      <stop offset="0.45" stop-color="#63E8FF"/>
+      <stop offset="0.72" stop-color="#1DB8FF"/>
+      <stop offset="1" stop-color="#6C7CFF"/>
+    </linearGradient>
+    <linearGradient id="markFill" x1="28" y1="30" x2="88" y2="90" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C8FBFF"/>
+      <stop offset="1" stop-color="#225CFF"/>
+    </linearGradient>
+    <filter id="markGlow" x="-120" y="-120" width="360" height="360" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="1 0 0 0 0  0 0.92 0 0 0  0 0.98 1 0 0  0 0 0 0.6 0"
+        result="glow"
+      />
+      <feBlend in="SourceGraphic" in2="glow" mode="screen"/>
+    </filter>
+    <filter id="trailGlow" x="210" y="-20" width="520" height="360" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+
+  <rect width="2048" height="368" fill="url(#bgGradient)"/>
+  <rect x="1" y="1" width="2046" height="366" stroke="rgba(99,232,255,0.08)"/>
+
+  <circle cx="460" cy="170" r="170" fill="url(#orbGlow)"/>
+
+  <g filter="url(#trailGlow)" opacity="0.9">
+    <ellipse cx="444" cy="168" rx="166" ry="124" transform="rotate(-12 444 168)" stroke="#A885FF" stroke-opacity="0.45" stroke-width="6"/>
+    <ellipse cx="450" cy="172" rx="176" ry="136" transform="rotate(18 450 172)" stroke="#7CEBFF" stroke-opacity="0.4" stroke-width="5"/>
+    <ellipse cx="458" cy="170" rx="184" ry="144" transform="rotate(34 458 170)" stroke="#63E8FF" stroke-opacity="0.3" stroke-width="4"/>
+  </g>
+
+  <g transform="translate(284 38) scale(2.7)" filter="url(#markGlow)">
+    <path
+      d="M84 28C76.7 20.7 67.3 16.5 55.8 16.5C33.9 16.5 18 35.2 18 60C18 84.8 33.9 103.5 55.8 103.5C67.3 103.5 76.7 99.3 84 92"
+      stroke="url(#markStroke)"
+      stroke-width="11"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path d="M38 60H73" stroke="url(#markStroke)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M60 46L78 60L60 74" stroke="url(#markStroke)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M30 37L46 52" stroke="url(#markStroke)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M28 60H46" stroke="url(#markStroke)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M30 83L46 68" stroke="url(#markStroke)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M46 52L55 60" stroke="url(#markStroke)" stroke-width="4" stroke-linecap="round"/>
+    <path d="M46 68L55 60" stroke="url(#markStroke)" stroke-width="4" stroke-linecap="round"/>
+
+    <circle cx="24" cy="37" r="5.5" fill="url(#markFill)"/>
+    <circle cx="22" cy="60" r="6.5" fill="url(#markFill)"/>
+    <circle cx="24" cy="83" r="5.5" fill="url(#markFill)"/>
+    <circle cx="48" cy="52" r="5" fill="#C8FBFF"/>
+    <circle cx="48" cy="68" r="5" fill="#C8FBFF"/>
+    <circle cx="56" cy="60" r="6" fill="#EAF8FF"/>
+  </g>
+
+  <text
+    x="760"
+    y="196"
+    fill="#F4FBFF"
+    font-family="Sora, IBM Plex Sans, Segoe UI, Arial, sans-serif"
+    font-size="122"
+    font-weight="700"
+    letter-spacing="-0.06em"
+  >catalyst applied ai</text>
+
+  <path
+    d="M1932 292C1934.7 305.3 1944.7 315.3 1958 318C1944.7 320.7 1934.7 330.7 1932 344C1929.3 330.7 1919.3 320.7 1906 318C1919.3 315.3 1929.3 305.3 1932 292Z"
+    fill="#EAF8FF"
+    fill-opacity="0.7"
+  />
+</svg>

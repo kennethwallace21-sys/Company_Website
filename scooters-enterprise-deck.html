@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scooter's Coffee | CAAi Command Center Sales Deck</title>
+<meta name="description" content="Sales deck for Scooter's Coffee focused on CAAi Command Center, Catalyst Custom Models, and the live NVIDIA-backed RAG stack.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: dark;
+  --midnight:#07111c; --deep-ink:#0e1e30; --card:#0f1d2b; --card-hover:#132030;
+  --frost:#eaf8ff; --slate:#8ea6bc; --cyan:#63e8ff; --blue:#1db8ff; --catalyst:#225cff;
+  --success:#1db954; --amber:#e8a030; --border:rgba(99,232,255,.08);
+  --display:"Sora",sans-serif; --body:"IBM Plex Sans",sans-serif; --mono:"IBM Plex Mono",monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; color: var(--frost); font-family: var(--body); overflow-x: hidden;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(29,184,255,.12), transparent 26%),
+    radial-gradient(circle at 84% 10%, rgba(34,92,255,.1), transparent 24%),
+    linear-gradient(180deg, #07111c 0%, #081523 46%, #07111c 100%);
+}
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(99,232,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,232,255,.025) 1px, transparent 1px);
+  background-size: 64px 64px; mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, #000 40%, transparent 100%);
+}
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+a { color: inherit; }
+nav, main, footer { position: relative; z-index: 1; }
+nav {
+  position: sticky; top: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  height: 64px; padding: 0 32px; border-bottom: 1px solid var(--border);
+  background: rgba(7,17,28,.88); backdrop-filter: blur(20px);
+}
+.brand { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+.brand img { width: auto; height: 40px; max-width: 300px; }
+.brand-title { font: 700 15px var(--display); }
+.brand-sub { font: 8px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--slate); }
+.nav-links, .footer-links { display: flex; gap: 18px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+.nav-links a, .footer-links a { text-decoration: none; color: var(--slate); font: 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.nav-links a:hover, .footer-links a:hover { color: var(--frost); }
+.btn-primary, .btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none;
+  border-radius: 6px; transition: transform .2s ease, background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.btn-primary {
+  padding: 14px 26px; border: none; font: 600 14px var(--display); color: var(--frost);
+  background: linear-gradient(135deg, #1db8ff, #225cff);
+}
+.btn-primary:hover { transform: translateY(-2px); background: linear-gradient(135deg, #63e8ff, #1db8ff); color: var(--midnight); box-shadow: 0 10px 40px rgba(29,184,255,.35); }
+.btn-ghost {
+  padding: 12px 20px; border: 1px solid rgba(99,232,255,.18); background: rgba(7,17,28,.72); color: var(--slate); font: 500 14px var(--display);
+}
+.btn-ghost:hover { color: var(--frost); border-color: rgba(99,232,255,.4); background: rgba(99,232,255,.05); }
+.deck { max-width: 1360px; margin: 0 auto; padding: 36px 28px 80px; }
+.slide { padding: 24px 0; }
+.frame {
+  min-height: calc(100vh - 156px); padding: 44px; border: 1px solid var(--border); border-radius: 8px;
+  background: linear-gradient(180deg, rgba(14,30,48,.94), rgba(7,17,28,.98));
+  display: flex; flex-direction: column; justify-content: space-between; gap: 28px;
+}
+.label { display: flex; align-items: center; gap: 10px; color: var(--cyan); font: 10px var(--mono); letter-spacing: .22em; text-transform: uppercase; }
+.label::before { content: ""; width: 24px; height: 1px; background: linear-gradient(90deg, #63e8ff, #1db8ff); }
+h1, h2, h3 { margin: 0; font-family: var(--display); letter-spacing: -.04em; }
+h1 { max-width: 900px; font-size: clamp(48px, 6vw, 86px); line-height: .98; }
+h2 { max-width: 860px; font-size: clamp(34px, 4.4vw, 60px); line-height: 1.04; }
+h1 em, h2 em { font-style: normal; color: var(--cyan); }
+.sub, .copy, .card p, .briefing, .footer-copy { color: var(--slate); line-height: 1.8; }
+.sub { max-width: 760px; margin-top: 22px; font-size: 18px; }
+.actions, .meta-row, .footer-links { display: flex; gap: 14px; flex-wrap: wrap; }
+.note, .card, .brief-panel, .table-card, .quote, .cta { border: 1px solid var(--border); border-radius: 8px; background: rgba(7,17,28,.54); }
+.note, .card, .brief-panel, .table-card, .quote, .cta { padding: 22px; }
+.stats, .grid-2, .grid-3, .grid-4, .compare, .footer-grid { display: grid; gap: 18px; }
+.stats { grid-template-columns: repeat(4, 1fr); }
+.grid-2 { grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.compare { grid-template-columns: repeat(2, 1fr); }
+.meta { color: var(--cyan); font: 10px var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+.value { font: 700 32px var(--display); letter-spacing: -.04em; margin-top: 8px; }
+.card:hover, .brief-panel:hover, .table-card:hover { background: rgba(19,32,48,.72); }
+.bullet-list, .step-list, .kpi-list { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.bullet-list li, .step-list li, .kpi-list li { display: flex; gap: 10px; color: var(--slate); line-height: 1.7; }
+.bullet-list li::before, .step-list li::before, .kpi-list li::before { content: ">"; color: var(--cyan); font-family: var(--mono); }
+.step-list { margin-top: 20px; }
+.status { display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 4px; font: 10px var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.status.live { color: var(--success); background: rgba(29,185,84,.1); border: 1px solid rgba(29,185,84,.18); }
+.status.roadmap { color: var(--amber); background: rgba(232,160,48,.1); border: 1px solid rgba(232,160,48,.18); }
+.brief-panel { display: grid; gap: 16px; }
+.priority { padding: 14px 16px; border-left: 3px solid var(--blue); background: rgba(29,184,255,.08); }
+.priority.warn { border-left-color: var(--amber); background: rgba(232,160,48,.08); }
+.priority.ok { border-left-color: var(--success); background: rgba(29,185,84,.08); }
+.priority strong { display: block; color: var(--frost); margin-bottom: 6px; }
+.quote { background: linear-gradient(180deg, rgba(232,160,48,.08), rgba(7,17,28,.86)); }
+.table-card { display: grid; gap: 16px; }
+.row { display: grid; grid-template-columns: 140px 1fr; gap: 16px; padding-top: 14px; border-top: 1px solid rgba(99,232,255,.08); }
+.row:first-child { padding-top: 0; border-top: none; }
+.row-label { color: var(--cyan); font: 10px var(--mono); letter-spacing: .16em; text-transform: uppercase; }
+.footer-grid { grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr) max-content; align-items: start; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+@media (max-width: 1100px) {
+  nav { height: auto; padding: 16px 24px; flex-wrap: wrap; }
+  .grid-2, .grid-3, .grid-4, .compare, .stats, .footer-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .deck { padding: 20px 12px 60px; }
+  .frame { padding: 24px; min-height: auto; }
+  nav { padding: 14px 18px; }
+}
+@media print {
+  @page { size: landscape; margin: .35in; }
+  nav, body::before, body::after { display: none; }
+  body { background: #07111c; }
+  .deck { padding: 0; max-width: none; }
+  .slide { page-break-after: always; padding: 0; }
+  .slide:last-child { page-break-after: auto; }
+  .frame { min-height: 7in; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="https://www.catalystappliedai.com/" target="_blank" rel="noopener noreferrer">
+    <img src="./assets/catalyst-applied-ai-wordmark.svg" alt="Catalyst Applied AI">
+    <div>
+      <div class="brand-title">CAAi Command Center</div>
+      <div class="brand-sub">Scooter's Coffee Deck</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#solution">Solution</a></li>
+    <li><a href="#rag">RAG</a></li>
+    <li><a href="#enterprise">Enterprise</a></li>
+    <li><a href="#pilot">Pilot</a></li>
+  </ul>
+  <a class="btn-primary" href="mailto:sales@catalystappliedai.com" data-contact-intent="Request Scooter's Coffee pilot">Request Pilot</a>
+</nav>
+
+<main class="deck">
+  <section class="slide" id="top">
+    <div class="frame">
+      <div>
+        <div class="label reveal">Scooter's Coffee Sales Deck</div>
+        <h1 class="reveal">Turn store data into daily priorities across <em>every location.</em></h1>
+        <p class="sub reveal">
+          <code>CAAi Command Center</code> is the operations intelligence layer for Scooter's Coffee.
+          <code>Catalyst Custom Models</code> is the managed enterprise deployment path behind it.
+          As of March 14, 2026, both are anchored to a live local NVIDIA-backed RAG stack, not a future-state diagram.
+        </p>
+        <div class="actions reveal" style="margin-top:30px">
+          <a class="btn-primary" href="#pilot">See Pilot Plan</a>
+          <a class="btn-ghost" href="./custom-models.html">Open Custom Models Page</a>
+        </div>
+      </div>
+      <div class="stats reveal">
+        <article class="note"><div class="meta">Go-To-Market</div><div class="value">3 Stores</div><div class="footer-copy">Pilot first with one owner, then expand through proof inside the franchise network.</div></article>
+        <article class="note"><div class="meta">Current Posture</div><div class="value">Phase 1 + 2</div><div class="footer-copy">Local stack and control maturity are complete before cloud expansion begins.</div></article>
+        <article class="note"><div class="meta">Product Thesis</div><div class="value">Grounded Ops</div><div class="footer-copy">Daily priorities, alerts, and answers over real store data rather than generic AI chat.</div></article>
+        <article class="note"><div class="meta">Roadmap</div><div class="value">Phase 3</div><div class="footer-copy">Cloud NIM and LoRA remain the next deployment phase, not current-state claims.</div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="problem">
+    <div class="frame">
+      <div>
+        <div class="label reveal">What The Buyer Is Buying</div>
+        <h2 class="reveal">Scooter's does not need HR software. It needs an operations layer that helps owners <em>decide faster.</em></h2>
+      </div>
+      <div class="grid-4 reveal">
+        <article class="card"><div class="meta">Visibility</div><h3>Multi-store blind spots</h3><p>Owners lose time stitching together sales, labor, inventory, and issue signals across locations.</p></article>
+        <article class="card"><div class="meta">Briefings</div><h3>Manager focus drift</h3><p>Daily priorities change faster than teams can summarize them in spreadsheets and text chains.</p></article>
+        <article class="card"><div class="meta">Profit</div><h3>Waste and variance</h3><p>Labor-to-sales gaps, inventory waste, and slow exception handling leak margin before anyone acts.</p></article>
+        <article class="card"><div class="meta">Trust</div><h3>Generic AI is not enough</h3><p>Store decisions need grounded answers on real SOPs and operating data, not model guesses.</p></article>
+      </div>
+      <div class="quote reveal">
+        <div class="meta">Approved Positioning</div>
+        <div class="copy">CAAi Command Center is an operations intelligence layer for multi-unit operators. It turns live store data into daily priorities, alerts, and grounded answers for owners and managers.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="solution">
+    <div class="frame">
+      <div>
+        <div class="label reveal">CAAi Command Center</div>
+        <h2 class="reveal">Daily manager briefings, cross-store visibility, and grounded answers in one <em>operating surface.</em></h2>
+      </div>
+      <div class="grid-2">
+        <div class="reveal">
+          <ul class="step-list">
+            <li>Morning briefings surface the top actions for the day instead of forcing managers to hunt for context.</li>
+            <li>Owner-level visibility shows labor, sales, inventory, and operational exceptions across all stores.</li>
+            <li>Alerts focus managers on what needs intervention now: waste, staffing risk, service issues, and execution gaps.</li>
+            <li>Grounded Q&amp;A sits on top of actual store materials and operating data, not generic assistant behavior.</li>
+          </ul>
+        </div>
+        <aside class="brief-panel reveal">
+          <div class="meta">Sample Daily Briefing</div>
+          <div class="priority warn"><strong>Labor watch</strong> Store 104 is trending above plan for the morning rush. Adjust staffing against sales per labor hour before 10:30 AM.</div>
+          <div class="priority"><strong>Waste risk</strong> Breakfast sandwich pull is running hot at one location. Check pars before the second prep window.</div>
+          <div class="priority"><strong>Service execution</strong> Drive-thru delay patterns point to one training gap on handoff and loyalty scanning.</div>
+          <div class="priority ok"><strong>Owner view</strong> All stores can be reviewed in one place without another spreadsheet pass.</div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="rag">
+    <div class="frame">
+      <div>
+        <div class="label reveal">Why The RAG Matters</div>
+        <h2 class="reveal">The stack wins because the answer path is grounded, verified, and already <em>running locally.</em></h2>
+      </div>
+      <div class="grid-2">
+        <article class="table-card reveal">
+          <div class="meta">Current Live RAG Stack</div>
+          <div class="row"><div class="row-label">Ingest</div><div class="copy"><code>NeMo Curator</code> handles extraction, normalization, deduplication, quality filtering, and PII redaction.</div></div>
+          <div class="row"><div class="row-label">Embed</div><div class="copy"><code>snowflake-arctic-embed2:l</code> is the live embedding baseline for the current local-first posture.</div></div>
+          <div class="row"><div class="row-label">Infer</div><div class="copy"><code>Nemotron 3 Nano 30B-A3B</code> runs locally through <code>Ollama</code> on the <code>RTX 5090</code>.</div></div>
+          <div class="row"><div class="row-label">Verify</div><div class="copy"><code>CAAi Trust Layer</code> screens prompts, validates grounding, checks citations, and emits verdicts.</div></div>
+          <div class="row"><div class="row-label">Export</div><div class="copy">Requests, responses, verdicts, and evidence can be reviewed or exported for audit-friendly follow-up.</div></div>
+        </article>
+        <article class="table-card reveal">
+          <div class="meta">What To Say</div>
+          <ul class="bullet-list">
+            <li>Lead with functional equivalence and local execution discipline.</li>
+            <li>Describe NIM and cloud operator work as the next deployment phase.</li>
+            <li>Do not imply that cloud NIM is already deployed.</li>
+            <li>Do not position the product as generic AI divorced from operating outcomes.</li>
+          </ul>
+          <div class="meta-row" style="margin-top:18px">
+            <span class="status live">Current stack live</span>
+            <span class="status roadmap">Phase 3 cloud expansion later</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="enterprise">
+    <div class="frame">
+      <div>
+        <div class="label reveal">Catalyst Custom Models</div>
+        <h2 class="reveal">Command Center is the Scooter's wedge. Custom Models is the managed enterprise deployment path <em>behind it.</em></h2>
+      </div>
+      <div class="compare reveal">
+        <article class="card">
+          <div class="meta">CAAi Command Center</div>
+          <h3>What Scooter's sees first</h3>
+          <ul class="bullet-list">
+            <li>Retail operations command center for owners and managers</li>
+            <li>Daily priorities, alerts, briefings, and grounded store answers</li>
+            <li>Strongest edge-AI demonstration for the current pilot motion</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="meta">Catalyst Custom Models</div>
+          <h3>What scales the deployment</h3>
+          <ul class="bullet-list">
+            <li>Managed deployment model for enterprise clients</li>
+            <li>Retrieval plus workflow-specific controls in a buyer-appropriate boundary</li>
+            <li>Future LoRA and NIM story when domain specificity and scale justify it</li>
+          </ul>
+        </article>
+      </div>
+      <div class="grid-3 reveal">
+        <article class="card"><div class="meta">Now</div><h3>Managed deployment</h3><p>Sell the grounded system that already works: ingestion, retrieval, inference, and Trust Layer controls.</p></article>
+        <article class="card"><div class="meta">Later</div><h3>LoRA only when earned</h3><p>Fine-tuning remains real, but it is not the immediate first step for every customer or pilot.</p></article>
+        <article class="card"><div class="meta">Phase 3</div><h3>NIM and cloud scale</h3><p>Move into cloud production infrastructure only after the pilot proves operational value and control quality.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" id="pilot">
+    <div class="frame">
+      <div>
+        <div class="label reveal">Pilot Motion</div>
+        <h2 class="reveal">Pilot first. Proof second. Network expansion third. That is still the right <em>Scooter's motion.</em></h2>
+      </div>
+      <div class="grid-2">
+        <article class="table-card reveal">
+          <div class="meta">30 / 60 / 90 Day Motion</div>
+          <div class="row"><div class="row-label">30 Days</div><div class="copy">Connect the minimum live data sources, establish KPI baselines, and deploy the daily briefing and alert workflow first.</div></div>
+          <div class="row"><div class="row-label">60 Days</div><div class="copy">Measure change in labor cost variance, inventory waste, manager admin hours, sales per labor hour, and issue detection speed.</div></div>
+          <div class="row"><div class="row-label">90 Days</div><div class="copy">Turn results into a short case study and use operator proof to expand inside the franchise network.</div></div>
+        </article>
+        <article class="table-card reveal">
+          <div class="meta">Pilot KPIs</div>
+          <ul class="kpi-list">
+            <li>Labor cost variance</li>
+            <li>Inventory waste percentage</li>
+            <li>Manager administrative hours per week</li>
+            <li>Sales per labor hour</li>
+            <li>Speed of issue detection and response</li>
+          </ul>
+        </article>
+      </div>
+      <div class="cta reveal">
+        <div class="label">Next Step</div>
+        <h2>Launch the 3-store pilot, prove the operating lift, then expand with <em>evidence.</em></h2>
+        <p class="sub" style="margin-top:18px; max-width:800px">
+          The deck should sell a real operating system, not abstract AI. Keep the pitch on multi-store visibility,
+          daily manager briefings, grounded answers on real store data, and a clean managed-deployment path into
+          larger enterprise work when the proof exists.
+        </p>
+        <div class="actions" style="margin-top:28px">
+          <a class="btn-primary" href="mailto:sales@catalystappliedai.com" data-contact-intent="Request Scooter's Coffee pilot">Request Scooter's pilot</a>
+          <a class="btn-ghost" href="mailto:sales@catalystappliedai.com" data-contact-intent="Discuss Scooter's enterprise deployment">Discuss enterprise deployment</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="deck">
+  <div class="frame" style="min-height:auto">
+    <div class="footer-grid">
+      <div class="footer-copy">
+        <strong>Catalyst Applied AI, LLC.</strong> This deck is aligned to the March 14, 2026 NVIDIA full-stack strategy.
+        Current-state claims stay limited to the live local NVIDIA-backed stack, Trust Layer controls, and pilot-ready Command Center posture.
+      </div>
+      <div class="footer-copy">
+        <code>NIM LLM</code>, <code>NeMo Retriever NIM</code>, and production LoRA deployment remain Phase 3 roadmap items.
+        Public claims should stay precise and avoid implying completed certification or endorsement.
+      </div>
+      <ul class="footer-links">
+        <li><a href="mailto:sales@catalystappliedai.com" data-contact-intent="Contact sales from Scooter's Coffee deck">Contact</a></li>
+        <li><a href="./custom-models.html">Custom Models</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script src="./contact-form.js"></script>
+<script>
+window.initCatalystContactForm({
+  endpoint: "/api/contact",
+  salesEmail: "sales@catalystappliedai.com",
+  product: "CAAi Command Center",
+  defaultIntent: "Request Scooter's Coffee pilot",
+  defaultMessage: "Tell us which stores, data systems, and operating KPIs you want to evaluate in the pilot.",
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) entry.target.classList.add("visible");
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll(".reveal").forEach((node) => observer.observe(node));
+</script>
+</body>
+</html>

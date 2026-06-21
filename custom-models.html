@@ -1,0 +1,721 @@
+<!--
+  ============================================================================
+  CANONICAL LANDING PAGE — DO NOT REWRITE
+  ============================================================================
+  This is the approved production landing page for Catalyst Custom Models.
+  Design: DM Serif Display + Outfit, blue accent (#2563eb), GPT-OSS-20B stack.
+  Deployed to: https://custom-models.catalystappliedai.com
+
+  DO NOT replace this file with a different design, layout, or copy.
+  If updates are needed, make targeted edits — not a full rewrite.
+  ============================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalyst Custom Models — Fine-Tuned AI for Your Domain</title>
+<meta name="description" content="Catalyst fine-tunes GPT-OSS-20B on your domain data and hosts the resulting model as a managed service. LoRA adapters, RAG pipelines, CAAi Trust Layer controls, and multimodal queries — built on NVIDIA GPU infrastructure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0a0c10; --ink-mid: #111520; --ink-light: #1a1f2e;
+  --steel: #232a3b; --mist: #8892a4; --fog: #c4cad6; --white: #f0f2f6;
+  --accent: #2563eb; --accent-glow: rgba(37,99,235,0.18); --accent-bright: #3b82f6;
+  --gold: #e8a030; --danger: #ef4444; --success: #22c55e; --amber: #f59e0b;
+  --border: rgba(255,255,255,0.07); --border-active: rgba(37,99,235,0.4);
+  --sans: 'Outfit', sans-serif; --serif: 'DM Serif Display', serif; --mono: 'IBM Plex Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--ink); color: var(--white); overflow-x: hidden; line-height: 1.6; }
+body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"); opacity: 0.028; pointer-events: none; z-index: 9999; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 64px; background: rgba(10,12,16,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+.nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.nav-logo { width: 32px; height: 32px; background: var(--accent); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); display: flex; align-items: center; justify-content: center; position: relative; }
+.nav-logo::after { content: ''; position: absolute; inset: 3px; background: var(--ink); clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+.nav-wordmark { font-family: var(--sans); font-weight: 600; font-size: 15px; color: var(--white); letter-spacing: 0.02em; }
+.nav-wordmark span { color: var(--accent-bright); }
+.nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+.nav-links a { font-size: 13px; font-weight: 500; color: var(--mist); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-cta { background: var(--accent); color: var(--white) !important; padding: 8px 20px; border-radius: 4px; font-size: 13px !important; font-weight: 600 !important; transition: background 0.2s !important; }
+.nav-cta:hover { background: var(--accent-bright) !important; }
+
+.hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 120px 48px 80px; position: relative; overflow: hidden; }
+.hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 30%, transparent 100%); }
+.hero-glow { position: absolute; top: -200px; left: 50%; transform: translateX(-50%); width: 900px; height: 600px; background: radial-gradient(ellipse at center, rgba(37,99,235,0.12) 0%, transparent 70%); pointer-events: none; }
+.hero-glow-2 { position: absolute; bottom: -100px; right: -200px; width: 600px; height: 600px; background: radial-gradient(ellipse at center, rgba(118,185,0,0.06) 0%, transparent 70%); pointer-events: none; }
+.hero-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-bright); margin-bottom: 24px; display: flex; align-items: center; gap: 12px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.1s; }
+.hero-eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--accent-bright); }
+.hero-headline { font-family: var(--serif); font-size: clamp(52px, 7vw, 96px); line-height: 1.04; letter-spacing: -0.02em; max-width: 900px; margin-bottom: 32px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s; }
+.hero-headline em { font-style: italic; color: var(--accent-bright); }
+.hero-sub { font-size: 18px; font-weight: 300; color: var(--mist); max-width: 600px; line-height: 1.7; margin-bottom: 48px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.3s; }
+.hero-actions { display: flex; align-items: center; gap: 16px; opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s; }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: var(--white); font-family: var(--sans); font-weight: 600; font-size: 14px; padding: 14px 28px; border-radius: 4px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; }
+.btn-primary:hover { background: var(--accent-bright); transform: translateY(-1px); box-shadow: 0 8px 32px rgba(37,99,235,0.35); }
+.btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--fog); font-family: var(--sans); font-weight: 500; font-size: 14px; padding: 14px 24px; border-radius: 4px; text-decoration: none; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; }
+.btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: var(--white); background: rgba(255,255,255,0.04); }
+.hero-stats { display: flex; gap: 48px; margin-top: 80px; padding-top: 48px; border-top: 1px solid var(--border); opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s; }
+.stat-value { font-family: var(--serif); font-size: 36px; line-height: 1; color: var(--white); margin-bottom: 6px; }
+.stat-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mist); }
+
+.ticker-wrap { background: var(--ink-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 12px 0; overflow: hidden; white-space: nowrap; opacity: 0; animation: fadeIn 0.8s ease forwards 0.8s; }
+.ticker-track { display: inline-flex; gap: 0; animation: ticker 32s linear infinite; }
+.ticker-item { display: inline-flex; align-items: center; gap: 12px; padding: 0 40px; font-family: var(--mono); font-size: 12px; color: var(--mist); }
+.ticker-item strong { color: var(--white); font-weight: 500; }
+.ticker-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse-dot 2s ease infinite; }
+.ticker-dot.amber { background: var(--amber); }
+.ticker-dot.blue { background: var(--accent-bright); }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.7); } }
+
+section { padding: 120px 48px; position: relative; }
+.section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-bright); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+.section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent-bright); }
+.section-headline { font-family: var(--serif); font-size: clamp(36px, 4vw, 56px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; max-width: 700px; }
+.section-body { font-size: 16px; color: var(--mist); max-width: 600px; line-height: 1.8; }
+
+.preview-section { padding: 0 48px 120px; position: relative; }
+.preview-container { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: var(--ink-mid); box-shadow: 0 0 0 1px rgba(37,99,235,0.1), 0 40px 120px rgba(0,0,0,0.6), 0 0 80px rgba(37,99,235,0.08); }
+.preview-bar { background: var(--steel); padding: 12px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+.preview-dots { display: flex; gap: 6px; }
+.preview-dot { width: 10px; height: 10px; border-radius: 50%; }
+.preview-dot:nth-child(1) { background: #ef4444; }
+.preview-dot:nth-child(2) { background: #f59e0b; }
+.preview-dot:nth-child(3) { background: #22c55e; }
+.preview-url { flex: 1; background: var(--ink-light); border: 1px solid var(--border); border-radius: 4px; padding: 5px 14px; font-family: var(--mono); font-size: 11px; color: var(--mist); text-align: center; }
+.preview-inner { padding: 28px; min-height: 460px; }
+.mini-dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.mini-title { font-family: var(--serif); font-size: 20px; color: var(--white); }
+.mini-badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--success); background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); padding: 4px 10px; border-radius: 2px; display: flex; align-items: center; gap: 6px; }
+.mini-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--success); animation: pulse-dot 2s ease infinite; }
+.mini-kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.mini-kpi { background: var(--ink-light); border: 1px solid var(--border); border-radius: 6px; padding: 16px; transition: border-color 0.2s; }
+.mini-kpi:hover { border-color: var(--border-active); }
+.mini-kpi-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mist); margin-bottom: 8px; }
+.mini-kpi-value { font-family: var(--serif); font-size: 26px; line-height: 1; margin-bottom: 6px; }
+.mini-kpi-delta { font-family: var(--mono); font-size: 10px; }
+.delta-up { color: var(--success); }
+.delta-warn { color: var(--amber); }
+
+.mini-content-row { display: grid; grid-template-columns: 1fr 340px; gap: 16px; }
+.mini-ai-panel { background: var(--ink-light); border: 1px solid var(--border-active); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.mini-ai-header { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-bright); display: flex; align-items: center; gap: 8px; }
+.mini-ai-header::before { content: '⬡'; font-size: 12px; }
+.mini-alert { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-left: 3px solid var(--accent); border-radius: 3px; padding: 10px 12px; }
+.mini-alert.warn { background: rgba(245,158,11,0.06); border-color: rgba(245,158,11,0.15); border-left-color: var(--amber); }
+.mini-alert.ok { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.15); border-left-color: var(--success); }
+.mini-alert-text { font-size: 11px; color: var(--fog); line-height: 1.5; }
+.mini-alert-text strong { color: var(--white); }
+
+.mini-sources { background: var(--ink-light); border: 1px solid var(--border); border-radius: 6px; padding: 16px; }
+.mini-source-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mist); margin-bottom: 16px; }
+.mini-source-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; color: var(--fog); }
+.mini-source-item:last-child { border-bottom: none; }
+.mini-source-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.mini-source-score { font-family: var(--mono); font-size: 10px; margin-left: auto; }
+
+.capabilities { background: var(--ink-mid); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-top: 72px; }
+.cap-card { background: var(--ink-mid); padding: 48px 40px; position: relative; overflow: hidden; transition: background 0.3s; }
+.cap-card:hover { background: var(--ink-light); }
+.cap-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+.cap-card:hover::before { transform: scaleX(1); }
+.cap-number { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--accent-bright); margin-bottom: 24px; opacity: 0.6; }
+.cap-icon { width: 44px; height: 44px; margin-bottom: 20px; color: var(--white); }
+.cap-title { font-family: var(--serif); font-size: 24px; margin-bottom: 16px; line-height: 1.2; }
+.cap-desc { font-size: 14px; color: var(--mist); line-height: 1.8; }
+
+.how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 80px; }
+.step-list { display: flex; flex-direction: column; gap: 0; }
+.step { display: flex; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--border); transition: all 0.2s; cursor: default; }
+.step:first-child { padding-top: 0; }
+.step:last-child { border-bottom: none; }
+.step:hover .step-num { background: var(--accent); color: var(--white); }
+.step-num { flex-shrink: 0; width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--mist); transition: all 0.2s; }
+.step-title { font-weight: 600; font-size: 15px; margin-bottom: 6px; color: var(--white); }
+.step-desc { font-size: 14px; color: var(--mist); line-height: 1.7; }
+
+.arch-panel { background: var(--ink-light); border: 1px solid var(--border); border-radius: 8px; padding: 32px; font-family: var(--mono); font-size: 12px; line-height: 2; color: var(--mist); }
+.arch-layer { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 4px; margin-bottom: 4px; transition: background 0.2s; }
+.arch-layer:hover { background: rgba(255,255,255,0.03); }
+.arch-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.arch-label { color: var(--fog); font-weight: 500; flex: 1; }
+.arch-tag { font-size: 10px; color: var(--accent-bright); background: var(--accent-glow); padding: 2px 8px; border-radius: 2px; }
+.arch-connector { width: 1px; height: 16px; background: var(--border); margin: 0 0 4px 19px; }
+
+.proof-section { background: var(--ink); }
+.proof-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 72px; }
+.proof-card { background: var(--ink-light); border: 1px solid var(--border); border-radius: 8px; padding: 40px; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+.proof-card:hover { border-color: rgba(37,99,235,0.25); transform: translateY(-2px); }
+.proof-card.featured { border-color: rgba(37,99,235,0.3); background: linear-gradient(135deg, rgba(37,99,235,0.06), var(--ink-light)); }
+.proof-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-bright); margin-bottom: 16px; }
+.proof-metric { font-family: var(--serif); font-size: 52px; line-height: 1; margin-bottom: 12px; }
+.proof-metric-label { font-size: 15px; color: var(--fog); font-weight: 500; margin-bottom: 16px; }
+.proof-desc { font-size: 13px; color: var(--mist); line-height: 1.7; }
+
+.pricing-section { background: var(--ink-mid); border-top: 1px solid var(--border); }
+.pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 72px; max-width: 860px; }
+.price-card { background: var(--ink-light); border: 1px solid var(--border); border-radius: 8px; padding: 40px; position: relative; transition: all 0.3s; }
+.price-card:hover { border-color: rgba(37,99,235,0.3); transform: translateY(-2px); }
+.price-card.featured { border-color: var(--accent); background: linear-gradient(160deg, rgba(37,99,235,0.08), var(--ink-light)); }
+.price-card.featured::before { content: 'LAUNCH PARTNER'; position: absolute; top: -1px; right: 24px; background: var(--accent); color: var(--white); font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; padding: 4px 12px; border-radius: 0 0 4px 4px; }
+.price-tier { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mist); margin-bottom: 12px; }
+.price-amount { font-family: var(--serif); font-size: 48px; line-height: 1; margin-bottom: 4px; }
+.price-period { font-size: 13px; color: var(--mist); margin-bottom: 32px; }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+.price-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--fog); line-height: 1.5; }
+.price-features li::before { content: '→'; color: var(--accent-bright); font-family: var(--mono); flex-shrink: 0; margin-top: 1px; }
+
+.cta-section { padding: 160px 48px; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(37,99,235,0.08) 0%, transparent 70%); }
+.cta-headline { font-family: var(--serif); font-size: clamp(40px, 5vw, 72px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px; position: relative; }
+.cta-sub { font-size: 17px; color: var(--mist); max-width: 480px; margin: 0 auto 48px; line-height: 1.7; position: relative; }
+.cta-actions { display: flex; justify-content: center; gap: 16px; position: relative; }
+
+footer { background: var(--ink-mid); border-top: 1px solid var(--border); padding: 48px; display: flex; align-items: center; justify-content: space-between; }
+.footer-brand { font-family: var(--mono); font-size: 11px; color: var(--mist); letter-spacing: 0.08em; }
+.footer-brand strong { color: var(--white); }
+.footer-links { display: flex; gap: 32px; list-style: none; }
+.footer-links a { font-size: 12px; color: var(--mist); text-decoration: none; font-family: var(--mono); letter-spacing: 0.05em; transition: color 0.2s; }
+.footer-links a:hover { color: var(--white); }
+.footer-llama { font-family: var(--mono); font-size: 10px; color: var(--mist); letter-spacing: 0.1em; opacity: 0.5; }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+svg { display: block; }
+
+/* CHAT UI */
+.chat-section { background: var(--ink); padding: 120px 48px; position: relative; }
+.chat-container { max-width: 860px; margin: 48px auto 0; background: var(--ink-mid); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 40px 120px rgba(0,0,0,0.5), 0 0 0 1px rgba(37,99,235,0.1); display: flex; flex-direction: column; height: 600px; position: relative; z-index: 10; }
+.chat-history { flex: 1; overflow-y: auto; padding: 40px; display: flex; flex-direction: column; gap: 32px; scroll-behavior: smooth; }
+.chat-history::-webkit-scrollbar { width: 6px; }
+.chat-history::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+.chat-message { display: flex; gap: 20px; max-width: 85%; opacity: 0; animation: fadeUp 0.4s ease forwards; }
+.user-message { align-self: flex-end; flex-direction: row-reverse; }
+.message-avatar { width: 36px; height: 36px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--ink-light); border: 1px solid var(--border); color: var(--mist); }
+.ai-message .message-avatar { background: var(--accent); border-color: var(--accent-bright); color: var(--white); box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+.message-content { background: var(--ink-light); border: 1px solid var(--border); padding: 18px 24px; border-radius: 8px; font-size: 15px; color: var(--fog); line-height: 1.6; position: relative; }
+.user-message .message-content { background: var(--steel); border-color: rgba(255,255,255,0.1); color: var(--white); }
+.message-content p { margin-bottom: 12px; }
+.message-content p:last-child { margin-bottom: 0; }
+.chat-input-area { padding: 24px 40px; background: var(--ink); border-top: 1px solid var(--border); }
+#chatForm { display: flex; gap: 16px; position: relative; }
+#chatInput { flex: 1; background: var(--ink-light); border: 1px solid var(--border); border-radius: 6px; padding: 0 24px; color: var(--white); font-family: var(--sans); font-size: 15px; height: 56px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+#chatInput:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
+#chatInput::placeholder { color: var(--mist); opacity: 0.5; }
+.chat-submit { width: 56px; height: 56px; background: var(--accent); color: var(--white); border: none; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.chat-submit:hover:not(:disabled) { background: var(--accent-bright); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(37,99,235,0.3); }
+.chat-submit:disabled { background: var(--ink-light); color: var(--mist); border: 1px solid var(--border); cursor: not-allowed; }
+
+/* AI Metadata Styling */
+.ai-meta { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); font-family: var(--mono); font-size: 11px; display: flex; flex-direction: column; gap: 12px; }
+.verdict-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 4px; border: 1px solid; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; width: fit-content; }
+.verdict-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+.verdict-GREEN { color: var(--success); background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); }
+.verdict-GREEN::before { background: var(--success); box-shadow: 0 0 8px var(--success); }
+.verdict-AMBER { color: var(--amber); background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); }
+.verdict-AMBER::before { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
+.verdict-RED { color: var(--danger); background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
+.verdict-RED::before { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+.meta-sources { color: var(--mist); }
+.source-title { font-weight: 600; color: var(--fog); margin-bottom: 6px; letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; }
+.source-item { display: flex; align-items: flex-start; gap: 8px; margin-top: 6px; line-height: 1.4; }
+.source-item::before { content: '→'; color: var(--accent-bright); margin-top: 1px; }
+
+/* Loading State */
+.loading-dots { display: inline-block; width: 24px; text-align: left; }
+.loading-dots::after { content: '.'; animation: dots 1.5s steps(4, end) infinite; }
+@keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60% { content: '...'; } 80%, 100% { content: ''; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo"></div>
+    <span class="nav-wordmark">Catalyst <span>Custom Models</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#capabilities">Capabilities</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="mailto:hello@catalystappliedai.com" class="nav-cta">Request Access →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-eyebrow">Catalyst Applied AI — Custom Models · GPT-OSS-20B on NVIDIA RTX · NVIDIA Inception</div>
+  <h1 class="hero-headline">Your model. Your data.<br>Our <em>infrastructure.</em></h1>
+  <p class="hero-sub">Catalyst fine-tunes GPT-OSS-20B on your domain data with LoRA adapters, then hosts the resulting model as a managed service — with RAG pipelines, CAAi Trust Layer controls, and multimodal support built in. Developed on NVIDIA RTX 5090, with a production roadmap targeting NVIDIA NeMo, TensorRT-LLM, and NIM.</p>
+  <div class="hero-actions">
+    <a href="mailto:hello@catalystappliedai.com" class="btn-primary">
+      <span>Schedule a Demo</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="#capabilities" class="btn-ghost">See Capabilities</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <div class="stat-value">20<em style="font-size:20px;color:var(--mist)">B</em></div>
+      <div class="stat-label">Active Parameters</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">$0</div>
+      <div class="stat-label">Client Hardware</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">14<em style="font-size:20px;color:var(--mist)">day</em></div>
+      <div class="stat-label">Onboarding</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">99.9<em style="font-size:20px;color:var(--mist)">%</em></div>
+      <div class="stat-label">Uptime SLA</div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>GPT-OSS-20B</strong> Serving on NVIDIA RTX 5090</span>
+    <span class="ticker-item"><span class="ticker-dot blue"></span> <strong>vLLM</strong> MXFP4 + FP8 KV cache active</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>RAG Pipeline</strong> 128 documents indexed in ChromaDB</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span> <strong>LoRA Adapters</strong> Domain fine-tuning pipeline ready</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>CAAi Trust Layer</strong> SafeGuard guardrails active</span>
+    <span class="ticker-item"><span class="ticker-dot blue"></span> <strong>NVIDIA Inception</strong> Member · Production roadmap active</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>Multimodal</strong> Image upload for visual queries</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>Data Flywheel</strong> Continuous model improvement cycle</span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>GPT-OSS-20B</strong> Serving on NVIDIA RTX 5090</span>
+    <span class="ticker-item"><span class="ticker-dot blue"></span> <strong>vLLM</strong> MXFP4 + FP8 KV cache active</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>RAG Pipeline</strong> 128 documents indexed in ChromaDB</span>
+    <span class="ticker-item"><span class="ticker-dot amber"></span> <strong>LoRA Adapters</strong> Domain fine-tuning pipeline ready</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>CAAi Trust Layer</strong> SafeGuard guardrails active</span>
+    <span class="ticker-item"><span class="ticker-dot blue"></span> <strong>NVIDIA Inception</strong> Member · Production roadmap active</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>Multimodal</strong> Image upload for visual queries</span>
+    <span class="ticker-item"><span class="ticker-dot"></span> <strong>Data Flywheel</strong> Continuous model improvement cycle</span>
+  </div>
+</div>
+
+<!-- DASHBOARD PREVIEW -->
+<section class="preview-section">
+  <div style="text-align:center; margin: 80px 0 40px;">
+    <div class="section-label" style="justify-content:center">Model Management Console</div>
+    <h2 class="section-headline" style="margin: 0 auto 16px; text-align:center">One interface for every model.</h2>
+    <p style="color:var(--mist); font-size:15px; max-width:520px; margin:0 auto; line-height:1.7;">Monitor inference, manage adapters, query your RAG pipeline, and review CAAi Trust Layer verdicts — all from a single pane of glass.</p>
+  </div>
+  <div class="preview-container reveal">
+    <div class="preview-bar">
+      <div class="preview-dots"><div class="preview-dot"></div><div class="preview-dot"></div><div class="preview-dot"></div></div>
+      <div class="preview-url">custom-models.catalystappliedai.com/console</div>
+    </div>
+    <div class="preview-inner">
+      <div class="mini-dash-header">
+        <div class="mini-title">Model Console — GPT-OSS-20B + LoRA</div>
+        <div class="mini-badge">Serving on NVIDIA RTX 5090</div>
+      </div>
+      <div class="mini-kpi-row">
+        <div class="mini-kpi">
+          <div class="mini-kpi-label">Inference Latency</div>
+          <div class="mini-kpi-value" style="color:var(--success)">142<span style="font-size:14px;color:var(--mist)">ms</span></div>
+          <div class="mini-kpi-delta delta-up">↓ vLLM MXFP4 optimized</div>
+        </div>
+        <div class="mini-kpi">
+          <div class="mini-kpi-label">Active Adapters</div>
+          <div class="mini-kpi-value">12</div>
+          <div class="mini-kpi-delta delta-up">LoRA ready · base serving</div>
+        </div>
+        <div class="mini-kpi">
+          <div class="mini-kpi-label">RAG Sources</div>
+          <div class="mini-kpi-value">4.2<span style="font-size:14px;color:var(--mist)">M</span></div>
+          <div class="mini-kpi-delta delta-up">Vectors indexed</div>
+        </div>
+        <div class="mini-kpi">
+          <div class="mini-kpi-label">Trust Layer</div>
+          <div class="mini-kpi-value" style="color:var(--success)">99.7<span style="font-size:14px;color:var(--mist)">%</span></div>
+          <div class="mini-kpi-delta delta-up">Trust Layer pass rate</div>
+        </div>
+      </div>
+      <div class="mini-content-row">
+        <div class="mini-sources">
+          <div class="mini-source-title">Recent RAG Queries — Grounded Responses</div>
+          <div class="mini-source-item"><div class="mini-source-dot" style="background:var(--success)"></div> "What is the return policy for enterprise licenses?" <span class="mini-source-score" style="color:var(--success)">0.94</span></div>
+          <div class="mini-source-item"><div class="mini-source-dot" style="background:var(--success)"></div> "Summarize Q4 compliance requirements" <span class="mini-source-score" style="color:var(--success)">0.91</span></div>
+          <div class="mini-source-item"><div class="mini-source-dot" style="background:var(--accent-bright)"></div> "Compare onboarding procedures across regions" <span class="mini-source-score" style="color:var(--accent-bright)">0.87</span></div>
+          <div class="mini-source-item"><div class="mini-source-dot" style="background:var(--success)"></div> "Show safety incident reports from last month" <span class="mini-source-score" style="color:var(--success)">0.93</span></div>
+          <div class="mini-source-item"><div class="mini-source-dot" style="background:var(--amber)"></div> "Revenue forecast for Southeast division" <span class="mini-source-score" style="color:var(--amber)">0.72</span></div>
+        </div>
+        <div class="mini-ai-panel">
+          <div class="mini-ai-header">NVIDIA GPU Infrastructure</div>
+          <div class="mini-alert ok">
+            <div class="mini-alert-text"><strong>RTX 5090</strong> — GPU healthy. vLLM serving with MXFP4 model loading and FP8 KV cache. Local inference active.</div>
+          </div>
+          <div class="mini-alert">
+            <div class="mini-alert-text"><strong>RAG Pipeline</strong> — ChromaDB vector store live. 128 knowledge documents ingested. Lexical + vector retrieval active.</div>
+          </div>
+          <div class="mini-alert ok">
+            <div class="mini-alert-text"><strong>CAAi Trust Layer</strong> — SafeGuard active. Prompt-injection screening, hallucination detection, source-grounding — GREEN/AMBER/RED verdicts.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE RAG DEMO -->
+<section class="chat-section" id="demo">
+  <div class="hero-glow-2" style="top:-100px; left:-200px; right:auto;"></div>
+  <div style="text-align:center; margin-bottom: 40px;">
+    <div class="section-label reveal" style="justify-content:center">Interactive Demo</div>
+    <h2 class="section-headline reveal" style="margin: 0 auto 16px; text-align:center">Query the model <em>live.</em></h2>
+    <p class="section-body reveal" style="margin:0 auto;">Test the RAG pipeline and CAAi Trust Layer directly against our documentation corpus. The model grounds its answers based on 128 available sources.</p>
+  </div>
+  
+  <div class="chat-container reveal">
+    <div class="chat-history" id="chatHistory">
+      <div class="chat-message ai-message">
+        <div class="message-avatar">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="message-content">
+          Hello. I am the Catalyst Custom Models demo running on an NVIDIA RTX 5090. Ask me a question about store operations, retail standards, or HR policies.
+        </div>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <form id="chatForm">
+        <input type="text" id="chatInput" placeholder="Ask a question (e.g., 'What is the employee discount policy?')" autocomplete="off" required>
+        <button type="submit" class="chat-submit" id="chatSubmit" aria-label="Send message">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="capabilities" id="capabilities">
+  <div class="section-label reveal">Core Capabilities</div>
+  <h2 class="section-headline reveal">Domain AI delivered as<br>a <em>managed service.</em></h2>
+  <div class="cap-grid reveal">
+    <div class="cap-card">
+      <div class="cap-number">01</div>
+      <svg class="cap-icon" viewBox="0 0 44 44" fill="none"><path d="M10 34V18l12-10 12 10v16" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><rect x="17" y="24" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M22 16v4M19 20h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="cap-title">LoRA Fine-Tuning</div>
+      <div class="cap-desc">Domain-specific LoRA adapters trained on your documents. The base GPT-OSS-20B model learns your terminology, policies, and patterns. Currently served on NVIDIA RTX 5090 via vLLM with MXFP4 quantization. Production roadmap targets NVIDIA NeMo PEFT workflows and TensorRT-LLM optimization.</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">02</div>
+      <svg class="cap-icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="14" stroke="currentColor" stroke-width="1.5"/><path d="M16 18h12M16 22h8M16 26h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="cap-title">RAG Pipelines</div>
+      <div class="cap-desc">Retrieval-augmented generation connected to your internal data sources. ChromaDB vector store with embeddings and lexical retrieval. Every response is grounded against your documents with source citations and relevance scoring. Live today with 128+ indexed documents.</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">03</div>
+      <svg class="cap-icon" viewBox="0 0 44 44" fill="none"><path d="M22 8l10 4v10c0 6-5 10-10 12-5-2-10-6-10-12V12l10-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M16 22l3 3 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="cap-title">CAAi Trust Layer</div>
+      <div class="cap-desc">CAAi Trust Layer controls configured for your compliance requirements. Prompt-injection screening, acceptable-use enforcement, hallucination detection, and source-grounding verification — with GREEN/AMBER/RED verdicts and audit-friendly traces. Aligned to NIST AI RMF 1.0.</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">04</div>
+      <svg class="cap-icon" viewBox="0 0 44 44" fill="none"><rect x="6" y="6" width="32" height="32" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M6 14h32M14 14v24" stroke="currentColor" stroke-width="1.5"/><path d="M20 22h12M20 28h8M20 34h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <div class="cap-title">Web Interface & API</div>
+      <div class="cap-desc">Clean web console for your team to query the model, review RAG-grounded responses, and monitor Trust Layer verdicts. Plus an OpenAI-compatible API endpoint via vLLM — so your engineers can integrate directly. Production roadmap targets NVIDIA NIM serving for scale.</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">05</div>
+      <svg class="cap-icon" viewBox="0 0 44 44" fill="none"><rect x="8" y="8" width="28" height="22" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 24h28M16 30h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="22" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/></svg>
+      <div class="cap-title">Multimodal Queries</div>
+      <div class="cap-desc">Upload images alongside text prompts for visual analysis. Document parsing, chart interpretation, photo-based assessment — processed on NVIDIA RTX 5090 GPU with multimodal model support.</div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">06</div>
+      <svg class="cap-icon" viewBox="0 0 44 44" fill="none"><path d="M10 32V20l12-8 12 8v12" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 36h36" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><rect x="18" y="26" width="8" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/><circle cx="22" cy="16" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+      <div class="cap-title">Managed Cloud Hosting</div>
+      <div class="cap-desc">Hosted and managed by Catalyst on NVIDIA GPU infrastructure. No client hardware required. Currently running on NVIDIA RTX 5090 workstation inference. Production roadmap targets cloud GPU deployment with dedicated compute allocation. You get the model; we handle the infrastructure.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="section-label reveal">NVIDIA-Accelerated Architecture</div>
+  <h2 class="section-headline reveal">Built on NVIDIA RTX.<br>Targeting <em>production scale.</em></h2>
+  <p class="section-body reveal" style="margin-bottom:0">Developed and serving on NVIDIA RTX 5090 with vLLM and MXFP4 quantization. The application layer is provider-agnostic — identical code runs on local RTX, vLLM, or NVIDIA NIM endpoints. Production roadmap targets NeMo fine-tuning, TensorRT-LLM optimization, and cloud GPU deployment.</p>
+  <div class="how-grid">
+    <div class="step-list reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <div class="step-title">Ingest your domain data</div>
+          <div class="step-desc">Documents, SOPs, knowledge bases, and operational data are ingested into a ChromaDB vector store using NVIDIA-optimized embeddings. Your data never leaves your designated environment.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <div class="step-title">Fine-tune with LoRA adapters</div>
+          <div class="step-desc">A LoRA adapter is trained on your domain corpus. The adapter captures your terminology, compliance language, and decision patterns without modifying the base GPT-OSS-20B weights. Production roadmap targets NVIDIA NeMo PEFT workflows for scalable fine-tuning.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <div class="step-title">Optimize for GPU inference</div>
+          <div class="step-desc">The model is served with MXFP4 quantization and FP8 KV cache via vLLM on NVIDIA RTX 5090. Production roadmap targets TensorRT-LLM compilation for maximum throughput on cloud GPU infrastructure.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <div class="step-title">Deploy with OpenAI-compatible API</div>
+          <div class="step-desc">The model serves through an OpenAI-compatible endpoint via vLLM. CAAi Trust Layer validates every output with SafeGuard guardrails. Production roadmap targets NVIDIA NIM serving for enterprise-scale deployment.</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch-panel reveal">
+      <div style="font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-bright); margin-bottom:24px;">NVIDIA-ACCELERATED STACK</div>
+      <div class="arch-layer"><div class="arch-dot" style="background:var(--accent-bright)"></div><span class="arch-label">Client Web Console + API</span><span class="arch-tag">React + FastAPI</span></div>
+      <div class="arch-connector"></div>
+      <div class="arch-layer"><div class="arch-dot" style="background:var(--success)"></div><span class="arch-label">CAAi Trust Layer</span><span class="arch-tag">Trust Layer Runtime</span></div>
+      <div class="arch-connector"></div>
+      <div class="arch-layer"><div class="arch-dot" style="background:var(--gold)"></div><span class="arch-label">GPT-OSS-20B + LoRA Adapter</span><span class="arch-tag">vLLM · MXFP4</span></div>
+      <div class="arch-connector"></div>
+      <div class="arch-layer"><div class="arch-dot" style="background:var(--amber)"></div><span class="arch-label">NVIDIA RTX 5090 GPU</span><span class="arch-tag">FP8 KV Cache</span></div>
+      <div class="arch-connector"></div>
+      <div class="arch-layer"><div class="arch-dot" style="background:var(--accent)"></div><span class="arch-label">RAG Pipeline + Vector Store</span><span class="arch-tag">ChromaDB + Embeddings</span></div>
+      <div class="arch-connector"></div>
+      <div class="arch-layer"><div class="arch-dot" style="background:var(--mist)"></div><span class="arch-label">Client Data Sources</span><span class="arch-tag">Documents · APIs · Warehouses</span></div>
+      <div style="margin-top:28px; padding-top:20px; border-top:1px solid var(--border); font-size:10px; color:var(--mist); line-height:1.8; letter-spacing:0.03em;">
+        Currently serving on NVIDIA RTX 5090 via vLLM with MXFP4 + FP8.<br>
+        Production roadmap: NVIDIA NeMo PEFT → TensorRT-LLM → NIM serving.<br>
+        NVIDIA Data Flywheel pattern for continuous model improvement.<br>
+        Catalyst Applied AI is a member of NVIDIA Inception.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF METRICS -->
+<section class="proof-section" id="results">
+  <div class="section-label reveal">Performance</div>
+  <h2 class="section-headline reveal">NVIDIA RTX 5090 performance.<br>Measured, not <em>estimated.</em></h2>
+  <p class="section-body reveal">Every deployment is benchmarked on NVIDIA GPU hardware. Latency, throughput, and accuracy are measured against your baseline before sign-off. Currently validated on RTX 5090 workstation inference.</p>
+  <div class="proof-grid reveal">
+    <div class="proof-card featured">
+      <div class="proof-label">Inference Latency</div>
+      <div class="proof-metric">&lt;200<em style="font-size:28px;color:var(--mist)">ms</em></div>
+      <div class="proof-metric-label">P95 end-to-end on NVIDIA RTX 5090</div>
+      <div class="proof-desc">vLLM serving with MXFP4 model loading and FP8 KV cache on NVIDIA RTX 5090. Measured under real workload with RAG retrieval and Trust Layer validation included in the round-trip.</div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-label">Throughput</div>
+      <div class="proof-metric">2,400<em style="font-size:28px;color:var(--mist)">t/s</em></div>
+      <div class="proof-metric-label">Tokens per second on RTX 5090</div>
+      <div class="proof-desc">vLLM serving with async scheduling and batched prefill on NVIDIA RTX 5090. GPU utilization monitored in real-time to ensure optimal resource allocation.</div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-label">Uptime</div>
+      <div class="proof-metric">99.9<em style="font-size:28px;color:var(--mist)">%</em></div>
+      <div class="proof-metric-label">Managed infrastructure target</div>
+      <div class="proof-desc">Catalyst-managed NVIDIA GPU infrastructure with continuous monitoring. No client infrastructure team needed — we handle everything from GPU to API endpoint. Production roadmap targets multi-GPU cloud deployment.</div>
+    </div>
+    <div class="proof-card">
+      <div class="proof-label">Onboarding</div>
+      <div class="proof-metric">14<em style="font-size:28px;color:var(--mist)">day</em></div>
+      <div class="proof-metric-label">Data ingestion to live model</div>
+      <div class="proof-desc">From document handoff to a RAG-connected, CAAi Trust Layer-protected model serving on NVIDIA GPU infrastructure. Knowledge base ingestion and vector indexing complete in minutes; LoRA fine-tuning in hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <div class="section-label reveal">Pricing</div>
+  <h2 class="section-headline reveal">Managed AI models.<br>No GPU to buy.</h2>
+  <p class="section-body reveal">Fixed monthly cost covers NVIDIA GPU hosting, model fine-tuning, optimization, Trust Layer guardrails, and support. No capital expenditure.</p>
+  <div class="pricing-grid reveal">
+    <div class="price-card featured">
+      <div class="price-tier">Launch Partner</div>
+      <div class="price-amount">$2,500</div>
+      <div class="price-period">/month · First 5 deployments</div>
+      <ul class="price-features">
+        <li>Fine-tuned GPT-OSS-20B with LoRA adapter</li>
+        <li>RAG pipeline connected to your data sources</li>
+        <li>CAAi Trust Layer with policy controls</li>
+        <li>Web console + OpenAI-compatible API</li>
+        <li>Multimodal query support (text + image)</li>
+        <li>NVIDIA GPU hosting with optimized inference</li>
+        <li>Performance monitoring + usage reporting</li>
+        <li>Launch partner lock-in pricing</li>
+      </ul>
+      <a href="mailto:hello@catalystappliedai.com" class="btn-primary" style="width:100%;justify-content:center">Apply for Launch</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Growth</div>
+      <div class="price-amount">$4,000</div>
+      <div class="price-period">/month per model deployment</div>
+      <ul class="price-features">
+        <li>Everything in Launch Partner</li>
+        <li>Multiple LoRA adapters per deployment</li>
+        <li>Priority fine-tuning queue</li>
+        <li>Dedicated GPU allocation</li>
+        <li>Custom Trust Layer policy configuration</li>
+        <li>Monthly model performance reviews</li>
+        <li>SLA-backed 99.9% uptime guarantee</li>
+      </ul>
+      <a href="mailto:hello@catalystappliedai.com" class="btn-ghost" style="width:100%;justify-content:center">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-headline reveal">Ready to deploy<br>your own <em>model?</em></h2>
+  <p class="cta-sub reveal">Schedule a demo and we'll show you GPT-OSS-20B running your domain data on NVIDIA RTX 5090 — with RAG, guardrails, and multimodal support live. See the actual product, not a mockup.</p>
+  <div class="cta-actions reveal">
+    <a href="mailto:hello@catalystappliedai.com" class="btn-primary">
+      Schedule a Demo
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <a href="https://commandcenter.catalystappliedai.com" class="btn-ghost">See Command Center →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <strong>Catalyst Applied AI, LLC</strong> — Custom Models<br>
+    <span style="font-size:10px; opacity:0.5;">© 2026 · NVIDIA Inception member</span>
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://commandcenter.catalystappliedai.com">Command Center</a></li>
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Terms</a></li>
+    <li><a href="mailto:hello@catalystappliedai.com">Contact</a></li>
+  </ul>
+  <div class="footer-llama">Powered by GPT-OSS-20B on NVIDIA RTX · Catalyst Applied AI © 2026</div>
+</footer>
+
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+reveals.forEach(el => observer.observe(el));
+
+// CHAT WIDGET LOGIC
+const chatForm = document.getElementById('chatForm');
+const chatInput = document.getElementById('chatInput');
+const chatHistory = document.getElementById('chatHistory');
+const chatSubmit = document.getElementById('chatSubmit');
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+  }[tag]));
+}
+
+function createMessageHTML(text, isUser, metaHTML = '') {
+  const avatar = isUser ? 
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' : 
+    '<svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  
+  // Convert markdown-style bold/newlines to HTML for simple rendering
+  const formattedText = escapeHTML(text).replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+
+  return `
+    <div class="chat-message ${isUser ? 'user-message' : 'ai-message'}">
+      <div class="message-avatar">${avatar}</div>
+      <div class="message-content">
+        ${formattedText}
+        ${metaHTML}
+      </div>
+    </div>
+  `;
+}
+
+if(chatForm) {
+  chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = chatInput.value.trim();
+    if (!query) return;
+
+    // Add user message
+    chatHistory.insertAdjacentHTML('beforeend', createMessageHTML(query, true));
+    chatInput.value = '';
+    chatSubmit.disabled = true;
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+    
+    // Add loading message
+    const loadingId = 'loading-' + Date.now();
+    const loadingHTML = `
+      <div class="chat-message ai-message" id="${loadingId}">
+        <div class="message-avatar">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="message-content" style="color:var(--mist); font-style:italic;">
+          Searching vector store and screening prompt<span class="loading-dots"></span>
+        </div>
+      </div>
+    `;
+    chatHistory.insertAdjacentHTML('beforeend', loadingHTML);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    try {
+      const res = await fetch('/api/custom-models/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+      });
+      
+      const loadingEl = document.getElementById(loadingId);
+      if (loadingEl) loadingEl.remove();
+      
+      if (!res.ok) throw new Error('API request failed');
+      
+      const data = await res.json();
+      
+      const metaHTML = `
+        <div class="ai-meta">
+          <div class="verdict-badge verdict-${data.verdict}">Trust Layer: ${data.verdict}</div>
+        </div>
+      `;
+
+      chatHistory.insertAdjacentHTML('beforeend', createMessageHTML(data.answer, false, metaHTML));
+      
+    } catch (error) {
+      const loadingEl = document.getElementById(loadingId);
+      if (loadingEl) loadingEl.remove();
+      chatHistory.insertAdjacentHTML('beforeend', createMessageHTML("Connection error. Ensure the local backend and RAG server are running.", false, 
+        `<div class="ai-meta"><div class="verdict-badge verdict-RED">Error</div></div>`
+      ));
+    } finally {
+      chatSubmit.disabled = false;
+      chatInput.focus();
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
+  });
+}
+</script>
+</body>
+</html>
+

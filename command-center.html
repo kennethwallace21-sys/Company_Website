@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAAi Command Center</title>
+    <meta
+        name="description"
+        content="Catalyst Applied AI command center for store operations, SOP search, and manager decision support."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        display: ['Instrument Serif', 'serif'],
+                        body: ['Manrope', 'sans-serif'],
+                    },
+                    colors: {
+                        ink: '#08111f',
+                        fog: '#8ca0b8',
+                        shell: '#0d1728',
+                        edge: 'rgba(159, 188, 214, 0.18)',
+                        accent: '#7ce9ff',
+                        warm: '#ffd483',
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        :root { color-scheme: dark; }
+        * { box-sizing: border-box; }
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(95, 199, 255, 0.12), transparent 28%),
+                radial-gradient(circle at top right, rgba(255, 209, 122, 0.09), transparent 24%),
+                linear-gradient(180deg, #07101b 0%, #04070d 100%);
+            color: #edf5ff;
+            font-family: "Manrope", sans-serif;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(180deg, rgba(255,255,255,0.42), transparent 80%);
+        }
+        .shell {
+            background: rgba(11, 20, 34, 0.82);
+            border: 1px solid rgba(159, 188, 214, 0.16);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+        }
+        .soft { color: #8ca0b8; }
+        .copy { white-space: pre-wrap; word-break: break-word; }
+        .scroll::-webkit-scrollbar { width: 10px; height: 10px; }
+        .scroll::-webkit-scrollbar-thumb { background: rgba(144, 170, 194, 0.24); border-radius: 999px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const BRAND_ASSETS = {
+            caaiMark: "/assets/caai-mark.svg",
+            nvidiaInceptionMember: "/assets/nvidia-inception-member-dark.jpg",
+        };
+
+        const AGENT_ICONS = {
+            "command-center": "bot-message-square",
+            "inventory-ops": "package-search",
+            "labor-staffing": "users-round",
+            "sales-marketing": "badge-dollar-sign",
+            "finance": "wallet-cards",
+            "hr-people": "graduation-cap",
+            "talent-acquisition": "user-plus",
+            "customer-service": "messages-square",
+        };
+
+        const WEATHER_ICONS = {
+            Clear: "sun",
+            Sunny: "sun",
+            Cloudy: "cloud",
+            "Partly Cloudy": "cloud-sun",
+            "Light Rain": "cloud-drizzle",
+            Rain: "cloud-rain",
+            Snow: "snowflake",
+            Fog: "cloud-fog",
+            Windy: "wind",
+            Thunderstorm: "cloud-lightning",
+        };
+
+        const DEFAULT_AGENTS = [
+            { agent_id: "command-center", display_name: "Command Center", description: "Cross-store briefing, fast routing, and manager summaries." },
+            { agent_id: "inventory-ops", display_name: "Inventory & COGS", description: "Waste, pars, pulls, order guide support, and spoilage control." },
+            { agent_id: "labor-staffing", display_name: "Labor & Staffing", description: "Coverage, callouts, overtime, smiles per half hour, and labor target control." },
+            { agent_id: "sales-marketing", display_name: "Sales & Marketing", description: "Upsell coaching, catering, loyalty, and morning rush revenue lifts." },
+            { agent_id: "finance", display_name: "Finance", description: "Margin leaks, revenue mix, and store-level financial tradeoffs." },
+            { agent_id: "hr-people", display_name: "HR & People", description: "Training, SOP reinforcement, policies, and team readiness." },
+            { agent_id: "talent-acquisition", display_name: "Talent Acquisition", description: "Hiring plans, recruiting help, and retention ideas." },
+            { agent_id: "customer-service", display_name: "Customer Experience", description: "Guest feedback, service recovery, and Tattle-informed actions." },
+        ];
+
+        const QUICK_PROMPTS = [
+            { label: "Morning briefing", text: "Give me the morning store briefing and the top 3 actions." },
+            { label: "Waste check", text: "What product waste is costing us money today?" },
+            { label: "Coverage risk", text: "Where are we exposed on staffing today?" },
+            { label: "Upsell plan", text: "What should I coach the team to upsell this morning?" },
+        ];
+
+        const FAQ_CATEGORIES = [
+            {
+                title: "Food pull and ordering",
+                prompts: [
+                    "How should I use the weekly suggested order guide?",
+                    "What does the food pull sheet tell a shift lead to prepare?",
+                    "Which products should I watch for waste or pull mistakes?",
+                ],
+            },
+            {
+                title: "Drive-thru and speed",
+                prompts: [
+                    "What should a manager watch when weather slows drive-thru traffic?",
+                    "How do we staff for peak traffic without blowing labor?",
+                    "What does smiles per half hour mean for staffing decisions?",
+                ],
+            },
+            {
+                title: "Training and SOPs",
+                prompts: [
+                    "Show me the SOP for new scanning and loyalty steps.",
+                    "What should baristas know about upsell competitions?",
+                    "What operating docs should I use for technology troubleshooting?",
+                ],
+            },
+            {
+                title: "Guest experience",
+                prompts: [
+                    "How should a manager use Tattle feedback in daily coaching?",
+                    "What is the service recovery play for a remake complaint?",
+                    "How do we turn guest feedback into better store execution?",
+                ],
+            },
+        ];
+
+        const STORE_OPTIONS = [
+            { value: 4, label: "Store 104" },
+            { value: 1, label: "Store 101" },
+            { value: 5, label: "Store 105" },
+            { value: 7, label: "Store 107" },
+        ];
+
+        const verdictTone = {
+            GREEN: "border-emerald-400/20 bg-emerald-500/10 text-emerald-100",
+            AMBER: "border-amber-300/20 bg-amber-500/10 text-amber-100",
+            RED: "border-rose-400/20 bg-rose-500/10 text-rose-100",
+        };
+
+        function useLucide(deps) {
+            React.useEffect(() => {
+                if (window.lucide) window.lucide.createIcons();
+            }, deps);
+        }
+
+        function classNames(...parts) {
+            return parts.filter(Boolean).join(" ");
+        }
+
+        function fmtCurrency(value) {
+            if (value == null || Number.isNaN(Number(value))) return "--";
+            return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(value);
+        }
+
+        function fmtPct(value) {
+            if (value == null || Number.isNaN(Number(value))) return "--";
+            return `${Number(value).toFixed(1)}%`;
+        }
+
+        function fmtTime(seconds) {
+            if (!seconds && seconds !== 0) return "--";
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${String(secs).padStart(2, "0")}`;
+        }
+
+        const BrandMark = () => (
+            <a href="https://www.catalystappliedai.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 no-underline text-inherit">
+                <img src={BRAND_ASSETS.caaiMark} alt="CAAi" className="h-12 w-12 rounded-2xl" />
+                <div>
+                    <div className="text-xl font-semibold tracking-tight">CAAi Command Center</div>
+                    <div className="text-sm soft">Catalyst Applied AI</div>
+                </div>
+            </a>
+        );
+
+        const Header = ({ activeView, onChange }) => {
+            const nav = [
+                { id: "command", label: "Command Center" },
+                { id: "search", label: "Enterprise Search" },
+                { id: "operations", label: "StoreCommand" },
+            ];
+            return (
+                <header className="shell sticky top-4 z-20 mx-auto mt-4 w-[min(1440px,calc(100%-24px))] rounded-[28px] px-4 py-4 md:px-6">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        <BrandMark />
+                        <div className="flex flex-wrap gap-2">
+                            {nav.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => onChange(item.id)}
+                                    className={classNames(
+                                        "rounded-full px-4 py-2 text-sm font-semibold transition",
+                                        activeView === item.id
+                                            ? "bg-accent text-slate-950"
+                                            : "border border-white/10 bg-slate-950/40 text-slate-300 hover:border-white/20 hover:text-white"
+                                    )}
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const AgentCard = ({ agent, selected, onSelect }) => (
+            <button
+                onClick={() => onSelect(agent)}
+                className={classNames(
+                    "shell w-full rounded-[26px] p-5 text-left transition hover:-translate-y-0.5",
+                    selected ? "border-cyan-300/45 bg-cyan-400/10" : "hover:border-white/20"
+                )}
+            >
+                <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-center gap-3">
+                        <div className={classNames(
+                            "flex h-11 w-11 items-center justify-center rounded-2xl border",
+                            selected ? "border-cyan-300/25 bg-cyan-300/15 text-cyan-100" : "border-white/10 bg-slate-950/40 text-slate-300"
+                        )}>
+                            <i data-lucide={AGENT_ICONS[agent.agent_id] || "sparkles"} className="h-5 w-5"></i>
+                        </div>
+                        <div>
+                            <div className="text-lg font-semibold text-white">{agent.display_name}</div>
+                            <div className="text-sm soft">{selected ? "Pinned for the next chat turn" : "Click to route the next answer here"}</div>
+                        </div>
+                    </div>
+                    <span className={classNames(
+                        "rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]",
+                        selected ? "border-cyan-300/25 text-cyan-100" : "border-white/10 text-slate-400"
+                    )}>
+                        {selected ? "Selected" : "Auto"}
+                    </span>
+                </div>
+                <div className="mt-4 text-sm leading-7 text-slate-200">{agent.description}</div>
+            </button>
+        );
+
+        const MessageBubble = ({ message }) => {
+            const isUser = message.role === "user";
+            return (
+                <div className={classNames("flex", isUser ? "justify-end" : "justify-start")}>
+                    <div className={classNames(
+                        "max-w-[92%] rounded-[28px] border px-5 py-4",
+                        isUser ? "border-cyan-300/20 bg-cyan-300/10 text-cyan-50" : "border-white/10 bg-slate-950/65 text-slate-100"
+                    )}>
+                        <div className="mb-3 flex items-center gap-3">
+                            <div className={classNames(
+                                "flex h-9 w-9 items-center justify-center rounded-2xl",
+                                isUser ? "bg-cyan-300/15 text-cyan-100" : "bg-slate-900 text-slate-200"
+                            )}>
+                                <i data-lucide={isUser ? "user-round" : "sparkles"} className="h-4 w-4"></i>
+                            </div>
+                            <div>
+                                <div className="text-sm font-semibold">{isUser ? "You" : "CAAi"}</div>
+                                {message.routedAgentName && !isUser && <div className="text-xs soft">Handled by {message.routedAgentName}</div>}
+                            </div>
+                            {message.verdict && (
+                                <span className={classNames("ml-auto rounded-full border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]", verdictTone[message.verdict] || verdictTone.GREEN)}>
+                                    {message.verdict}
+                                </span>
+                            )}
+                        </div>
+                        <div className="copy text-sm leading-7">{message.content}</div>
+                        {message.followUpNote && (
+                            <div className="mt-4 rounded-[20px] border border-amber-300/20 bg-amber-400/[0.08] px-4 py-3 text-sm leading-6 text-amber-50">
+                                {message.followUpNote}
+                            </div>
+                        )}
+                        {message.sources?.length > 0 && (
+                            <div className="mt-4 border-t border-white/10 pt-4">
+                                <div className="mb-2 text-xs font-semibold uppercase tracking-[0.18em] soft">Sources</div>
+                                <div className="grid gap-2">
+                                    {message.sources.map((source, index) => (
+                                        <div key={`${source.id || source.source || source.url}-${index}`} className="rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2 text-sm soft">
+                                            [{index + 1}] {source.text || source.title || source.id}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const RuntimeRail = ({ health, lastResponse, activeAgent }) => (
+            <aside className="shell rounded-[30px] p-5">
+                <div className="text-xs font-semibold uppercase tracking-[0.2em] soft">Runtime</div>
+                <div className="mt-4 grid gap-3">
+                    <div className="rounded-[22px] border border-white/10 bg-slate-950/40 p-4">
+                        <div className="text-xs soft">Service</div>
+                        <div className="mt-1 text-sm font-semibold text-white">{health?.service || "catalyst-web"}</div>
+                    </div>
+                    <div className="rounded-[22px] border border-white/10 bg-slate-950/40 p-4">
+                        <div className="text-xs soft">Response mode</div>
+                        <div className="mt-1 text-sm font-semibold text-white">{lastResponse?.model || "waiting"}</div>
+                    </div>
+                    <div className="rounded-[22px] border border-white/10 bg-slate-950/40 p-4">
+                        <div className="text-xs soft">Pinned agent</div>
+                        <div className="mt-1 text-sm font-semibold text-white">{activeAgent?.display_name || "Auto-route"}</div>
+                    </div>
+                </div>
+                <div className="mt-6 rounded-[24px] border border-cyan-300/15 bg-cyan-400/10 p-4">
+                    <div className="flex items-center gap-2 text-sm font-semibold text-cyan-100">
+                        <i data-lucide="shield-check" className="h-4 w-4"></i>
+                        CAAi Trust Layer
+                    </div>
+                    <div className="mt-2 text-sm leading-6 text-slate-200">
+                        Search answers stay source-backed. Command answers prefer deterministic store data first, then grounded KB context.
+                    </div>
+                </div>
+            </aside>
+        );
+
+        const CommandCenterView = ({ agents, health }) => {
+            const [input, setInput] = React.useState("");
+            const [pending, setPending] = React.useState(false);
+            const [selectedAgent, setSelectedAgent] = React.useState(() => agents.find((item) => item.agent_id === "command-center") || null);
+            const [lastResponse, setLastResponse] = React.useState(null);
+            const [messages, setMessages] = React.useState([
+                {
+                    role: "assistant",
+                    content: "Ask what your store needs today. I can brief the store, pull SOP guidance, or jump straight to inventory, staffing, finance, training, or guest experience.",
+                    routedAgentName: "Command Center",
+                },
+            ]);
+
+            React.useEffect(() => {
+                if (!selectedAgent) {
+                    setSelectedAgent(agents.find((item) => item.agent_id === "command-center") || agents[0] || null);
+                }
+            }, [agents, selectedAgent]);
+
+            useLucide([messages, lastResponse, selectedAgent, agents]);
+
+            async function submitPrompt(promptText) {
+                const trimmed = promptText.trim();
+                if (!trimmed || pending) return;
+
+                setMessages((current) => [...current, { role: "user", content: trimmed }]);
+                setInput("");
+                setPending(true);
+
+                try {
+                    const response = await fetch("/api/command-center", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            query: trimmed,
+                            agent_id: selectedAgent?.agent_id || null,
+                        }),
+                    });
+                    const payload = await response.json();
+                    if (!response.ok) throw new Error(payload.detail || "Command Center request failed.");
+
+                    const routedAgent = agents.find((agent) => agent.agent_id === payload.routed_agent);
+                    const assistant = {
+                        role: "assistant",
+                        content: payload.answer,
+                        routedAgentName: routedAgent?.display_name || payload.routed_agent,
+                    };
+                    setMessages((current) => [...current, assistant]);
+                    setLastResponse({ ...payload, routedAgentName: assistant.routedAgentName });
+                } catch (error) {
+                    setMessages((current) => [...current, {
+                        role: "assistant",
+                        content: "I could not complete that request.",
+                        routedAgentName: selectedAgent?.display_name || "Command Center",
+                    }]);
+                } finally {
+                    setPending(false);
+                }
+            }
+
+            const highlightedAgent = selectedAgent || agents[0] || null;
+
+            return (
+                <main className="mx-auto mt-6 w-[min(1440px,calc(100%-24px))]">
+                    <section className="grid gap-6 xl:grid-cols-[1.2fr,0.8fr]">
+                        <div className="shell rounded-[34px] p-6 md:p-8">
+                            <div className="text-xs font-semibold uppercase tracking-[0.24em] soft">Store operations command</div>
+                            <h1 className="mt-3 max-w-4xl text-5xl font-semibold leading-[1.02] text-white md:text-6xl">
+                                Ask what your store needs
+                                <span className="font-display italic text-warm"> right now.</span>
+                            </h1>
+                            <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-200">
+                                Fast answers for waste, staffing, SOPs, weather impact, drive-thru traffic, and daily execution. Click an agent to pin the next answer there, or leave it on auto-route.
+                            </p>
+                            <div className="mt-6 flex flex-wrap gap-3 text-sm">
+                                <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">Built for inventory efficiency</span>
+                                <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">Grounded in SOPs and docs</span>
+                                <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">Fast demo responses from store data</span>
+                            </div>
+                            <div className="mt-8 rounded-[28px] border border-white/10 bg-slate-950/45 p-5">
+                                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                                    <div>
+                                        <div className="text-sm font-semibold text-white">Pinned for the next answer</div>
+                                        <div className="mt-1 text-sm soft">{highlightedAgent?.display_name || "Command Center"} {highlightedAgent ? `- ${highlightedAgent.description}` : ""}</div>
+                                    </div>
+                                    <button
+                                        onClick={() => setSelectedAgent(agents.find((item) => item.agent_id === "command-center") || null)}
+                                        className="rounded-full border border-white/10 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-white/20"
+                                    >
+                                        Reset to auto-route
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <RuntimeRail health={health} lastResponse={lastResponse} activeAgent={selectedAgent} />
+                    </section>
+
+                    <section className="mt-6 grid gap-6 xl:grid-cols-[0.95fr,1.05fr]">
+                        <div className="space-y-6">
+                            <div className="grid gap-4 md:grid-cols-2">
+                                {agents.map((agent) => (
+                                    <AgentCard
+                                        key={agent.agent_id}
+                                        agent={agent}
+                                        selected={selectedAgent?.agent_id === agent.agent_id}
+                                        onSelect={(nextAgent) => {
+                                            setSelectedAgent(nextAgent);
+                                            const suggestion = QUICK_PROMPTS.find((item) => item.label.toLowerCase().includes("briefing"));
+                                            if (!input.trim() && suggestion && nextAgent.agent_id === "command-center") {
+                                                setInput(suggestion.text);
+                                            }
+                                        }}
+                                    />
+                                ))}
+                            </div>
+
+                            <div className="shell rounded-[30px] p-5">
+                                <div className="text-xs font-semibold uppercase tracking-[0.2em] soft">Suggested asks</div>
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {QUICK_PROMPTS.map((prompt) => (
+                                        <button
+                                            key={prompt.label}
+                                            onClick={() => submitPrompt(prompt.text)}
+                                            className="rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-slate-200 hover:border-white/20 hover:text-white"
+                                        >
+                                            {prompt.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="shell rounded-[34px] p-5 md:p-6">
+                            <div className="flex items-center justify-between gap-3">
+                                <div>
+                                    <div className="text-xs font-semibold uppercase tracking-[0.2em] soft">Conversation</div>
+                                    <div className="mt-2 text-3xl font-semibold text-white">Command Center Chat</div>
+                                </div>
+                                <div className="rounded-full border border-cyan-300/15 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100">
+                                    {selectedAgent?.display_name || "Auto-route"}
+                                </div>
+                            </div>
+
+                            <div className="scroll mt-5 flex h-[560px] flex-col gap-4 overflow-y-auto rounded-[26px] border border-white/10 bg-slate-950/45 p-4">
+                                {messages.map((message, index) => <MessageBubble key={index} message={message} />)}
+                                {pending && <div className="rounded-[24px] border border-white/10 bg-white/[0.03] px-4 py-3 text-sm soft">Working through the fastest grounded path.</div>}
+                            </div>
+
+                            <div className="mt-5 rounded-[28px] border border-white/10 bg-slate-950/45 p-4">
+                                <div className="mb-3 text-sm font-semibold text-white">Try a natural question</div>
+                                <textarea
+                                    rows="4"
+                                    value={input}
+                                    onChange={(event) => setInput(event.target.value)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "Enter" && !event.shiftKey) {
+                                            event.preventDefault();
+                                            submitPrompt(input);
+                                        }
+                                    }}
+                                    className="w-full resize-none rounded-[22px] border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500"
+                                    placeholder={`Ask ${selectedAgent?.display_name || "CAAi"} a plain-language store question...`}
+                                />
+                                <div className="mt-4 flex items-center justify-between gap-3">
+                                    <div className="text-xs leading-5 soft">Click an agent to pin the next reply there. Leave it on Command Center if you want automatic routing.</div>
+                                    <button
+                                        onClick={() => submitPrompt(input)}
+                                        disabled={pending || !input.trim()}
+                                        className="rounded-full bg-accent px-5 py-3 text-sm font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-45"
+                                    >
+                                        Send
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            );
+        };
+
+        const SearchView = () => {
+            const [input, setInput] = React.useState("");
+            const [pending, setPending] = React.useState(false);
+            const [messages, setMessages] = React.useState([
+                {
+                    role: "assistant",
+                    content: "Search the operating docs, SOPs, order guides, and training files. This view stays inside approved internal sources in a secure environment and will say so when a request needs the open web.",
+                    verdict: "GREEN",
+                },
+            ]);
+
+            useLucide([messages]);
+
+            async function handleSearch(promptText) {
+                const trimmed = promptText.trim();
+                if (!trimmed || pending) return;
+                setMessages((current) => [...current, { role: "user", content: trimmed }]);
+                setInput("");
+                setPending(true);
+                try {
+                    const response = await fetch("/api/chat", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ query: trimmed }),
+                    });
+                    const payload = await response.json();
+                    if (!response.ok) throw new Error(payload.detail || "Enterprise Search failed.");
+                    const followUpNote = payload.requires_follow_up
+                        ? payload.needs_open_web
+                            ? "This search environment cannot reach the open web, so requests that require live internet access are declined and logged for follow-up."
+                            : "This question could not be answered confidently from approved internal sources, so it was logged for follow-up."
+                        : null;
+                    setMessages((current) => [...current, {
+                        role: "assistant",
+                        content: payload.answer,
+                        verdict: payload.verdict,
+                        sources: payload.sources,
+                        followUpNote,
+                    }]);
+                } catch (error) {
+                    setMessages((current) => [...current, {
+                        role: "assistant",
+                        content: "Enterprise Search could not finish that request.",
+                        verdict: "RED",
+                    }]);
+                } finally {
+                    setPending(false);
+                }
+            }
+
+            return (
+                <main className="mx-auto mt-6 w-[min(1440px,calc(100%-24px))]">
+                    <section className="grid gap-6 xl:grid-cols-[0.9fr,1.1fr]">
+                        <div className="shell rounded-[34px] p-6 md:p-8">
+                            <div className="text-xs font-semibold uppercase tracking-[0.24em] soft">Enterprise search</div>
+                            <h2 className="mt-3 text-5xl font-semibold leading-tight text-white">Search the SOP stack, not the internet.</h2>
+                            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-200">
+                                This mode is tuned for source-backed answers from the anonymized operating documents. CAAi Trust Layer is always visible so the demo feels trustworthy, not hand-wavy.
+                            </p>
+                            <div className="mt-8 space-y-4">
+                                {FAQ_CATEGORIES.map((category) => (
+                                    <div key={category.title} className="rounded-[26px] border border-white/10 bg-slate-950/45 p-4">
+                                        <div className="text-sm font-semibold text-white">{category.title}</div>
+                                        <div className="mt-3 flex flex-wrap gap-2">
+                                            {category.prompts.map((prompt) => (
+                                                <button
+                                                    key={prompt}
+                                                    onClick={() => handleSearch(prompt)}
+                                                    className="rounded-full border border-white/10 px-3 py-2 text-sm soft hover:border-white/20 hover:text-white"
+                                                >
+                                                    {prompt}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="shell rounded-[34px] p-5 md:p-6">
+                            <div className="flex items-center justify-between gap-3">
+                                <div>
+                                    <div className="text-xs font-semibold uppercase tracking-[0.2em] soft">Source-backed answers</div>
+                                    <div className="mt-2 text-3xl font-semibold text-white">Enterprise Search</div>
+                                </div>
+                                <div className="rounded-full border border-cyan-300/15 bg-cyan-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100">
+                                    Trust Layer on
+                                </div>
+                            </div>
+                            <div className="scroll mt-5 flex h-[620px] flex-col gap-4 overflow-y-auto rounded-[26px] border border-white/10 bg-slate-950/45 p-4">
+                                {messages.map((message, index) => <MessageBubble key={index} message={message} />)}
+                                {pending && <div className="rounded-[22px] border border-white/10 bg-white/[0.03] px-4 py-3 text-sm soft">Reviewing approved internal sources in a secure environment.</div>}
+                            </div>
+                            <div className="mt-5 rounded-[28px] border border-white/10 bg-slate-950/45 p-4">
+                                <input
+                                    value={input}
+                                    onChange={(event) => setInput(event.target.value)}
+                                    onKeyDown={(event) => {
+                                        if (event.key === "Enter") {
+                                            event.preventDefault();
+                                            handleSearch(input);
+                                        }
+                                    }}
+                                    className="w-full rounded-[22px] border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500"
+                                    placeholder="Ask for an SOP, order guide answer, policy detail, or training summary..."
+                                />
+                                <div className="mt-4 flex items-center justify-between gap-3">
+                                    <div className="text-xs soft">Best for documentation, SOPs, and internal operating guidance. No live web access.</div>
+                                    <button
+                                        onClick={() => handleSearch(input)}
+                                        disabled={pending || !input.trim()}
+                                        className="rounded-full bg-accent px-5 py-3 text-sm font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-45"
+                                    >
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            );
+        };
+
+        const StoreCommandView = () => {
+            const [locationId, setLocationId] = React.useState(4);
+            const [data, setData] = React.useState(null);
+            const [pending, setPending] = React.useState(false);
+
+            useLucide([data, pending]);
+
+            React.useEffect(() => {
+                loadData(locationId);
+            }, []);
+
+            async function loadData(nextLocationId) {
+                setPending(true);
+                try {
+                    const response = await fetch(`/api/storecommand/${nextLocationId}`);
+                    const payload = await response.json();
+                    if (!response.ok) throw new Error(payload.detail || "StoreCommand request failed.");
+                    setData(payload);
+                    setLocationId(Number(nextLocationId));
+                } finally {
+                    setPending(false);
+                }
+            }
+
+            const weather = data?.weather || null;
+            const traffic = data?.traffic || null;
+            const driveThru = data?.drive_thru || null;
+            const weatherIcon = WEATHER_ICONS[weather?.condition] || "cloud";
+
+            return (
+                <main className="mx-auto mt-6 w-[min(1440px,calc(100%-24px))]">
+                    <section className="grid gap-6 xl:grid-cols-[1.05fr,0.95fr]">
+                        <div className="shell rounded-[34px] p-6 md:p-8">
+                            <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                                <div>
+                                    <div className="text-xs font-semibold uppercase tracking-[0.24em] soft">StoreCommand</div>
+                                    <h2 className="mt-3 text-5xl font-semibold leading-tight text-white">Manager view for the shift that is actually happening.</h2>
+                                    <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-200">
+                                        Weather, traffic, labor, speed, waste, and revenue in one place. Built for the next decision, not a quarterly report.
+                                    </p>
+                                </div>
+                                <div className="rounded-[24px] border border-white/10 bg-slate-950/45 p-4">
+                                    <div className="text-xs soft">Store</div>
+                                    <select
+                                        value={locationId}
+                                        onChange={(event) => loadData(event.target.value)}
+                                        className="mt-2 rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-sm text-white outline-none"
+                                    >
+                                        {STORE_OPTIONS.map((option) => (
+                                            <option key={option.value} value={option.value}>{option.label}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                                <div className="rounded-[26px] border border-white/10 bg-slate-950/45 p-5">
+                                    <div className="text-xs soft">Revenue</div>
+                                    <div className="mt-2 text-3xl font-semibold text-white">{fmtCurrency(data?.revenue)}</div>
+                                    <div className="mt-1 text-sm soft">{data?.transaction_count || "--"} transactions</div>
+                                </div>
+                                <div className="rounded-[26px] border border-white/10 bg-slate-950/45 p-5">
+                                    <div className="text-xs soft">Avg ticket</div>
+                                    <div className="mt-2 text-3xl font-semibold text-white">{fmtCurrency(data?.avg_ticket)}</div>
+                                    <div className="mt-1 text-sm soft">Labor {fmtPct(data?.labor_cost_pct)}</div>
+                                </div>
+                                <div className="rounded-[26px] border border-white/10 bg-slate-950/45 p-5">
+                                    <div className="flex items-center gap-2 text-xs soft">
+                                        <i data-lucide={weatherIcon} className="h-4 w-4"></i>
+                                        Weather
+                                    </div>
+                                    <div className="mt-2 text-3xl font-semibold text-white">{weather?.condition || "--"}</div>
+                                    <div className="mt-1 text-sm soft">{weather ? `${weather.temp_high_f}F / ${weather.temp_low_f}F` : "No weather feed"}</div>
+                                </div>
+                                <div className="rounded-[26px] border border-white/10 bg-slate-950/45 p-5">
+                                    <div className="text-xs soft">Drive-thru</div>
+                                    <div className="mt-2 text-3xl font-semibold text-white">{fmtTime(driveThru?.avg_window_time_sec)}</div>
+                                    <div className="mt-1 text-sm soft">{traffic?.peak_hour != null ? `Traffic peak ${traffic.peak_hour}:00` : "No traffic feed"}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="shell rounded-[34px] p-6">
+                            <div className="text-xs font-semibold uppercase tracking-[0.2em] soft">Manager brief</div>
+                            <div className="mt-3 text-3xl font-semibold text-white">{data?.location_name || "StoreCommand"}</div>
+                            <div className="mt-2 text-sm soft">{data?.date || "Loading latest store date"}</div>
+                            <div className="mt-5 rounded-[28px] border border-white/10 bg-slate-950/45 p-5">
+                                <div className="copy text-sm leading-7 text-slate-200">
+                                    {pending && !data ? "Pulling the latest store view." : data?.scout_briefing || "No briefing available."}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="mt-6 grid gap-6 xl:grid-cols-[0.9fr,1.1fr]">
+                        <div className="space-y-6">
+                            <div className="shell rounded-[30px] p-5">
+                                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                                    <i data-lucide="alert-triangle" className="h-4 w-4 text-amber-300"></i>
+                                    Staffing alerts
+                                </div>
+                                <div className="mt-4 space-y-3">
+                                    {(data?.staffing_alerts || []).length === 0 && <div className="text-sm soft">No open staffing alerts.</div>}
+                                    {(data?.staffing_alerts || []).map((alert, index) => (
+                                        <div key={index} className="rounded-[22px] border border-white/10 bg-slate-950/45 px-4 py-3 text-sm text-slate-200">
+                                            {alert.message}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="shell rounded-[30px] p-5">
+                                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                                    <i data-lucide="package-search" className="h-4 w-4 text-cyan-200"></i>
+                                    Inventory and waste
+                                </div>
+                                <div className="mt-4 space-y-3">
+                                    {(data?.product_insights || []).length === 0 && <div className="text-sm soft">No major product waste flags.</div>}
+                                    {(data?.product_insights || []).map((item, index) => (
+                                        <div key={index} className="rounded-[22px] border border-white/10 bg-slate-950/45 px-4 py-3">
+                                            <div className="flex items-center justify-between gap-3 text-sm">
+                                                <div className="font-semibold text-white">{item.product}</div>
+                                                <div className="text-rose-200">+{item.waste_pct}% over</div>
+                                            </div>
+                                            <div className="mt-1 text-sm soft">
+                                                {item.actual} {item.unit} used vs {item.expected} expected. Estimated impact {fmtCurrency(item.cost_impact)}.
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="shell rounded-[30px] p-5">
+                                <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                                    <i data-lucide="car" className="h-4 w-4 text-warm"></i>
+                                    Traffic and demand
+                                </div>
+                                <div className="mt-4 grid gap-4 md:grid-cols-2">
+                                    <div className="rounded-[24px] border border-white/10 bg-slate-950/45 p-4">
+                                        <div className="text-xs soft">Vehicles</div>
+                                        <div className="mt-2 text-3xl font-semibold text-white">{traffic?.total_vehicles?.toLocaleString() || "--"}</div>
+                                        <div className="mt-1 text-sm soft">{traffic?.peak_hour != null ? `Peak ${traffic.peak_hour}:00` : "No traffic feed"}</div>
+                                    </div>
+                                    <div className="rounded-[24px] border border-white/10 bg-slate-950/45 p-4">
+                                        <div className="text-xs soft">Slowest drive-thru hour</div>
+                                        <div className="mt-2 text-3xl font-semibold text-white">{driveThru?.slowest_hour != null ? `${driveThru.slowest_hour}:00` : "--"}</div>
+                                        <div className="mt-1 text-sm soft">{driveThru?.slowest_time_sec != null ? `${fmtTime(driveThru.slowest_time_sec)} avg` : "No speed feed"}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="shell rounded-[30px] p-5">
+                                <div className="text-sm font-semibold text-white">Critical inventory alerts</div>
+                                <div className="mt-4 overflow-hidden rounded-[22px] border border-white/10">
+                                    <table className="min-w-full text-left text-sm">
+                                        <thead className="bg-slate-950/75 text-slate-400">
+                                            <tr>
+                                                <th className="px-4 py-3 font-medium">SKU</th>
+                                                <th className="px-4 py-3 font-medium text-right">On hand</th>
+                                                <th className="px-4 py-3 font-medium text-right">Par</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-white/10 bg-slate-950/45 text-slate-200">
+                                            {(data?.inventory_alerts || []).length === 0 && (
+                                                <tr><td colSpan="3" className="px-4 py-4 text-center soft">No critical shortages.</td></tr>
+                                            )}
+                                            {(data?.inventory_alerts || []).map((item, index) => (
+                                                <tr key={index}>
+                                                    <td className="px-4 py-3">{item.sku}</td>
+                                                    <td className="px-4 py-3 text-right text-rose-200">{item.on_hand}</td>
+                                                    <td className="px-4 py-3 text-right soft">{item.par}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            );
+        };
+
+        const PreviewBanner = () => {
+            useLucide([]);
+            return (
+                <div className="mx-auto mt-6 w-[min(1440px,calc(100%-24px))]">
+                    <div className="shell rounded-[30px] border border-amber-300/20 bg-amber-400/[0.08] px-5 py-4 md:px-6">
+                        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                            <div className="flex items-start gap-3">
+                                <i data-lucide="flask-conical" className="mt-0.5 h-5 w-5 text-amber-200"></i>
+                                <div>
+                                    <div className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-100/80">Preview Release</div>
+                                    <div className="mt-1 text-sm leading-6 text-slate-100">
+                                        Command Center is in active development and is shown for demo, evaluation, and pilot planning. Some dashboards may use staged or synthetic data, and flows may change before general availability.
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="text-sm leading-6 text-slate-300 md:max-w-lg">
+                                Review outputs before operational, legal, financial, HR, medical, security-critical, or other high-impact decisions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Footer = () => {
+            useLucide([]);
+            return (
+                <footer className="mx-auto my-8 w-[min(1440px,calc(100%-24px))] space-y-4">
+                    <div className="shell rounded-[28px] px-6 py-6">
+                        <div className="text-xs font-semibold uppercase tracking-[0.2em] soft">Technology & Program Affiliations</div>
+                        <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+                            <div className="flex items-start gap-4">
+                                <img
+                                    src={BRAND_ASSETS.nvidiaInceptionMember}
+                                    alt="NVIDIA Inception member badge"
+                                    className="h-12 w-auto rounded-lg border border-white/10 bg-slate-950/70"
+                                />
+                                <div className="max-w-3xl">
+                                    <div className="text-sm font-semibold leading-6 text-white">Built by CAAi on NVIDIA-accelerated infrastructure and model tooling.</div>
+                                    <div className="mt-2 text-sm leading-6 soft">
+                                        Catalyst Applied AI is a member of NVIDIA Inception. Reference to NVIDIA Inception reflects program participation and does not imply endorsement by NVIDIA.
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3 rounded-[20px] border border-white/10 bg-slate-950/45 px-4 py-3 text-sm soft">
+                                <i data-lucide="shield-check" className="mt-0.5 h-4 w-4 text-cyan-200"></i>
+                                AI output should still be reviewed before legal, financial, HR, medical, or security-critical decisions.
+                            </div>
+                        </div>
+                    </div>
+                    <div className="shell rounded-[28px] px-6 py-5">
+                        <div className="grid gap-4 md:grid-cols-[1.05fr,0.95fr]">
+                            <div className="text-sm leading-6 soft">
+                                Preview release. Command Center is in active development and shown for demo, evaluation, and pilot planning. Behaviors, dashboards, routing, and store views may change before general availability.
+                            </div>
+                            <div className="text-sm leading-6 soft">
+                                NVIDIA and the NVIDIA logo are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries. Other company and product names may be trademarks of the respective companies with which they are associated.
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            );
+        };
+
+        const App = () => {
+            const [activeView, setActiveView] = React.useState("command");
+            const [agents, setAgents] = React.useState(DEFAULT_AGENTS);
+            const [health, setHealth] = React.useState(null);
+
+            useLucide([activeView, agents, health]);
+
+            React.useEffect(() => {
+                async function hydrate() {
+                    try {
+                        const [agentResponse, healthResponse] = await Promise.all([
+                            fetch("/api/agents"),
+                            fetch("/healthz"),
+                        ]);
+                        if (agentResponse.ok) setAgents(await agentResponse.json());
+                        if (healthResponse.ok) setHealth(await healthResponse.json());
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+                hydrate();
+            }, []);
+
+            return (
+                <div className="pb-10">
+                    <Header activeView={activeView} onChange={setActiveView} />
+                    <PreviewBanner />
+                    {activeView === "command" && <CommandCenterView agents={agents} health={health} />}
+                    {activeView === "search" && <SearchView />}
+                    {activeView === "operations" && <StoreCommandView />}
+                    <Footer />
+                </div>
+            );
+        };
+
+        ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+</body>
+</html>

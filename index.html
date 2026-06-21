@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<!--
+  Catalyst Applied AI — Corporate Homepage v3.0
+  Deploy to: catalystappliedai.com (replaces ui/static/index.html)
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catalyst Applied AI — AI That Runs Where Your Data Lives</title>
+  <meta name="description"
+    content="Catalyst Applied AI deploys governed, auditable AI systems inside your environment. Air-gapped to cloud. Full stack. Every output cited and logged." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #070c14;
+      --ink2: #0b1220;
+      --ink3: #111b2e;
+      --border: rgba(255, 255, 255, 0.07);
+      --fog: #7a90a8;
+      --fog2: rgba(122, 144, 168, 0.55);
+      --accent: #5be0ff;
+      --accent2: #3b7fff;
+      --white: #eef2f7;
+      --white2: rgba(238, 242, 247, 0.65);
+      --green: #3ddc84;
+      --r: 10px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--ink);
+      color: var(--white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 60px;
+      background: rgba(7, 12, 20, 0.8);
+      backdrop-filter: blur(20px) saturate(1.5);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      color: var(--white);
+    }
+
+    .logo-hex {
+      width: 26px;
+      height: 26px;
+      background: linear-gradient(140deg, var(--accent), var(--accent2));
+      clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+      flex-shrink: 0;
+    }
+
+    .logo-name {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--fog);
+      text-decoration: none;
+      transition: color .15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-btn {
+      padding: 8px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--white);
+      color: var(--ink);
+      text-decoration: none;
+      transition: opacity .15s, transform .1s;
+    }
+
+    .nav-btn:hover {
+      opacity: .88;
+      transform: translateY(-1px);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px 24px 80px;
+      overflow: hidden;
+    }
+
+    /* animated gradient orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+    }
+
+    .orb-1 {
+      width: 700px;
+      height: 500px;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse, rgba(91, 224, 255, 0.13) 0%, transparent 70%);
+      animation: drift1 12s ease-in-out infinite alternate;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 400px;
+      bottom: 0;
+      right: -100px;
+      background: radial-gradient(ellipse, rgba(59, 127, 255, 0.1) 0%, transparent 70%);
+      animation: drift2 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from {
+        transform: translateX(-55%) translateY(0);
+      }
+
+      to {
+        transform: translateX(-45%) translateY(30px);
+      }
+    }
+
+    @keyframes drift2 {
+      from {
+        transform: translateX(0) translateY(0);
+      }
+
+      to {
+        transform: translateX(-20px) translateY(-30px);
+      }
+    }
+
+    /* grid overlay */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 20%, transparent 80%);
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 900px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(91, 224, 255, 0.2);
+      background: rgba(91, 224, 255, 0.05);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 36px;
+    }
+
+    .eyebrow-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 2.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: .3
+      }
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(44px, 7.5vw, 88px);
+      font-weight: 400;
+      line-height: 1.04;
+      letter-spacing: -0.025em;
+      margin-bottom: 28px;
+      color: var(--white);
+    }
+
+    .hero h1 .accent {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .hero h1 .dim {
+      color: var(--fog);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 20px);
+      font-weight: 400;
+      color: var(--fog);
+      max-width: 620px;
+      margin: 0 auto 44px;
+      line-height: 1.65;
+    }
+
+    .hero-sub strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 72px;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 14px 26px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      background: var(--white);
+      color: var(--ink);
+      text-decoration: none;
+      box-shadow: 0 0 0 0 rgba(91, 224, 255, 0);
+      transition: transform .15s, box-shadow .2s, background .15s;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(91, 224, 255, 0.18);
+      background: #fff;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 14px 26px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      background: transparent;
+      color: var(--white);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color .15s, background .15s, transform .15s;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+      transform: translateY(-2px);
+    }
+
+    /* proof bar */
+    .proof-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 0;
+      margin: 0 -24px;
+      width: calc(100% + 48px);
+    }
+
+    .proof-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 40px;
+      border-right: 1px solid var(--border);
+    }
+
+    .proof-item:last-child {
+      border-right: none;
+    }
+
+    .proof-val {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px;
+      line-height: 1;
+      color: var(--white);
+    }
+
+    .proof-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--fog);
+      margin-top: 5px;
+    }
+
+    /* ─── SECTION SHARED ─── */
+    section {
+      padding: 96px 24px;
+    }
+
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 400;
+      line-height: 1.12;
+      margin-bottom: 18px;
+    }
+
+    .sub {
+      font-size: 17px;
+      color: var(--fog);
+      line-height: 1.7;
+      max-width: 600px;
+    }
+
+    /* ─── PROBLEM STRIP ─── */
+    .problem {
+      background: var(--ink2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px;
+    }
+
+    .problem-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .problem-text .title {
+      margin-bottom: 20px;
+    }
+
+    .problem-text .sub {
+      margin-bottom: 32px;
+    }
+
+    .problem-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .problem-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 15px;
+      color: var(--fog);
+      line-height: 1.5;
+    }
+
+    .problem-list li .x {
+      font-size: 13px;
+      font-weight: 700;
+      color: #ff5b5b;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .problem-list li .check {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .problem-list li strong {
+      color: var(--white);
+    }
+
+    .problem-card {
+      background: var(--ink3);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px;
+    }
+
+    .problem-card-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fog);
+      margin-bottom: 20px;
+    }
+
+    .verdict-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .verdict-row:last-child {
+      border-bottom: none;
+    }
+
+    .verdict-key {
+      color: var(--fog2);
+    }
+
+    .verdict-val {
+      font-weight: 600;
+    }
+
+    .v-green {
+      color: var(--green);
+    }
+
+    .v-amber {
+      color: #f5a623;
+    }
+
+    .v-red {
+      color: #ff5b5b;
+    }
+
+    /* ─── OFFERINGS ─── */
+    .offerings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 56px;
+    }
+
+    .offering-card {
+      position: relative;
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--ink2);
+      transition: border-color .25s, transform .2s, box-shadow .25s;
+      overflow: hidden;
+    }
+
+    .offering-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      opacity: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(91, 224, 255, 0.06), transparent);
+      transition: opacity .3s;
+      pointer-events: none;
+    }
+
+    .offering-card:hover {
+      border-color: rgba(91, 224, 255, 0.18);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    .offering-card:hover::after {
+      opacity: 1;
+    }
+
+    .offering-card.wide {
+      grid-column: span 2;
+    }
+
+    .oc-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--fog2);
+      letter-spacing: 0.08em;
+      margin-bottom: 18px;
+    }
+
+    .oc-icon {
+      font-size: 26px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .oc-title {
+      font-size: 19px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.25;
+    }
+
+    .oc-hook {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .oc-body {
+      font-size: 14px;
+      color: var(--fog);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .oc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+
+    .oc-tag {
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--fog2);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .oc-link {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap .15s, color .15s;
+    }
+
+    .oc-link:hover {
+      gap: 9px;
+      color: var(--accent);
+    }
+
+    /* ─── ARCHITECTURE ─── */
+    .arch {
+      background: var(--ink2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .arch-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .tier-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .tier {
+      padding: 22px 24px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      transition: border-color .2s, background .2s;
+    }
+
+    .tier:hover {
+      border-color: rgba(91, 224, 255, 0.18);
+      background: rgba(91, 224, 255, 0.02);
+    }
+
+    .tier-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .tier-pill {
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .t1 {
+      background: rgba(91, 224, 255, 0.12);
+      color: var(--accent);
+    }
+
+    .t2 {
+      background: rgba(59, 127, 255, 0.12);
+      color: #60a5fa;
+    }
+
+    .t3 {
+      background: rgba(167, 139, 250, 0.12);
+      color: #a78bfa;
+    }
+
+    .tier-name {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .tier p {
+      font-size: 13px;
+      color: var(--fog);
+      line-height: 1.6;
+    }
+
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      font-size: 15px;
+      color: var(--fog);
+      line-height: 1.5;
+    }
+
+    .checklist li::before {
+      content: '✓';
+      color: var(--accent);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .checklist li strong {
+      color: var(--white);
+    }
+
+    /* ─── STACK ─── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 52px;
+    }
+
+    .stack-card {
+      padding: 22px 24px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--ink2);
+    }
+
+    .sc-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--fog2);
+      margin-bottom: 7px;
+    }
+
+    .sc-val {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .sc-desc {
+      font-size: 12px;
+      color: var(--fog);
+    }
+
+    /* ─── COMPLIANCE ─── */
+    .comp-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 52px;
+    }
+
+    .comp-card {
+      padding: 26px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--ink2);
+    }
+
+    .comp-card h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .comp-card p {
+      font-size: 13px;
+      color: var(--fog);
+      line-height: 1.6;
+    }
+
+    .badge {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .badge-green {
+      background: rgba(61, 220, 132, 0.1);
+      color: var(--green);
+    }
+
+    .badge-amber {
+      background: rgba(245, 166, 35, 0.1);
+      color: #f5a623;
+    }
+
+    .badge-blue {
+      background: rgba(91, 224, 255, 0.1);
+      color: var(--accent);
+    }
+
+    /* ─── CTA BAND ─── */
+    .cta-band {
+      text-align: center;
+      background: linear-gradient(160deg, rgba(91, 224, 255, 0.04) 0%, rgba(59, 127, 255, 0.04) 100%);
+      border-top: 1px solid var(--border);
+    }
+
+    .cta-band h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 400;
+      line-height: 1.12;
+      margin-bottom: 16px;
+    }
+
+    .cta-band p {
+      font-size: 17px;
+      color: var(--fog);
+      max-width: 520px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 48px 24px 36px;
+      border-top: 1px solid var(--border);
+    }
+
+    .foot-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .foot-brand p {
+      font-size: 13px;
+      color: var(--fog);
+      margin-top: 10px;
+      max-width: 240px;
+      line-height: 1.6;
+    }
+
+    .foot-links h5 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fog);
+      margin-bottom: 14px;
+    }
+
+    .foot-links ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .foot-links a {
+      font-size: 14px;
+      color: var(--fog);
+      text-decoration: none;
+      transition: color .15s;
+    }
+
+    .foot-links a:hover {
+      color: var(--white);
+    }
+
+    .foot-bottom {
+      max-width: 1160px;
+      margin: 32px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .foot-bottom p {
+      font-size: 12px;
+      color: var(--fog2);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .offerings-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .offering-card.wide {
+        grid-column: span 1;
+      }
+
+      .problem-layout,
+      .arch-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .stack-grid,
+      .comp-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .offerings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stack-grid,
+      .comp-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .proof-item {
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="logo">
+      <div class="logo-hex"></div>
+      <span class="logo-name">Catalyst Applied AI</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#offerings">Solutions</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#compliance">Compliance</a></li>
+      <li><a href="https://gov-products.catalystappliedai.com">CLERK</a></li>
+      <li><a href="https://custom-models.catalystappliedai.com">Custom Models</a></li>
+    </ul>
+    <a href="#contact" class="nav-btn">Talk to Us</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <div class="eyebrow-dot"></div>
+        Live in Production
+      </div>
+      <h1>
+        AI that runs<br />
+        <span class="accent">where your data lives.</span>
+      </h1>
+      <p class="hero-sub">
+        Most AI vendors want your data in their cloud.<br />
+        <strong>We deploy inside yours.</strong>
+        Governed, auditable, and grounded in your documents —
+        from fully air-gapped environments to the cloud.
+      </p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-cta">Book a Demo →</a>
+        <a href="#offerings" class="btn-outline">See the Platform</a>
+      </div>
+
+      <div class="proof-bar">
+        <div class="proof-item">
+          <span class="proof-val">Air Gap</span>
+          <span class="proof-label">to Cloud Ready</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-val">5</span>
+          <span class="proof-label">Platform Offerings</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-val">100%</span>
+          <span class="proof-label">US-Built Model Stack</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-val">Zero</span>
+          <span class="proof-label">Data Leaves Your Perimeter</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM SECTION -->
+  <div class="problem">
+    <div class="wrap">
+      <div class="problem-layout">
+        <div class="problem-text">
+          <div class="label">The Problem</div>
+          <h2 class="title">Your compliance team<br />keeps saying no.</h2>
+          <p class="sub">Because every AI vendor wants your data. Patient records. Financial data. Classified documents.
+            Operational data that can't leave your walls. The answer isn't to settle for less. It's to deploy AI
+            differently.</p>
+        </div>
+        <div>
+          <ul class="problem-list" style="margin-bottom:32px;">
+            <li><span class="x">✕</span>
+              <div><strong>Cloud-only AI vendors</strong> — your data leaves your environment. Full stop.</div>
+            </li>
+            <li><span class="x">✕</span>
+              <div><strong>Generic guardrails</strong> — bolted on after the fact, not built into the stack.</div>
+            </li>
+            <li><span class="x">✕</span>
+              <div><strong>Model-only vendors</strong> — hand you an LLM and walk away.</div>
+            </li>
+            <li><span class="x">✕</span>
+              <div><strong>No audit trail</strong> — you can't explain what the AI said or why.</div>
+            </li>
+          </ul>
+          <ul class="problem-list">
+            <li><span class="check">✓</span>
+              <div><strong>CAAi deploys inside your boundary</strong> — cloud tenant or fully air-gapped.</div>
+            </li>
+            <li><span class="check">✓</span>
+              <div><strong>Governance is the foundation</strong> — not an add-on once something breaks.</div>
+            </li>
+            <li><span class="check">✓</span>
+              <div><strong>Full stack</strong> — ingestion, retrieval, generation, and audit. Not just a model.</div>
+            </li>
+            <li><span class="check">✓</span>
+              <div><strong>Every output is cited and logged</strong> — always know where the answer came from.</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OFFERINGS -->
+  <section id="offerings">
+    <div class="wrap">
+      <div class="label">Platform</div>
+      <h2 class="title">Five ways to deploy<br />AI the right way.</h2>
+      <p class="sub">One platform. Five offerings. Every one governed, auditable, and deployable on your terms.</p>
+
+      <div class="offerings-grid">
+
+        <div class="offering-card wide">
+          <div class="oc-num">01 — ANCHOR PRODUCT</div>
+          <span class="oc-icon">🔒</span>
+          <div class="oc-title">Secure RAG as a Service</div>
+          <div class="oc-hook">Air-Gapped + Authorized Cloud</div>
+          <p class="oc-body">Your documents. Your infrastructure. AI that answers from your materials without your data
+            ever leaving the perimeter. Full-stack deployment — ingest, retrieve, generate — inside your security
+            boundary. Every answer cites its source.</p>
+          <div class="oc-tags">
+            <span class="oc-tag">Federal / DoD</span>
+            <span class="oc-tag">Healthcare</span>
+            <span class="oc-tag">Financial</span>
+            <span class="oc-tag">Air-Gapped</span>
+            <span class="oc-tag">Authorized Cloud</span>
+          </div>
+          <a href="#contact" class="oc-link">Request a Tier Review →</a>
+        </div>
+
+        <div class="offering-card">
+          <div class="oc-num">02</div>
+          <span class="oc-icon">⚙️</span>
+          <div class="oc-title">Agentic Workflow Platforms</div>
+          <div class="oc-hook">Mission Operations · Command Center</div>
+          <p class="oc-body">Not a chatbot. Orchestrated agents that execute multi-step workflows, pull from your data
+            sources, apply policy guardrails, and log every decision. Working in production today.</p>
+          <div class="oc-tags">
+            <span class="oc-tag">DoD Enterprise</span>
+            <span class="oc-tag">Logistics</span>
+            <span class="oc-tag">Operations</span>
+          </div>
+          <a href="#contact" class="oc-link">See the Architecture →</a>
+        </div>
+
+        <div class="offering-card">
+          <div class="oc-num">03</div>
+          <span class="oc-icon">🛡️</span>
+          <div class="oc-title">SafeGuard</div>
+          <div class="oc-hook">AI Guardrail & Governance Middleware</div>
+          <p class="oc-body">Wraps any AI system — ours or yours. Prompt screening, PII redaction, grounding checks,
+            confidence gating, and a tamper-evident audit trail. The layer that makes AI approvable.</p>
+          <div class="oc-tags">
+            <span class="oc-tag">Any Model</span>
+            <span class="oc-tag">NIST AI RMF</span>
+            <span class="oc-tag">ISSO Ready</span>
+          </div>
+          <a href="#contact" class="oc-link">Get the Brief →</a>
+        </div>
+
+        <div class="offering-card">
+          <div class="oc-num">04</div>
+          <span class="oc-icon">📊</span>
+          <div class="oc-title">Operational Intelligence</div>
+          <div class="oc-hook">Analytics · Logistics · Workforce</div>
+          <p class="oc-body">AI that synthesizes operational data into decisions — without touching raw sensitive
+            sources. Structured query → LLM synthesis. Trusted by design. Built for logistics, workforce, supply chain,
+            and compliance.</p>
+          <div class="oc-tags">
+            <span class="oc-tag">NDAA FY26</span>
+            <span class="oc-tag">Supply Chain</span>
+            <span class="oc-tag">Multi-Location</span>
+          </div>
+          <a href="#contact" class="oc-link">See Case Study →</a>
+        </div>
+
+        <div class="offering-card">
+          <div class="oc-num">05 — LONG GAME</div>
+          <span class="oc-icon">🏛️</span>
+          <div class="oc-title">FedRAMP Authorized AI PaaS</div>
+          <div class="oc-hook">Pre-Authorized · Repeatable · Mission-Ready</div>
+          <p class="oc-body">The full CAAi stack as a pre-authorized platform. One authorization, every mission domain.
+            Agencies stop re-certifying the same infrastructure over and over. Private sector: SOC 2 and HITRUST
+            equivalent.</p>
+          <div class="oc-tags">
+            <span class="oc-tag">FedRAMP 20x</span>
+            <span class="oc-tag">GSA MAS</span>
+            <span class="oc-tag">SOC 2</span>
+          </div>
+          <a href="#contact" class="oc-link">Join the Cohort →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section class="arch" id="architecture">
+    <div class="wrap">
+      <div class="arch-layout">
+        <div>
+          <div class="label">Architecture</div>
+          <h2 class="title">Same platform.<br />Any environment.</h2>
+          <p class="sub" style="margin-bottom:32px;">Move from cloud to on-prem without rewriting a single line of
+            application code. The security tier changes. The platform doesn't.</p>
+          <ul class="checklist">
+            <li><strong>Document ingestion</strong> with PII and CUI detection before data reaches the model</li>
+            <li><strong>Semantic retrieval</strong> grounded in your source materials, not general training data</li>
+            <li><strong>Citation on every answer</strong> — always know exactly where the AI's response came from</li>
+            <li><strong>Policy guardrails</strong> enforced before inputs ever reach the model layer</li>
+            <li><strong>Confidence gating</strong> — GREEN / AMBER / RED verdict routes uncertain outputs to review</li>
+            <li><strong>Full audit log</strong> of every query, retrieval, generation, and decision</li>
+          </ul>
+        </div>
+        <div class="tier-list">
+          <div class="tier">
+            <div class="tier-top"><span class="tier-pill t1">Tier 1</span><span class="tier-name">CAAi-Managed
+                Cloud</span></div>
+            <p>Fastest deployment. Unclassified data. Full platform access from day one with managed updates and
+              support.</p>
+          </div>
+          <div class="tier">
+            <div class="tier-top"><span class="tier-pill t2">Tier 2</span><span class="tier-name">Your Cloud
+                Tenant</span></div>
+            <p>Your Azure Government or AWS GovCloud account. Your keys. Your security controls. CUI and sensitive data
+              stays inside your environment.</p>
+          </div>
+          <div class="tier">
+            <div class="tier-top"><span class="tier-pill t3">Tier 3</span><span class="tier-name">On-Prem /
+                Air-Gapped</span></div>
+            <p>Fully air-gapped deployment on NVIDIA DGX. No internet. No cloud dependency. Classified environments,
+              IL5+, mission-critical isolated networks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section id="stack">
+    <div class="wrap">
+      <div class="label">Technology</div>
+      <h2 class="title">Built on a US-developed<br />model stack. By design.</h2>
+      <p class="sub">Every component purpose-selected for performance, deployability, and alignment with federal
+        procurement requirements.</p>
+      <div class="stack-grid">
+        <div class="stack-card">
+          <div class="sc-label">Inference</div>
+          <div class="sc-val">Nemotron 3 Nano 30B</div>
+          <div class="sc-desc">US-built primary inference engine. Production-tested on live deployments.</div>
+        </div>
+        <div class="stack-card">
+          <div class="sc-label">Embeddings</div>
+          <div class="sc-val">Arctic Embed 2 Large</div>
+          <div class="sc-desc">State-of-the-art semantic retrieval. Finds the right document, every time.</div>
+        </div>
+        <div class="stack-card">
+          <div class="sc-label">Ingestion</div>
+          <div class="sc-val">NVIDIA NeMo Curator</div>
+          <div class="sc-desc">PII redaction, CUI detection, and document normalization at ingest.</div>
+        </div>
+        <div class="stack-card">
+          <div class="sc-label">Vector Store</div>
+          <div class="sc-val">ChromaDB</div>
+          <div class="sc-desc">Deployable in fully isolated, air-gapped environments. No cloud required.</div>
+        </div>
+        <div class="stack-card">
+          <div class="sc-label">Governance</div>
+          <div class="sc-val">CAAi Trust Layer</div>
+          <div class="sc-desc">Prompt screening, grounding checks, citation validation, audit log.</div>
+        </div>
+        <div class="stack-card">
+          <div class="sc-label">Hardware</div>
+          <div class="sc-val">NVIDIA RTX 5090 / DGX</div>
+          <div class="sc-desc">Local inference in production. NVIDIA Inception program member.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPLIANCE -->
+  <section id="compliance" style="background:var(--ink2); border-top:1px solid var(--border);">
+    <div class="wrap">
+      <div class="label">Compliance & Authorization</div>
+      <h2 class="title">The governance your<br />approvers actually need.</h2>
+      <p class="sub">Built-in from the start. Not retrofitted after something breaks.</p>
+      <div class="comp-grid">
+        <div class="comp-card">
+          <h4>FedRAMP 20x</h4>
+          <p>Pursuing authorization via FedRAMP's agile, risk-based on-ramp. Early cohort partners receive priority
+            onboarding post-authorization.</p>
+          <span class="badge badge-amber">In Progress</span>
+        </div>
+        <div class="comp-card">
+          <h4>OMB M-25-22</h4>
+          <p>All-American model stack satisfies the requirement to maximize use of US-developed AI. Data ownership terms
+            included in every contract.</p>
+          <span class="badge badge-green">Ready Now</span>
+        </div>
+        <div class="comp-card">
+          <h4>NIST AI RMF</h4>
+          <p>Trust Layer and SafeGuard are built around NIST AI Risk Management Framework controls — governable,
+            measurable, and auditable.</p>
+          <span class="badge badge-green">Ready Now</span>
+        </div>
+        <div class="comp-card">
+          <h4>HIPAA / SOC 2</h4>
+          <p>Healthcare and financial services compliance pathway. Same platform, same Trust Layer — compliance wrapper
+            available for regulated industries.</p>
+          <span class="badge badge-amber">Roadmap 2026</span>
+        </div>
+        <div class="comp-card">
+          <h4>GSA MAS / SEWP VI</h4>
+          <p>Federal procurement vehicle applications in progress. Primes and SIs can reference CAAi as a compliant AI
+            platform element in proposals.</p>
+          <span class="badge badge-amber">In Progress</span>
+        </div>
+        <div class="comp-card">
+          <h4>SBIR / STTR</h4>
+          <p>SafeGuard is an active SBIR candidate — adversarial AI testing and prompt injection defense research for
+            DoD and DARPA priority areas.</p>
+          <span class="badge badge-blue">Active</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band" id="contact">
+    <div class="wrap">
+      <h2>See it running in<br />your environment.</h2>
+      <p>We'll map your data, your security requirements, and your mission to the right deployment tier — and show you a
+        working proof of concept, not a deck.</p>
+      <div class="cta-row">
+        <a href="mailto:contact@catalystappliedai.com" class="btn-cta">Book a Demo →</a>
+        <a href="https://gov-products.catalystappliedai.com" class="btn-outline">Explore CLERK</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-inner">
+      <div class="foot-brand">
+        <a href="/" class="logo">
+          <div class="logo-hex"></div>
+          <span class="logo-name">Catalyst Applied AI</span>
+        </a>
+        <p>AI that runs where your data lives. Governed. Auditable. Yours.</p>
+      </div>
+      <div class="foot-links">
+        <h5>Platform</h5>
+        <ul>
+          <li><a href="#offerings">Secure RAG</a></li>
+          <li><a href="#offerings">Agentic Workflows</a></li>
+          <li><a href="#offerings">SafeGuard</a></li>
+          <li><a href="#offerings">Operational Intelligence</a></li>
+          <li><a href="#offerings">FedRAMP Platform</a></li>
+        </ul>
+      </div>
+      <div class="foot-links">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="https://gov-products.catalystappliedai.com">CLERK</a></li>
+          <li><a href="https://custom-models.catalystappliedai.com">Custom Models</a></li>
+        </ul>
+      </div>
+      <div class="foot-links">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="mailto:contact@catalystappliedai.com">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 Catalyst Applied AI LLC. All rights reserved.</p>
+      <p>NVIDIA Inception Member · Built on Nemotron, Arctic Embed, NeMo Curator</p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

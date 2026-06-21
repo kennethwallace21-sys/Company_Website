@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAAi CLERK</title>
+<meta name="description" content="CAAi CLERK is a government-ready document workflow and records intelligence system for county offices, built on Nemotron 3 Nano with secure RAG and CAAi Trust Layer controls.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Sora:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07111c;--panel:#0e1e30;--panel-2:#10263d;--cyan:#63e8ff;--blue:#225cff;--text:#eaf8ff;--muted:#8ea6bc;--line:rgba(99,232,255,.14);--green:#4ade80;--amber:#fbbf24;--red:#f87171;--display:"Sora",sans-serif;--body:"IBM Plex Sans",sans-serif;--mono:"IBM Plex Mono",monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:var(--body);color:var(--text);background:radial-gradient(circle at 20% 20%,rgba(34,92,255,.16),transparent 32%),radial-gradient(circle at 82% 16%,rgba(99,232,255,.11),transparent 28%),linear-gradient(180deg,#07111c 0%,#081523 30%,#07111c 100%)}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(99,232,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,232,255,.03) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(circle at center,black 35%,transparent 100%);pointer-events:none}
+.shell{position:relative;z-index:1}.nav,.hero-grid,.workflow-grid,.workspace-grid,.summary-grid,.phase-grid,.control-grid,.tier-grid,.footer-grid,.chat-form{display:grid}
+.nav{position:sticky;top:0;z-index:10;grid-template-columns:max-content 1fr max-content;gap:24px;align-items:center;padding:18px 32px;background:rgba(7,17,28,.76);backdrop-filter:blur(18px);border-bottom:1px solid rgba(99,232,255,.08)}
+.brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit}.brand img{width:34px;height:34px}.brand-title{font:600 15px var(--display)}.brand-sub{font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.nav-links{display:flex;gap:20px;justify-content:center;list-style:none;margin:0;padding:0}.nav-links a,.footer-links a{color:var(--muted);text-decoration:none;font-size:13px}.nav-links a:hover,.footer-links a:hover{color:var(--text)}
+.nav-actions{display:flex;gap:12px}.button,.button-secondary,.phase-card,.check-item,.prompt-list button,.quick-prompts button{cursor:pointer}
+.button,.button-secondary{padding:12px 18px;border-radius:999px;border:1px solid transparent;font-weight:600;text-decoration:none}
+.button{background:linear-gradient(135deg,var(--cyan),var(--blue));color:#061019}.button-secondary{background:rgba(10,22,37,.65);color:var(--text);border-color:rgba(99,232,255,.2)}
+.hero,main section,footer{max-width:1440px;margin:0 auto;padding:32px}.hero{padding-top:64px}.hero-grid{grid-template-columns:minmax(0,1.2fr) minmax(360px,.8fr);gap:20px}
+.panel,.hero-copy,.workflow-card,.workspace-card,.notes-card,.chat-shell,.tier-card,.control-card,.phase-card{background:linear-gradient(180deg,rgba(14,30,48,.92),rgba(7,17,28,.95));border:1px solid var(--line);border-radius:24px;box-shadow:0 24px 72px rgba(0,0,0,.32)}
+.hero-copy,.panel,.workspace-card,.notes-card,.chat-shell,.tier-card,.control-card{padding:22px}
+.eyebrow,.chip,.status,.verdict,.tag{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase}
+.eyebrow{color:var(--cyan);border:1px solid rgba(99,232,255,.16)}.chip,.status{border:1px solid rgba(99,232,255,.16);background:rgba(9,25,40,.62)}.status{color:var(--green);border-color:rgba(74,222,128,.22);background:rgba(14,42,28,.45)}
+h1,h2,h3{margin:0;font-family:var(--display);letter-spacing:-.03em}.hero h1{font-size:clamp(40px,6vw,72px);line-height:1.02;margin:18px 0 16px}.lead,.section-copy,.card-copy,.phase-copy,.source-text,.check-text,.message-body,.notes-card p,.workspace-card p,.tier-card p,.control-card p{line-height:1.7;color:var(--muted)}
+.lead{font-size:17px;max-width:720px}.hero-actions{display:flex;gap:12px;margin:22px 0}.chip-row,.prompt-list,.quick-prompts,.footer-links{display:flex;flex-wrap:wrap;gap:10px}
+.summary-grid,.workflow-grid,.control-grid,.tier-grid,.phase-grid{gap:14px}.summary-grid{grid-template-columns:repeat(4,1fr);margin:18px 0}.workflow-grid,.control-grid,.tier-grid{grid-template-columns:repeat(3,1fr)}.phase-grid{grid-template-columns:repeat(4,1fr);margin-bottom:18px}
+.summary-card,.mini-card{padding:16px;border-radius:18px;background:rgba(8,18,29,.72);border:1px solid rgba(99,232,255,.08)}.summary-card strong{display:block;font:600 28px var(--display)}.summary-card span,.mini-meta,.footer-note{font-size:12px;color:var(--muted)}
+.notice-card{margin-top:18px;padding:16px 18px;border-radius:18px;border:1px solid rgba(251,191,36,.18);background:linear-gradient(180deg,rgba(251,191,36,.09),rgba(7,17,28,.9));box-shadow:0 18px 48px rgba(0,0,0,.18)}.notice-label{font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}.notice-copy{margin-top:8px;font-size:14px;line-height:1.7;color:var(--text);opacity:.9}
+.mini-stack{display:flex;flex-direction:column;gap:12px}.mini-card h3{margin-bottom:8px;font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}.mini-card p{margin:0;color:var(--muted);line-height:1.6}
+.section-head{max-width:780px;margin-bottom:22px}.section-head h2{font-size:clamp(28px,4vw,44px);line-height:1.06;margin:10px 0 12px}.workflow-card ul,.tier-card ul{padding:0;margin:14px 0 0;list-style:none;display:flex;flex-direction:column;gap:9px}.workflow-card li,.tier-card li{display:flex;gap:8px;font-size:14px}.workflow-card li::before,.tier-card li::before{content:">";color:var(--cyan);font-family:var(--mono)}
+.workspace-grid{grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start}.phase-card{padding:16px;text-align:left}.phase-card.active{border-color:rgba(99,232,255,.32)}.phase-num{width:36px;height:36px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:rgba(34,92,255,.18);color:var(--cyan);margin-bottom:10px}.phase-card small,.meta,.footer-note,.notes-actions,.source-meta{font:11px var(--mono);color:var(--muted)}
+.checklist-group{margin-bottom:16px}.checklist-group h4{margin:0 0 10px;font:12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}.check-item{display:flex;gap:12px;align-items:flex-start;width:100%;padding:14px 16px;border-radius:16px;border:1px solid rgba(99,232,255,.1);background:rgba(6,17,28,.72);margin-bottom:10px;color:inherit;text-align:left}.check-item.done{border-color:rgba(74,222,128,.22);background:rgba(11,35,24,.55)}
+.check-box{width:22px;height:22px;border-radius:8px;border:1px solid rgba(99,232,255,.22);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}.check-item.done .check-box{background:rgba(74,222,128,.18);color:var(--green);border-color:rgba(74,222,128,.26)}.tag{margin-top:8px;background:rgba(248,113,113,.12);color:var(--red)}
+.notes-card textarea,.chat-form input{width:100%;border-radius:16px;border:1px solid rgba(99,232,255,.16);background:rgba(7,17,28,.8);color:var(--text);padding:14px;font:inherit}.notes-card textarea{min-height:180px;resize:vertical}.notes-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
+.progress{height:8px;border-radius:999px;background:rgba(99,232,255,.08);margin:12px 0 8px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue))}
+.chat-shell{min-height:520px}.chat-history{display:flex;flex-direction:column;gap:14px;min-height:320px;max-height:480px;overflow:auto}.message{padding:16px;border-radius:18px;border:1px solid rgba(99,232,255,.08);background:rgba(7,17,28,.7)}.message.user{align-self:flex-end;max-width:76%;background:rgba(34,92,255,.16);border-color:rgba(34,92,255,.24)}.message-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.role{font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}.verdict.GREEN{background:rgba(74,222,128,.14);color:var(--green)}.verdict.AMBER{background:rgba(251,191,36,.14);color:var(--amber)}.verdict.RED{background:rgba(248,113,113,.14);color:var(--red)}
+.source-list,.check-list{display:flex;flex-direction:column;gap:10px;margin-top:12px}.source-item,.check-row{padding:12px 14px;border-radius:14px;background:rgba(13,28,44,.76);border:1px solid rgba(99,232,255,.08)}.source-item strong,.check-row strong{display:block;font-size:13px;margin-bottom:4px}.chat-form{grid-template-columns:1fr max-content;gap:10px;margin-top:16px}.loading{display:none;margin-top:12px;font:12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan)}.chat-note{margin-top:12px;font-size:12px;line-height:1.7;color:var(--muted)}.follow-up-note{margin-top:12px;padding:12px 14px;border-radius:14px;border:1px solid rgba(251,191,36,.18);background:rgba(251,191,36,.08);font-size:12px;line-height:1.6;color:var(--text)}
+.footer-grid{grid-template-columns:1fr max-content;gap:16px;align-items:center;padding-top:18px;border-top:1px solid rgba(99,232,255,.08)}.footer-links{gap:18px}
+footer>.footer-grid{display:none}.footer-stack{display:grid;gap:18px}.footer-panel{padding:22px;border-radius:24px;background:linear-gradient(180deg,rgba(14,30,48,.92),rgba(7,17,28,.95));border:1px solid var(--line);box-shadow:0 24px 72px rgba(0,0,0,.22)}.footer-affiliation{display:grid;grid-template-columns:max-content 1fr;gap:18px;align-items:start}.footer-badge{height:48px;width:auto;border-radius:10px;border:1px solid rgba(99,232,255,.12);background:rgba(6,17,28,.72)}.footer-legal-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr) max-content;gap:16px;align-items:start}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}.reveal.visible{opacity:1;transform:none}
+@media (max-width:1120px){.nav,.hero-grid,.workflow-grid,.workspace-grid,.summary-grid,.phase-grid,.control-grid,.tier-grid,.footer-grid,.chat-form,.footer-affiliation,.footer-legal-grid{grid-template-columns:1fr}.nav-links,.nav-actions{justify-content:flex-start;flex-wrap:wrap}.message.user{max-width:100%}}
+@media (max-width:720px){.nav,.hero,main section,footer{padding-left:18px;padding-right:18px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="nav">
+    <a class="brand" href="#top">
+      <img src="/static/assets/caai-mark.svg" alt="CAAi">
+      <div>
+        <div class="brand-title">CAAi CLERK</div>
+        <div class="brand-sub">County Language Engine for Records and Knowledge</div>
+      </div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#workflows">Workflows</a></li>
+      <li><a href="#readiness">Readiness</a></li>
+      <li><a href="#advisor">Advisor</a></li>
+      <li><a href="#deployments">Deployments</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a class="button-secondary" href="#advisor">Run Secure RAG</a>
+      <a class="button" href="mailto:sales@catalystappliedai.com" data-contact-intent="Request CLERK pilot">Request Pilot</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-grid">
+      <div class="hero-copy reveal">
+        <div class="eyebrow">Government Document Workflows</div>
+        <h1>County records intelligence with secure retrieval and trust-layer controls.</h1>
+        <p class="lead">CAAi CLERK helps county offices triage FOIA requests, summarize meeting materials, draft constituent responses, and review scanned permit packets using Nemotron 3 Nano, secure RAG, and CAAi Trust Layer verdicting.</p>
+        <div class="notice-card">
+          <div class="notice-label">Preview Release</div>
+          <div class="notice-copy">CAAi CLERK is in active development and shown for demo, evaluation, and pilot planning. Workflow, deployment, and standards guidance should be reviewed with your legal, security, procurement, and records teams before adoption.</div>
+        </div>
+        <div class="chip-row">
+          <div class="chip">Nemotron 3 Nano</div>
+          <div class="chip">Secure RAG</div>
+          <div class="chip">CAAi Trust Layer</div>
+        </div>
+        <div class="hero-actions">
+          <a class="button" href="#advisor">Open CLERK Advisor</a>
+          <a class="button-secondary" href="#readiness">See Readiness Workspace</a>
+        </div>
+        <div class="summary-grid" id="hero-stats"></div>
+      </div>
+      <aside class="panel reveal">
+        <div style="display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:18px">
+          <div>
+            <div class="eyebrow">Live Workspace Preview</div>
+            <h3 style="margin-top:12px">gov-products.catalystappliedai.com</h3>
+          </div>
+          <div class="status">Port 4000</div>
+        </div>
+        <div class="mini-stack">
+          <div class="mini-card"><h3>County workflows</h3><p>FOIA triage, meeting summaries, board packets, permit review, and constituent correspondence are packaged as repeatable workflows instead of freeform prompting.</p></div>
+          <div class="mini-card"><h3>Trust posture</h3><p>Every query passes through prompt screening, grounding checks, and verdict output before the answer is shown.</p></div>
+          <div class="mini-card"><h3>Deployment</h3><p>Run as a CAAi-managed pilot, inside a customer GovCloud tenant, or in a customer-managed on-prem / air-gapped environment.</p></div>
+        </div>
+        <div class="prompt-list" id="hero-prompts"></div>
+      </aside>
+    </div>
+  </header>
+
+  <main>
+    <section id="workflows" class="reveal">
+      <div class="section-head">
+        <div class="eyebrow">Workflow Library</div>
+        <h2>Built for the repetitive work county teams already carry.</h2>
+        <p class="section-copy">CLERK packages the workflows public-sector offices actually need, then wraps them in retrieval, source traceability, and deployment options that match procurement reality.</p>
+      </div>
+      <div class="workflow-grid" id="workflow-grid"></div>
+    </section>
+
+    <section id="readiness" class="reveal">
+      <div class="section-head">
+        <div class="eyebrow">Readiness Workspace</div>
+        <h2>Track deployment and procurement readiness without leaving the product story.</h2>
+        <p class="section-copy">The downloaded compliance navigator has been rebuilt as a CLERK readiness workspace. It keeps the checklist and phase structure, stores state locally, and routes advisory questions through the CLERK API instead of a browser-side model call.</p>
+      </div>
+      <div class="workspace-grid">
+        <div class="workspace-card">
+          <h3>Program Status</h3>
+          <p>Use the checklist to track certification and deployment preparation. Export the current state as JSON for internal planning or partner follow-up.</p>
+          <div class="summary-grid" id="summary-grid"></div>
+          <div class="phase-grid" id="phase-grid"></div>
+          <div id="checklist-root"></div>
+        </div>
+        <div>
+          <div class="notes-card" style="margin-bottom:18px">
+            <h3>Working Notes</h3>
+            <p>Capture buyer questions, deployment assumptions, or security follow-ups tied to the current CLERK motion.</p>
+            <textarea id="workspace-notes" placeholder="Example: County buyer wants Tier 2 language that explains the customer-managed boundary without overclaiming FedRAMP."></textarea>
+            <div class="notes-actions">
+              <span id="notes-status">Local workspace state</span>
+              <div style="display:flex;gap:10px">
+                <button class="button-secondary" id="reset-workspace" type="button">Reset</button>
+                <button class="button" id="export-workspace" type="button">Export JSON</button>
+              </div>
+            </div>
+          </div>
+          <div class="notes-card">
+            <h3>Control Focus</h3>
+            <p>These control families matter most for the current CLERK government-selling motion and customer-managed deployment tiers.</p>
+            <div class="control-grid" id="control-grid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="advisor" class="reveal">
+      <div class="section-head">
+        <div class="eyebrow">Secure RAG Advisor</div>
+        <h2>Ask CLERK about workflows, deployment tiers, or standards language.</h2>
+        <p class="section-copy">The advisor queries the dedicated <code>clerk_knowledge</code> collection, then returns a CAAi Trust Layer verdict, evidence record, and source-backed answer.</p>
+      </div>
+      <div class="chat-shell">
+        <h3>CLERK Advisor</h3>
+        <p>Best for product positioning, deployment-fit questions, standards language, and pilot planning.</p>
+        <div class="quick-prompts" id="quick-prompts"></div>
+        <div class="chat-history" id="chat-history"></div>
+        <div class="chat-form">
+          <input id="chat-input" type="text" placeholder="Ask about county workflows, deployment boundaries, or CLERK readiness.">
+          <button class="button" id="send-chat" type="button">Send</button>
+        </div>
+        <div class="chat-note">CLERK only answers from approved internal sources in this secure environment. If a request needs the open web or stronger grounding than the current knowledge base provides, CLERK will say so and log it for follow-up.</div>
+        <div id="chat-loading" class="loading">Reviewing approved internal sources in a secure environment...</div>
+      </div>
+    </section>
+
+    <section id="deployments" class="reveal">
+      <div class="section-head">
+        <div class="eyebrow">Deployment Tiers</div>
+        <h2>Offer the right boundary for the buyer instead of forcing one architecture.</h2>
+        <p class="section-copy">CLERK should be demoed and sold with a clear hosting story. The product stays consistent, while the security boundary and operating responsibility move to match agency requirements.</p>
+      </div>
+      <div class="tier-grid" id="tier-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-stack">
+      <div class="footer-panel">
+        <div class="eyebrow">Technology &amp; Program Affiliations</div>
+        <div class="footer-affiliation">
+          <img src="/static/assets/nvidia-inception-member-dark.jpg" alt="NVIDIA Inception member badge" class="footer-badge">
+          <div class="footer-note">Catalyst Applied AI is a member of NVIDIA Inception. Reference to NVIDIA Inception reflects program participation and does not imply endorsement by NVIDIA.</div>
+        </div>
+      </div>
+      <div class="footer-panel">
+        <div class="footer-legal-grid">
+          <div class="footer-note"><strong>Catalyst Applied AI, LLC.</strong> CAAi CLERK is in active development and shown for demo, evaluation, and pilot planning. Nothing on this page is legal advice or a claim of certification, compliance, or government endorsement.</div>
+          <div class="footer-note">AI output and deployment guidance should be reviewed before legal, compliance, records-retention, procurement, security, or other high-impact decisions. NVIDIA and the NVIDIA logo are trademarks and/or registered trademarks of NVIDIA Corporation in the U.S. and other countries. Other company and product names may be trademarks of the respective companies with which they are associated.</div>
+          <div class="footer-links">
+            <a href="mailto:sales@catalystappliedai.com" data-contact-intent="Contact CLERK sales">Contact</a>
+            <a href="/healthz">Health</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-grid">
+      <div class="footer-note">Catalyst Applied AI, LLC. CAAi CLERK uses Nemotron 3 Nano with CAAi Trust Layer controls and secure retrieval. Standards language should use aligned to, mapped to, or designed to support rather than unsupported certification claims.</div>
+      <div class="footer-links">
+        <a href="mailto:sales@catalystappliedai.com" data-contact-intent="Contact CLERK sales">Contact</a>
+        <a href="/healthz">Health</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script src="/static/contact-form.js"></script>
+<script>
+const WORKFLOWS = [
+  { title: "FOIA Triage", description: "Classify incoming requests, flag missing information, and draft grounded response paths without burying staff in first-pass review.", bullets: ["Same-day intake routing", "Redaction review flags", "Source-backed response drafting"] },
+  { title: "Meeting Minutes", description: "Turn transcripts, notes, or recordings into concise summaries, decisions, and action items for county teams and board packets.", bullets: ["Decision extraction", "Action-item rollup", "Historical minute retrieval"] },
+  { title: "Constituent Correspondence", description: "Draft replies using agency policy, prior case context, and approved language so staff can review instead of start from zero.", bullets: ["Template-grounded drafting", "Policy lookups", "Case-history context"] },
+  { title: "Permit Review Support", description: "Review scanned packets and forms, surface missing items, and compare submissions against local requirements and review checklists.", bullets: ["Scanned-document handling", "Requirement checks", "Structured reviewer summaries"] },
+  { title: "Board Packet Assembly", description: "Gather materials from multiple departments and compile an executive-ready board packet with summaries and supporting references.", bullets: ["Packet aggregation", "Executive summaries", "Source trace for attachments"] },
+  { title: "Trust Layer Controls", description: "Wrap each workflow in prompt screening, response grounding, and exportable verdict data for review and audit workflows.", bullets: ["Prompt-injection screening", "Grounding + citations", "Evidence for SIEM or GRC export"] },
+];
+
+const PHASES = [
+  { id: 1, name: "Scoping & Gap Analysis", weeks: "1 to 4", description: "Define the operating boundary, deployment model, key data classes, and near-term trust materials needed for pilots." },
+  { id: 2, name: "Technical Hardening", weeks: "5 to 12", description: "Tighten auth, logging, environment controls, retention, and deployment packaging for customer-managed environments." },
+  { id: 3, name: "Documentation & Evidence", weeks: "13 to 20", description: "Build architecture diagrams, incident paths, security documentation, and reusable evidence exports." },
+  { id: 4, name: "External Validation", weeks: "21 to 32", description: "Start buyer-relevant certifications and assessments only after the product and pilot motion justify them." },
+];
+
+const CHECKLIST = [
+  { id: "sam", phase: 1, label: "SAM.gov registration and UEI are current for government-facing activity", required: true },
+  { id: "pilot-pack", phase: 1, label: "Pilot package exists: product brief, architecture, security overview, and pricing", required: true },
+  { id: "boundary", phase: 1, label: "Deployment boundaries are documented for Tier 1, Tier 2, and Tier 3", required: true },
+  { id: "synthetic-demo", phase: 1, label: "Synthetic county demo data is ready for FOIA, meetings, and permit review", required: true },
+  { id: "auth", phase: 2, label: "Auth, access controls, and request logging are defined for the standalone product", required: true },
+  { id: "evidence", phase: 2, label: "Trust Layer response evidence includes verdict, checks, and request metadata", required: true },
+  { id: "retention", phase: 2, label: "Retention and export behavior are documented for prompts, answers, and traces", required: false },
+  { id: "govcloud", phase: 2, label: "Customer-managed government-cloud deployment path is packaged and documented", required: true },
+  { id: "security-docs", phase: 3, label: "Security overview, privacy posture, and architecture diagrams are current", required: true },
+  { id: "dpa", phase: 3, label: "Core legal and trust materials exist: DPA, terms, privacy policy, and pilot language", required: false },
+  { id: "case-study-plan", phase: 3, label: "Pilot success criteria and case-study measurement plan are defined", required: true },
+  { id: "soc2", phase: 4, label: "SOC 2 Type II program timing has been decided based on buyer pull", required: false },
+  { id: "cmmc", phase: 4, label: "CMMC or NIST 800-171 work is scoped only where target contracts actually require it", required: false },
+  { id: "channels", phase: 4, label: "Channel outreach plan is active for KY League of Cities and KY Association of Counties", required: true },
+];
+
+const CONTROLS = [
+  { id: "3.1", name: "Access Control", progress: 64, detail: "Least privilege, remote-access control, and operator roles matter first for customer-managed deployments." },
+  { id: "3.3", name: "Audit & Accountability", progress: 72, detail: "CLERK should emit verdicts, source traces, and request metadata that can be exported cleanly." },
+  { id: "3.5", name: "Identification & Authentication", progress: 58, detail: "MFA, tenant-aware access, and controlled admin paths are the main buyer questions." },
+  { id: "3.6", name: "Incident Response", progress: 43, detail: "Document how issues are triaged across managed cloud and customer-managed boundaries." },
+  { id: "3.13", name: "System & Communications Protection", progress: 61, detail: "Encryption boundaries, API protection, and deployment isolation need clear product language." },
+  { id: "3.14", name: "System & Information Integrity", progress: 67, detail: "Prompt injection screening, flaw remediation, and runtime monitoring align well with Trust Layer messaging." },
+];
+
+const TIERS = [
+  { id: "Tier 1", badge: "Managed Cloud", title: "CAAi-managed pilot lane", description: "Best for early county pilots and non-sensitive workloads where the buyer wants low friction and fast time to value.", bullets: ["CAAi-managed U.S. region hosting", "Per-client isolation", "Fastest route to demo and case study"] },
+  { id: "Tier 2", badge: "Customer GovCloud", title: "Customer-managed boundary", description: "Use when the buyer needs the system inside its own government-cloud tenant and wants direct control over the operating boundary.", bullets: ["Deploy into customer AWS GovCloud or equivalent", "Customer keeps the primary compliance boundary", "Best fit for more sensitive record workflows"] },
+  { id: "Tier 3", badge: "On-Prem / Air Gap", title: "Restricted environment path", description: "For buyers that require on-prem operation, isolated networks, or a tighter facility-controlled deployment posture.", bullets: ["Customer-managed infrastructure", "Optional restricted-network operation", "Position carefully and only when the buyer demands it"] },
+];
+
+const QUICK_PROMPTS = [
+  "What does CAAi CLERK do for county clerks?",
+  "How should we describe Tier 2 without overclaiming compliance?",
+  "What standards language is safe for a county-buyer deck?",
+  "How does CAAi Trust Layer make the CLERK demo look more credible?",
+];
+
+const HERO_PROMPTS = [
+  "What deployment tier fits a Kentucky county clerk office with scanned permit packets and moderate sensitivity?",
+  "How does CAAi CLERK handle FOIA triage with secure RAG?",
+  "What standards language should we use when describing CAAi CLERK to a county buyer?",
+];
+
+const KEYS = { phase: "clerk-phase-v1", checklist: "clerk-checklist-v1", notes: "clerk-notes-v1", history: "clerk-history-v1" };
+let currentPhase = Number(localStorage.getItem(KEYS.phase) || 1);
+let checklistState = JSON.parse(localStorage.getItem(KEYS.checklist) || "{}");
+let workspaceNotes = localStorage.getItem(KEYS.notes) || "";
+let chatHistory = JSON.parse(localStorage.getItem(KEYS.history) || "[]");
+
+const byId = (id) => document.getElementById(id);
+const saveState = () => {
+  localStorage.setItem(KEYS.phase, String(currentPhase));
+  localStorage.setItem(KEYS.checklist, JSON.stringify(checklistState));
+  localStorage.setItem(KEYS.notes, workspaceNotes);
+  localStorage.setItem(KEYS.history, JSON.stringify(chatHistory.slice(-8)));
+};
+const completeCount = () => CHECKLIST.filter(item => checklistState[item.id]).length;
+const requiredRemaining = () => CHECKLIST.filter(item => item.required && !checklistState[item.id]).length;
+const readinessScore = () => Math.round((completeCount() / CHECKLIST.length) * 100);
+const escapeHtml = (value) => value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;");
+
+function renderHeroStats() {
+  byId("hero-stats").innerHTML = [
+    ["5", "Pre-built county workflows for records, meetings, permits, and board materials."],
+    ["3", "Hosting tiers spanning managed cloud, customer-managed government cloud, and optional air-gap."],
+    ["NIST", "Aligned messaging for AI RMF, the GenAI profile, and OWASP LLM risks."],
+    ["Audit", "Evidence-rich responses with source trace, verdict, and control-check details."],
+  ].map(([value, text]) => `<div class="summary-card"><strong>${value}</strong><span>${text}</span></div>`).join("");
+}
+
+function renderWorkflowCards() {
+  byId("workflow-grid").innerHTML = WORKFLOWS.map((item, index) => `
+    <article class="workflow-card">
+      <div class="eyebrow">0${index + 1}</div>
+      <h3>${item.title}</h3>
+      <p class="card-copy">${item.description}</p>
+      <ul>${item.bullets.map(bullet => `<li>${bullet}</li>`).join("")}</ul>
+    </article>
+  `).join("");
+}
+
+function renderSummary() {
+  byId("summary-grid").innerHTML = `
+    <div class="summary-card"><strong>${readinessScore()}%</strong><span>Readiness score</span></div>
+    <div class="summary-card"><strong>${completeCount()}/${CHECKLIST.length}</strong><span>Checklist items completed</span></div>
+    <div class="summary-card"><strong>${requiredRemaining()}</strong><span>Required blockers remaining</span></div>
+    <div class="summary-card"><strong>${currentPhase}</strong><span>Current execution phase</span></div>
+  `;
+}
+
+function renderPhases() {
+  byId("phase-grid").innerHTML = PHASES.map(phase => `
+    <button class="phase-card ${phase.id === currentPhase ? "active" : ""}" data-phase="${phase.id}" type="button">
+      <div class="phase-num">${phase.id}</div>
+      <h3>${phase.name}</h3>
+      <small>Weeks ${phase.weeks}</small>
+      <p class="phase-copy" style="margin-top:10px">${phase.description}</p>
+    </button>
+  `).join("");
+  document.querySelectorAll("[data-phase]").forEach(node => node.addEventListener("click", () => {
+    currentPhase = Number(node.dataset.phase);
+    saveState();
+    renderSummary();
+    renderPhases();
+  }));
+}
+
+function renderChecklist() {
+  byId("checklist-root").innerHTML = PHASES.map(phase => `
+    <div class="checklist-group">
+      <h4>Phase ${phase.id} / ${phase.name}</h4>
+      ${CHECKLIST.filter(item => item.phase === phase.id).map(item => `
+        <button class="check-item ${checklistState[item.id] ? "done" : ""}" data-check="${item.id}" type="button">
+          <span class="check-box">${checklistState[item.id] ? "&#10003;" : ""}</span>
+          <span>
+            <strong>${item.label}</strong>
+            <div class="check-text">${item.required ? "Required before stronger external selling motions." : "Recommended once the product and buyer pull justify it."}</div>
+            ${item.required ? '<span class="tag">Required</span>' : ""}
+          </span>
+        </button>
+      `).join("")}
+    </div>
+  `).join("");
+  document.querySelectorAll("[data-check]").forEach(node => node.addEventListener("click", () => {
+    checklistState[node.dataset.check] = !checklistState[node.dataset.check];
+    saveState();
+    renderSummary();
+    renderChecklist();
+  }));
+}
+
+function renderControls() {
+  byId("control-grid").innerHTML = CONTROLS.map(item => `
+    <article class="control-card">
+      <div class="meta">${item.id}</div>
+      <h3>${item.name}</h3>
+      <div class="progress"><span style="width:${item.progress}%"></span></div>
+      <div class="mini-meta">${item.progress}% attention coverage</div>
+      <p style="margin-top:10px">${item.detail}</p>
+    </article>
+  `).join("");
+}
+
+function renderTiers() {
+  byId("tier-grid").innerHTML = TIERS.map(item => `
+    <article class="tier-card">
+      <div class="eyebrow">${item.id}</div>
+      <h3 style="margin-top:12px">${item.title}</h3>
+      <div class="meta" style="margin-top:6px">${item.badge}</div>
+      <p style="margin-top:12px">${item.description}</p>
+      <ul>${item.bullets.map(bullet => `<li>${bullet}</li>`).join("")}</ul>
+    </article>
+  `).join("");
+}
+
+function renderPromptSets() {
+  byId("hero-prompts").innerHTML = HERO_PROMPTS.map(prompt => `<button type="button">${prompt}</button>`).join("");
+  byId("quick-prompts").innerHTML = QUICK_PROMPTS.map(prompt => `<button type="button">${prompt}</button>`).join("");
+  byId("hero-prompts").querySelectorAll("button").forEach((button, index) => button.addEventListener("click", () => {
+    byId("chat-input").value = HERO_PROMPTS[index];
+    byId("advisor").scrollIntoView({ behavior: "smooth" });
+  }));
+  byId("quick-prompts").querySelectorAll("button").forEach((button, index) => button.addEventListener("click", () => {
+    byId("chat-input").value = QUICK_PROMPTS[index];
+    sendChat();
+  }));
+}
+
+function renderChat() {
+  if (!chatHistory.length) {
+    byId("chat-history").innerHTML = `
+      <div class="message">
+        <div class="message-top"><div class="role">CLERK Advisor</div><div class="verdict GREEN">Ready</div></div>
+        <div class="message-body">Ask about county workflows, deployment tiers, standards language, or the CLERK go-to-market plan. Responses come only from the dedicated CLERK knowledge collection in this secure environment. If CLERK cannot ground the answer or the request requires open-web access, it will decline and log the question for follow-up.</div>
+      </div>
+    `;
+    return;
+  }
+
+  byId("chat-history").innerHTML = chatHistory.map(entry => {
+    if (entry.role === "user") {
+      return `<div class="message user"><div class="message-top"><div class="role">You</div></div><div class="message-body">${escapeHtml(entry.content)}</div></div>`;
+    }
+    
+    // Clean, premium rendering: synthesized text as paragraphs, no raw source lists.
+    const bodyHtml = escapeHtml(entry.content).split("\n").filter(p => p.trim()).map(p => `<p>${p}</p>`).join("");
+    const evidence = entry.evidence ? `<div class="source-meta" style="margin-top:12px">Trace ID: ${escapeHtml(entry.evidence.request_id)}</div>` : "";
+    const followUp = entry.requires_follow_up
+      ? `<div class="follow-up-note">${entry.needs_open_web
+          ? "CLERK is isolated from the open web in this secure environment, so it cannot complete requests that require live internet access."
+          : "CLERK could not answer that confidently from approved internal sources, so the question has been logged for follow-up."}</div>`
+      : "";
+    
+    return `
+      <div class="message">
+        <div class="message-top">
+          <div class="role">CLERK Advisor</div>
+          <div class="verdict ${entry.verdict || "GREEN"}">${entry.verdict || "GREEN"}</div>
+        </div>
+        <div class="message-body">${bodyHtml}</div>
+        ${followUp}
+        ${evidence}
+      </div>
+    `;
+  }).join("");
+}
+
+async function askClerk(query) {
+  const response = await fetch("/api/clerk/search", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, collection: "clerk_knowledge" }),
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error(data.detail || "CLERK request failed.");
+  return data;
+}
+
+async function sendChat() {
+  const input = byId("chat-input");
+  const query = input.value.trim();
+  if (!query) return;
+  chatHistory.push({ role: "user", content: query });
+  renderChat();
+  saveState();
+  input.value = "";
+  byId("chat-loading").style.display = "block";
+  try {
+    const result = await askClerk(query);
+    chatHistory.push({
+      role: "assistant",
+      content: result.answer,
+      verdict: result.verdict,
+      sources: result.sources,
+      safeguard_checks: result.safeguard_checks,
+      evidence: result.evidence,
+      requires_follow_up: result.requires_follow_up,
+      needs_open_web: result.needs_open_web
+    });
+  } catch (error) {
+    chatHistory.push({ role: "assistant", content: error.message, verdict: "RED", sources: [], safeguard_checks: [] });
+  } finally {
+    chatHistory = chatHistory.slice(-8);
+    byId("chat-loading").style.display = "none";
+    renderChat();
+    saveState();
+    byId("chat-history").scrollTop = byId("chat-history").scrollHeight;
+  }
+}
+
+function exportWorkspace() {
+  const payload = {
+    exported_at: new Date().toISOString(),
+    product: "CAAi CLERK",
+    current_phase: currentPhase,
+    readiness_score: readinessScore(),
+    checklist: CHECKLIST.map(item => ({ id: item.id, label: item.label, phase: item.phase, required: item.required, complete: !!checklistState[item.id] })),
+    notes: workspaceNotes,
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "caai-clerk-workspace-export.json";
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function resetWorkspace() {
+  currentPhase = 1;
+  checklistState = {};
+  workspaceNotes = "";
+  chatHistory = [];
+  byId("workspace-notes").value = "";
+  renderSummary();
+  renderPhases();
+  renderChecklist();
+  renderChat();
+  saveState();
+}
+
+function initWorkspace() {
+  byId("workspace-notes").value = workspaceNotes;
+  byId("workspace-notes").addEventListener("input", () => { workspaceNotes = byId("workspace-notes").value; saveState(); });
+  byId("send-chat").addEventListener("click", sendChat);
+  byId("chat-input").addEventListener("keydown", event => { if (event.key === "Enter") sendChat(); });
+  byId("export-workspace").addEventListener("click", exportWorkspace);
+  byId("reset-workspace").addEventListener("click", resetWorkspace);
+  renderHeroStats();
+  renderWorkflowCards();
+  renderSummary();
+  renderPhases();
+  renderChecklist();
+  renderControls();
+  renderTiers();
+  renderPromptSets();
+  renderChat();
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add("visible"); }), { threshold: .16 });
+  document.querySelectorAll(".reveal").forEach(node => observer.observe(node));
+}
+
+initWorkspace();
+</script>
+<script>
+if (window.initCatalystContactForm) {
+  window.initCatalystContactForm({
+    product: "CAAi CLERK",
+    endpoint: "/api/contact",
+    salesEmail: "sales@catalystappliedai.com"
+  });
+}
+</script>
+</body>
+</html>
