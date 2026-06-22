@@ -1,0 +1,21 @@
+# Robots.txt for catalystappliedai.com
+# Allow all search engine crawlers
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_internal/
+
+# Sitemap location
+Sitemap: https://catalystappliedai.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Google-specific
+User-agent: Googlebot
+Allow: /
+
+# Bing-specific
+User-agent: Bingbot
+Allow: /
