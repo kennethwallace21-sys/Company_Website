@@ -1,42 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { 
+import {
     Menu, X, ChevronDown, ChevronRight,
-    Search, GraduationCap, Cpu, Database,
-    Zap, Layout, Mic, FileSearch
+    FileSearch, Workflow, Users, BarChart3, Bot
 } from 'lucide-react';
 
 const navItems = [
     {
         label: 'Solutions',
-        featured: { label: 'All Services', path: '/#services' },
+        featured: { label: 'All Solutions', path: '/#services' },
         compact: true,
         columns: [
             {
-                heading: 'Strategy',
+                heading: 'Solutions',
                 links: [
-                    { label: 'AI Tools Implementation', path: '/ServiceDetail?service=ai-implementation', icon: Layout },
-                ]
-            },
-            {
-                heading: 'Engineering',
-                links: [
-                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', icon: Cpu },
-                    { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', icon: Database },
-                ]
-            },
-            {
-                heading: 'Automation',
-                links: [
-                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', icon: Zap },
-                    { label: 'Voice & Conversational AI', path: '/ServiceDetail?service=voice-ai', icon: Mic },
-                ]
-            },
-            {
-                heading: 'Intelligence',
-                links: [
-                    { label: 'Enterprise Model Deployment', path: '/ServiceDetail?service=custom-rag', icon: FileSearch },
+                    { label: 'RAG Knowledge Systems', path: '/ServiceDetail?service=rag-knowledge-systems', description: 'Query your documents with cited, auditable answers', icon: FileSearch },
+                    { label: 'Agentic Workflow Engines', path: '/ServiceDetail?service=agentic-workflow-engines', description: 'Multi-step processes run end-to-end, with oversight', icon: Workflow },
+                    { label: 'Human Capital Management', path: '/ServiceDetail?service=hcm-platform', description: 'AI workforce intelligence & compliance reporting', icon: Users },
+                    { label: 'Signal Intelligence', path: '/ServiceDetail?service=signal-intelligence', description: 'Raw operational data into decision-quality signals', icon: BarChart3 },
+                    { label: 'Customized AI Agents', path: '/ServiceDetail?service=ai-agents', description: 'Purpose-built agents deployed in your environment', icon: Bot },
                 ]
             }
         ]
