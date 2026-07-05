@@ -14,19 +14,19 @@ const services = [
     {
         icon: Search,
         title: "Discovery & Diagnostic",
-        description: "Find your fastest ROI opportunities and build a roadmap that pays for itself",
+        description: "A short scoping engagement that maps where AI pays off in your workflows and ends with a concrete build plan",
         features: [
             "Spot top ROI opportunities in workflows",
             "Forecast impact (time saved, cost reduced)",
             "Get a tailored AI readiness score",
-            "Clear, actionable strategy aligned with goals"
+            "Leave with a concrete build plan"
         ],
         gradient: "from-blue-400 to-blue-500"
     },
     {
         icon: Cpu,
         title: "Custom AI Solutions",
-        description: "Turn complex problems into practical AI tools that work",
+        description: "Turn complex problems into working AI tools",
         features: [
             "Build generative AI apps for content & insights",
             "Develop predictive models for forecasting",

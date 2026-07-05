@@ -5,7 +5,7 @@ const SITE_URL = 'https://catalystappliedai.com';
 const DEFAULT_IMAGE = `${SITE_URL}/logo.jpg`;
 
 /**
- * SEOHead — Dynamic per-page SEO meta tags.
+ * SEOHead: Dynamic per-page SEO meta tags.
  * 
  * Usage:
  *   <SEOHead 
@@ -25,7 +25,7 @@ export default function SEOHead({
 }) {
     const fullTitle = title
         ? `${title} | Catalyst Applied AI`
-        : 'Catalyst Applied AI | Practical AI Solutions for Business';
+        : 'Catalyst Applied AI | Production AI Deployed in Your Environment';
 
     const canonicalUrl = `${SITE_URL}${path}`;
 

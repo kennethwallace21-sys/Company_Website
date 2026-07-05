@@ -2,8 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Mail, MapPin, Linkedin, Phone } from 'lucide-react';
+import { Mail, MapPin, Linkedin, Phone, Facebook, Instagram } from 'lucide-react';
 import { fadeUp, staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
+
+const XIcon = (props) => (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+        <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>
+    </svg>
+);
 
 export default function Footer() {
     return (
@@ -37,8 +43,46 @@ export default function Footer() {
                             </span>
                         </Link>
                         <p className="text-slate-400 text-sm">
-                            Practical AI solutions that deliver real business results.
+                            AI that runs where your data lives. Governed. Auditable. Yours.
                         </p>
+                        <div role="navigation" aria-label="Social media" className="flex items-center gap-3 mt-4">
+                            <a
+                                href="https://www.linkedin.com/company/catalyst-applied-ai"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="LinkedIn"
+                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                            >
+                                <Linkedin className="w-5 h-5" />
+                            </a>
+                            <a
+                                href="https://x.com/CatalystApplied"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="X"
+                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                            >
+                                <XIcon className="w-5 h-5" />
+                            </a>
+                            <a
+                                href="https://www.facebook.com/Catalystappliedai"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Facebook"
+                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                            >
+                                <Facebook className="w-5 h-5" />
+                            </a>
+                            <a
+                                href="https://www.instagram.com/catalystappliedai/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Instagram"
+                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                            >
+                                <Instagram className="w-5 h-5" />
+                            </a>
+                        </div>
                     </motion.div>
 
                     {/* Services Links */}
@@ -101,12 +145,6 @@ export default function Footer() {
                                 <a href="tel:+15024168342" className="text-slate-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
                                     <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                     +1-502-416-8342
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://www.linkedin.com/company/catalyst-applied-ai/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-blue-400 transition-colors text-sm flex items-center gap-2 group">
-                                    <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                                    LinkedIn
                                 </a>
                             </li>
                             <li className="text-slate-400 text-sm flex items-start gap-2">

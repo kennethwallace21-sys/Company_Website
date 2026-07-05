@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { 
-    Menu, X, ChevronDown, ChevronRight, 
-    Search, GraduationCap, Cpu, Database, 
-    Wrench, Zap, Layout, Bot, Box 
+import {
+    Menu, X, ChevronDown, ChevronRight,
+    Search, GraduationCap, Cpu, Database,
+    Wrench, Zap, Layout, Bot, Box, BarChart3
 } from 'lucide-react';
 
 const navItems = [
@@ -16,8 +16,8 @@ const navItems = [
             {
                 heading: 'Architecture',
                 links: [
-                    { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', description: 'AI opportunity audit', icon: Search },
-                    { label: 'AI Strategy & Roadmap', path: '/ServiceDetail?service=discovery-diagnostic', description: 'Implementation path', icon: Layout },
+                    { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', description: 'Scoping engagement', icon: Search },
+                    { label: 'Scoping & Architecture', path: '/ServiceDetail?service=discovery-diagnostic', description: 'Implementation path', icon: Layout },
                     { label: 'Training & Enablement', path: '/ServiceDetail?service=training-support', description: 'Team upskilling', icon: GraduationCap },
                 ]
             },
@@ -42,7 +42,7 @@ const navItems = [
                 links: [
                     { label: 'Predictive Analytics', path: '/ServiceDetail?service=data-engineering', description: 'Future-cast insights', icon: Database },
                     { label: 'Computer Vision', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Visual data processing', icon: Cpu },
-                    { label: 'Sentiment Analysis', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Textual tone audit', icon: Search },
+                    { label: 'Sentiment Analysis', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Automated tone scoring', icon: Search },
                 ]
             }
         ]
@@ -146,7 +146,7 @@ export default function Navbar({ showNav }) {
                     >
                         <div className="max-w-7xl mx-auto px-6">
                             <div className="flex items-center justify-between h-20">
-                                {/* Left — Logo */}
+                                {/* Left: Logo */}
                                 <Link 
                                     to="/" 
                                     className="flex items-center gap-3 group" 
@@ -163,7 +163,7 @@ export default function Navbar({ showNav }) {
                                     </span>
                                 </Link>
 
-                                {/* Right — Nav + CTA grouped */}
+                                {/* Right: Nav + CTA grouped */}
                                 <div className="hidden md:flex items-center gap-1 bg-white/[0.06] backdrop-blur-sm border border-white/[0.08] rounded-full px-2 py-1.5">
                                     {navItems.map((item) => (
                                         <div

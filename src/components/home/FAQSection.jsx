@@ -6,7 +6,7 @@ import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 const faqs = [
     {
         question: "How do you determine which AI solutions are best for my business?",
-        answer: "We begin with our proprietary Discovery & Diagnostic process. We analyze your existing workflows, identify manual bottlenecks, and assess your data readiness. We only recommend solutions where we can forecast a clear, measurable ROI."
+        answer: "We start with a short Discovery & Diagnostic scoping engagement. We map your existing workflows, find the manual bottlenecks, and assess your data readiness, then hand you a build plan with a clear, measurable ROI forecast."
     },
     {
         question: "How long does it typically take to see results?",
@@ -22,7 +22,7 @@ const faqs = [
     },
     {
         question: "Do we need an in-house data science team to work with you?",
-        answer: "Not alert. Our mission is to bridge the gap for organizations that don't have extensive in-house AI expertise. We act as your external AI department, providing everything from strategy to long-term support."
+        answer: "No. That's the point of working with us: we build and deploy the AI systems, so you don't need an in-house AI team to get value from them. We stay involved from the build through long-term support."
     }
 ];
 

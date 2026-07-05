@@ -15,11 +15,11 @@ const allFaqs = [
         items: [
             {
                 question: "What exactly does Catalyst Applied AI do?",
-                answer: "We are a practical AI partner. We help businesses cut through the hype to find, design, and build AI tools that actually solve problems—whether that's automating a tedious document review process or building a custom platform to manage your company's internal knowledge."
+                answer: "We build production AI systems and deploy them inside your environment. That includes automating a tedious document review process, extracting intelligence from internal records, and building custom platforms that manage your company's internal knowledge."
             },
             {
                 question: "What makes you different from a generic software agency?",
-                answer: "We focus exclusively on Applied AI. Unlike general agencies, we understand the specific nuances of 'grounded' AI—ensuring your models don't hallucinate, your data stays private, and every tool we build has a measurable Return on Investment (ROI)."
+                answer: "We focus exclusively on Applied AI. Unlike general agencies, we understand the specific nuances of 'grounded' AI: ensuring your models don't hallucinate, your data stays private, and every tool we build has a measurable Return on Investment (ROI)."
             },
             {
                 question: "Do you work with small businesses?",
@@ -32,7 +32,7 @@ const allFaqs = [
         items: [
             {
                 question: "What is the 'Discovery & Diagnostic' service?",
-                answer: "It is our high-impact audit. We look at your current manual workflows, identify where humans are slowed down by repetitive data tasks, and give you a prioritized roadmap of which AI features will give you the most 'bang for your buck' first."
+                answer: "It's a short scoping engagement. We look at your current manual workflows, find where humans are slowed down by repetitive data tasks, and hand you a concrete build plan for the AI features that will pay off first."
             },
             {
                 question: "How do your Custom AI Solutions work?",

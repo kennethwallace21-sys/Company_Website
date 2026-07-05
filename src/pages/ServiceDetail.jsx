@@ -12,20 +12,20 @@ import SEOHead from '../components/SEOHead';
 const servicesData = {
     'discovery-diagnostic': {
         title: 'Discovery & Diagnostic',
-        subtitle: 'Find your fastest ROI opportunities and build a roadmap that pays for itself',
+        subtitle: 'A short scoping engagement that maps where AI pays off in your workflows and ends with a concrete build plan',
         heroImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1920&q=80',
-        description: 'Our Discovery & Diagnostic service helps you identify the highest-impact AI opportunities in your organization. We analyze your workflows, data, and processes to create a clear roadmap for AI implementation.',
+        description: 'Our Discovery & Diagnostic engagement is a short, focused scoping sprint. We map your workflows, data, and processes to find the highest-impact places for AI, and you walk away with a concrete build plan.',
         benefits: [
             'Identify top ROI opportunities in your workflows',
             'Get a tailored AI readiness assessment',
             'Forecast impact: time saved, costs reduced',
-            'Receive a clear, actionable strategy aligned with your goals'
+            'Walk away with a concrete, actionable build plan'
         ],
         process: [
             { step: 1, title: 'Assessment', description: 'We conduct in-depth interviews and process analysis' },
             { step: 2, title: 'Analysis', description: 'Our team identifies automation opportunities and ROI potential' },
-            { step: 3, title: 'Roadmap', description: 'You receive a prioritized implementation plan' },
-            { step: 4, title: 'Presentation', description: 'We present findings with clear recommendations' }
+            { step: 3, title: 'Build Plan', description: 'You receive a prioritized, ready-to-build plan' },
+            { step: 4, title: 'Handoff', description: 'We walk through the plan and the recommended next steps' }
         ],
         stats: [
             { value: 'Efficiency', label: 'Cost optimization focus' },
@@ -35,7 +35,7 @@ const servicesData = {
     },
     'custom-ai-solutions': {
         title: 'Custom AI Solutions',
-        subtitle: 'Turn complex problems into practical AI tools that work',
+        subtitle: 'Turn complex problems into working AI tools',
         heroImage: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&q=80',
         description: 'We build bespoke AI solutions tailored to your specific business challenges. From generative AI applications to predictive models, we create tools that integrate seamlessly with your existing workflows.',
         benefits: [
@@ -91,7 +91,7 @@ const servicesData = {
             'Implement dashboards for real-time insights'
         ],
         process: [
-            { step: 1, title: 'Audit', description: 'Assess current data infrastructure' },
+            { step: 1, title: 'Assess', description: 'Assess current data infrastructure' },
             { step: 2, title: 'Architecture', description: 'Design scalable data systems' },
             { step: 3, title: 'Build', description: 'Implement pipelines and integrations' },
             { step: 4, title: 'Validate', description: 'Ensure data quality and governance' }
@@ -337,14 +337,14 @@ export default function ServiceDetail() {
                         Ready to Get Started with {service.title}?
                     </h2>
                     <p className="text-slate-300 text-lg mb-8">
-                        Book a free consultation to discuss how we can help transform your business with AI.
+                        Tell us what you are trying to automate. We will show you what we would build.
                     </p>
                     <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-block">
                         <Button
                             onClick={() => window.location.href = `mailto:sales@catalystappliedai.com?subject=${encodeURIComponent(service.title)} Inquiry`}
                             className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-10 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
                         >
-                            Schedule a Consultation
+                            Book a Demo
                             <ArrowRight className="ml-2 w-5 h-5" />
                         </Button>
                     </motion.div>

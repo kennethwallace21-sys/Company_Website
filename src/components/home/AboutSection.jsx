@@ -59,8 +59,8 @@ export default function AboutSection() {
                             Empowering <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">AI Solutions</span>
                         </h2>
                         <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                            Catalyst Applied AI helps organizations identify, design, and implement practical AI solutions.
-                            We bridge the gap between potential and performance, unlocking opportunities that drive real business value.
+                            Catalyst Applied AI builds production AI systems and deploys them inside your environment.
+                            We ship agents, RAG systems, and automations that plug into how your team already works.
                         </p>
 
                         {/* Values */}
