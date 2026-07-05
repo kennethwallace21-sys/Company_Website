@@ -76,7 +76,7 @@ function useShaderBackground(containerRef) {
         const gl = canvas.getContext('webgl2');
 
         if (prefersReduced || !gl) {
-            // Static gradient fallback — no animation, no GPU cost
+            // Static gradient fallback: no animation, no GPU cost
             canvas.style.background = 'linear-gradient(135deg, #060a14 0%, #0d1a2d 40%, #0a1628 70%, #060a14 100%)';
             return;
         }
@@ -214,8 +214,8 @@ export default function HeroSection() {
                         transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className="text-lg sm:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed"
                     >
-                        We help organizations identify, design, and implement practical AI solutions
-                        that drive real business value. Save time. Cut costs. Stay focused.
+                        We build production AI systems and deploy them inside your environment: RAG,
+                        agentic workflows, and domain-trained AI agents. Save time. Cut costs. Keep your data yours.
                     </motion.p>
 
                     {/* Benefits */}

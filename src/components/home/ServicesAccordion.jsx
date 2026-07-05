@@ -59,10 +59,10 @@ export default function ServicesAccordion() {
                 items={servicesData}
                 title={
                     <>
-                        Practical <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">AI Solutions</span> for Your Business
+                        Production <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">AI Systems</span> for Your Business
                     </>
                 }
-                subtitle="We bridge the gap between potential and performance. From discovery to deployment, our comprehensive services transform how you work with AI. Click any service to learn more."
+                subtitle="We scope it, build it, and deploy it in your environment. Click any service to learn more."
                 ctaText="Book Your ROI Assessment"
                 ctaHref="mailto:sales@catalystappliedai.com?subject=Request%20for%20Information"
                 defaultActiveIndex={1}

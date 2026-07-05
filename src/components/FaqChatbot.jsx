@@ -5,7 +5,7 @@ import { MessageCircle, X, ChevronRight, Search, Send, RotateCcw } from 'lucide-
 const faqs = [
     {
         question: "What exactly does Catalyst Applied AI do?",
-        answer: "We help businesses build practical AI tools that solve real problems—like automating manual document reviews or extracting intelligence from internal records. We focus on ROI, not hype."
+        answer: "We build production AI systems and deploy them inside your environment: things like automating manual document reviews or extracting intelligence from internal records. We focus on ROI, not hype."
     },
     {
         question: "What is CAAi CLERK?",
@@ -20,8 +20,8 @@ const faqs = [
         answer: "We build fully managed AI deployments using techniques like RAG and restricted trust layers to ensure your AI only uses your private data and never makes things up."
     },
     {
-        question: "What is a 'Discovery & Diagnostic' audit?",
-        answer: "It's a high-impact review where we identify exactly where AI can save you the most time and money in your current workflows before you commit to building anything."
+        question: "What is the 'Discovery & Diagnostic' service?",
+        answer: "It's a short scoping engagement where we map exactly where AI can save you the most time and money in your current workflows, and end with a concrete build plan."
     },
     {
         question: "Is my data used to train public models like ChatGPT?",
@@ -77,7 +77,7 @@ function findBestMatch(userMessage) {
         { keywords: ['location', 'located', 'based', 'where are you', 'office', 'remote', 'kentucky', 'onsite', 'on-site'], index: 12 },
         { keywords: ['chatbot', 'virtual assistant', 'conversational', 'chat bot', 'bot'], index: 13 },
         { keywords: ['measure', 'success', 'kpi', 'metric', 'roi', 'results', 'track'], index: 14 },
-        { keywords: ['strategy', 'roadmap', 'consulting', 'advisory', 'guidance', 'plan', 'without building'], index: 15 },
+        { keywords: ['strategy', 'roadmap', 'scoping', 'architecture', 'guidance', 'plan', 'without building'], index: 15 },
     ];
 
     // Check keyword map first (highest priority)
@@ -134,7 +134,7 @@ function findBestMatch(userMessage) {
     }
 
     // Fallback
-    return "Great question! I don't have a specific answer for that, but our team would love to help. You can reach us at **sales@catalystappliedai.com** or call **502-416-8342** for a free consultation. You can also browse the suggested questions below! 👇";
+    return "Great question! I don't have a specific answer for that, but our team would love to help. You can reach us at **sales@catalystappliedai.com** or call **502-416-8342** to talk through what you need. You can also browse the suggested questions below! 👇";
 }
 
 export default function FaqChatbot() {
@@ -227,7 +227,7 @@ export default function FaqChatbot() {
 
     // Render message text with bold markdown (**text**)
     // SECURITY NOTE: This is safe from XSS because React escapes string children
-    // by default. Do NOT change this to use dangerouslySetInnerHTML — if you do,
+    // by default. Do NOT change this to use dangerouslySetInnerHTML: if you do,
     // user-typed chatbot input becomes an XSS injection vector.
     const renderText = (text) => {
         const parts = text.split(/(\*\*.*?\*\*)/g);
