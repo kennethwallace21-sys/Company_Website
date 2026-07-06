@@ -9,37 +9,37 @@ const servicesData = [
     {
         id: 1,
         title: 'Discovery & Diagnostic',
-        imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80',
+        imageUrl: '/services/discovery-diagnostic.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=discovery-diagnostic'
     },
     {
         id: 2,
         title: 'Custom AI Solutions',
-        imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80',
+        imageUrl: '/services/custom-ai-solutions.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=custom-ai-solutions'
     },
     {
         id: 3,
         title: 'Workflow Automation',
-        imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+        imageUrl: '/services/workflow-automation.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=workflow-automation'
     },
     {
         id: 4,
         title: 'Data Engineering',
-        imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
+        imageUrl: '/services/data-engineering.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=data-engineering'
     },
     {
         id: 5,
         title: 'AI Implementation',
-        imageUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80',
+        imageUrl: '/services/ai-implementation.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=ai-implementation'
     },
     {
         id: 6,
         title: 'Training & Support',
-        imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80',
+        imageUrl: '/services/training-support.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=training-support'
     },
 ];
