@@ -9,7 +9,6 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
-import { Analytics } from "@vercel/analytics/react"
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollToTop from '@/components/ScrollToTop';
 
@@ -117,7 +116,6 @@ function App() {
                         <ScrollToTop />
                         <NavigationTracker />
                         <AuthenticatedApp />
-                        <Analytics />
                         <Suspense fallback={null}>
                             <FaqChatbot />
                         </Suspense>
