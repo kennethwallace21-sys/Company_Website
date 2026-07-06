@@ -1,15 +1,31 @@
-# Catalyst Applied AI — Website (catalyst-applied-ai)
+# Catalyst Applied AI Website (catalyst-applied-ai)
 
-Production marketing site for **Catalyst Applied AI (CAAi)** — *production AI deployed
+Production marketing site for **Catalyst Applied AI (CAAi)**: *production AI deployed
 inside your environment* (RAG, agentic workflows, workforce intelligence, and
-domain-trained AI agents; government & enterprise ready).
+domain-trained AI agents; government and enterprise ready).
 
-**This is the live site at [catalystappliedai.com](https://catalystappliedai.com).**
-React (Vite) SPA + serverless contact API, deployed on **Vercel** with Cloudflare in
-front for DNS/CDN.
+React (Vite) SPA + serverless contact API. Cloudflare fronts the DNS/CDN for
+[catalystappliedai.com](https://catalystappliedai.com).
 
-> A previous static-HTML version lived in the repo `CAAi-company-website` (GitHub Pages).
-> It is **archived/retired** — do not use it. This repo is the single source of truth.
+## Remotes and deploy reality (verified 2026-07-05)
+
+- **Two synced remotes, one codebase:**
+  - GitHub `kennethwallace21-sys/Company_Website` (Vercel deploys pull from here via CLI)
+  - GitLab `caai-main-group/caai_website` (the original repo, used by CAAI's GitLab agents)
+  Keep BOTH in sync: push every change to both remotes.
+- **Vercel:** project `caai_website` in team `catlaystappliedais-projects`
+  (production alias caaiwebsite.vercel.app). There is NO git auto-deploy connected;
+  deploy manually: `npx vercel link --yes --project caai_website --scope
+  catlaystappliedais-projects && npx vercel deploy --prod --yes`.
+- **The public domain** has historically been served by a Cloudflare Pages project built
+  from the GitLab repo (see the June 2026 incident notes in the CAAI social-media-manager
+  memory). If the apex shows stale content, check the Cloudflare zone's Workers & Pages
+  projects and its cache before assuming a deploy failed.
+- The GitLab `development` branch contains an unmerged migration of the contact API to
+  Cloudflare Pages Functions plus Turnstile/CORS hardening; evaluate before discarding.
+
+> Older repos: GitHub `CAAi-company-website` (static HTML, GitHub Pages era) is
+> archived/retired. Do not use it.
 
 ---
 
@@ -19,7 +35,8 @@ front for DNS/CDN.
 - **Routing:** client-side; `vercel.json` rewrites all non-`/api` paths to `index.html`
 - **Serverless API:** `/api/*` (Vercel functions)
 - **Lead pipeline:** `api/send-email.js` → email via **Resend** + persistence in **MongoDB** (Mongoose)
-- **Deploy:** push to `main` → Vercel builds & deploys. PR branches get Vercel preview deploys.
+- **Deploy:** manual, via Vercel CLI (see "Remotes and deploy reality" above). Pushing to
+  git does NOT auto-deploy.
 
 ## Local development
 
