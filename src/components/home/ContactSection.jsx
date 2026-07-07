@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Send, ArrowRight, CheckCircle, Linkedin, Phone } from 'lucide-react';
 import { fadeUp, fadeLeft, fadeRight, scaleUp } from '@/hooks/useFluidReveal';
+import { submitLead } from '@/lib/submitLead';
 
 export default function ContactSection() {
     const [formData, setFormData] = useState({
@@ -23,20 +24,13 @@ export default function ContactSection() {
         setError(null);
         setIsLoading(true);
         try {
-            const base = import.meta.env.VITE_API_URL || '';
-            const res = await fetch(`${base}/api/send-email`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
-            const data = await res.json().catch(() => ({}));
-            if (!res.ok) {
-                throw new Error(data.error || `Request failed (${res.status})`);
+            const { ok, message } = await submitLead(formData);
+            if (!ok) {
+                setError(message || 'Something went wrong. Please try again or email us directly.');
+                return;
             }
             setIsSubmitted(true);
             setFormData({ name: '', email: '', company: '', message: '', website: '' });
-        } catch (err) {
-            setError(err.message || 'Something went wrong. Please try again or email us directly.');
         } finally {
             setIsLoading(false);
         }
