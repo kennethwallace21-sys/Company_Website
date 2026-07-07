@@ -5,17 +5,21 @@ Cloudflare Pages build updates the live domain in a few minutes. Keep GitHub
 `kennethwallace21-sys/Company_Website` main pushed in lockstep (Vercel preview mirror,
 `caaiwebsite.vercel.app`). See README "Remotes and deploy reality".
 
-## P1: Contact form does not deliver leads on the live domain
+## RESOLVED 2026-07-06: Contact form now delivers leads
 
-- `api/send-email.js` is Vercel-serverless format; Cloudflare Pages ignores it, so the
-  form's POST hits the SPA rewrite and dies. Leads are silently lost.
-- The `development` branch already migrates the API to Cloudflare Pages Functions and
-  adds Turnstile CAPTCHA, CORS, and input validation (commits 9a00ca0, b6e5710).
-- Plan: review that branch, rebase or cherry-pick onto current main, then set env vars
-  (`RESEND_API_KEY`, `RESEND_TO_EMAIL` = real sales inbox, `RESEND_FROM_EMAIL`,
-  `MONGODB_URI` if DB persistence is kept, Turnstile keys) in the Cloudflare Pages
-  project settings. Verify with a real submission from the live page.
-- Blocked on: access to the Cloudflare account that owns the Pages project.
+- Root cause: `api/send-email.js` is Vercel-serverless format; Cloudflare Pages ignores
+  it, so the form's POST hit the SPA rewrite, and the 200 response made the UI show a
+  FALSE success while the lead was lost.
+- Fix shipped: client-side delivery via Web3Forms (`src/lib/submitLead.js`), submitted
+  as FormData specifically because a JSON Content-Type triggers a CORS preflight that
+  api.web3forms.com does not answer. Verified live 2026-07-06: real submission from the
+  live domain showed the thank-you state and the email was received.
+- Note: Web3Forms rejects non-browser and headless-localhost submissions by design; do
+  not "verify" this form with curl or a headless browser, test from the live page.
+- Optional upgrade (P3, unblocked only by Cloudflare account access): the `development`
+  branch's Pages Functions migration (Resend + Turnstile + CORS, commits 9a00ca0,
+  b6e5710) adds server-side delivery and DB persistence. If adopted, keep the Web3Forms
+  path as fallback.
 
 ## P2: Cloudflare account consolidation
 
