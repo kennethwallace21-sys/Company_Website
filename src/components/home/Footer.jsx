@@ -51,36 +51,36 @@ export default function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="LinkedIn"
-                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                                className="text-slate-300 hover:text-blue-400 transition-colors"
                             >
-                                <Linkedin className="w-5 h-5" />
+                                <Linkedin className="w-6 h-6" />
                             </a>
                             <a
                                 href="https://x.com/CatalystApplied"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="X"
-                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                                className="text-slate-300 hover:text-blue-400 transition-colors"
                             >
-                                <XIcon className="w-5 h-5" />
+                                <XIcon className="w-6 h-6" />
                             </a>
                             <a
                                 href="https://www.facebook.com/Catalystappliedai"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Facebook"
-                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                                className="text-slate-300 hover:text-blue-400 transition-colors"
                             >
-                                <Facebook className="w-5 h-5" />
+                                <Facebook className="w-6 h-6" />
                             </a>
                             <a
                                 href="https://www.instagram.com/catalystappliedai/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Instagram"
-                                className="text-slate-400 hover:text-blue-400 transition-colors"
+                                className="text-slate-300 hover:text-blue-400 transition-colors"
                             >
-                                <Instagram className="w-5 h-5" />
+                                <Instagram className="w-6 h-6" />
                             </a>
                         </div>
                     </motion.div>
