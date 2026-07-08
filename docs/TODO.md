@@ -1,4 +1,4 @@
-# Website open items (updated 2026-07-07)
+# Website open items (updated 2026-07-08)
 
 Deploy pipeline (verified end-to-end 2026-07-07): the live domain is served by a
 Cloudflare **Worker** named `website` (static assets + SPA fallback), auto-built by
@@ -12,27 +12,24 @@ were correct). If HTML looks stale after a push, purge the zone cache with the t
 at `C:\Users\kenne\.cloudflare\claude-deploys.token` (zone id
 `457c5260bc5194207e0daf632f202993`). See README "Remotes and deploy reality".
 
-## NEXT UP: server-side contact form (Resend + Turnstile)
+## Contact form status: Worker API ported, live secrets still required
 
-- Current state: the contact form delivers via Web3Forms client-side
-  (`src/lib/submitLead.js`), live-verified 2026-07-06 and working. This is a stable
-  fallback, not a dead end, keep it working even after the upgrade below.
-- Upgrade available: DNS on the zone already has `resend._domainkey.catalystappliedai.com`
-  and `send.catalystappliedai.com` (SPF for `amazonses.com`) records, meaning a Resend
-  account was provisioned for this domain at some point. Find that Resend login (check
-  password manager / whoever set up email sending) before starting this.
-- The `development` git branch already has most of the work done: migrates the contact
-  API to Cloudflare (Pages Functions era, will need porting to a Worker fetch handler
-  or bound as the same Worker's routes) with Resend for delivery, Turnstile CAPTCHA,
-  CORS, and input validation (commits `9a00ca0`, `b6e5710`). Review it, port anything
-  that assumed Pages Functions to work with the Worker, then wire it up.
-- Once ported: set env vars/secrets on the Worker (`RESEND_API_KEY`, `RESEND_TO_EMAIL`
-  = real sales inbox, `RESEND_FROM_EMAIL`, Turnstile site/secret keys) via `wrangler
-  secret put` or the dashboard. Verify with a real submission from the live page (same
-  rule as Web3Forms: Resend/Turnstile will also reject non-browser test traffic, so
-  test from the live site in a real browser, not curl or headless).
-- Keep Web3Forms as a fallback path if the new endpoint errors, so a misconfigured
-  secret never silently drops a lead again.
+- Implemented 2026-07-08: `/api/send-email` now runs through the Cloudflare Worker
+  (`src/worker.js`) instead of the old Vercel-format function. The Worker handles
+  CORS, rate limiting, honeypot rejection, input validation, optional Turnstile
+  verification, optional MongoDB Atlas Data API persistence, and Resend delivery.
+- `src/lib/submitLead.js` now tries the Worker first and falls back to Web3Forms when
+  the Worker, Turnstile service, Resend, or required Worker config is unavailable.
+  The Web3Forms path remains the stable client-side fallback verified 2026-07-06.
+- `src/components/home/ContactSection.jsx` renders Cloudflare Turnstile only when
+  `VITE_TURNSTILE_SITE_KEY` is present at build time. The Worker verifies Turnstile
+  only when `TURNSTILE_SECRET_KEY` is set, so the rollout can happen without breaking
+  the current fallback.
+- Still required before calling this live-complete: find the Resend login/API key and
+  set Worker secrets/vars (`RESEND_API_KEY`, `RESEND_TO_EMAIL`, `RESEND_FROM_EMAIL`,
+  optional `TURNSTILE_SECRET_KEY`, optional MongoDB Data API vars) plus the build var
+  `VITE_TURNSTILE_SITE_KEY` if Turnstile is enabled. Then verify with a real browser
+  submission from the live page.
 
 ## P3: Smaller cleanups
 

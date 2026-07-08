@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Mail, MapPin, Linkedin, Phone, Facebook, Instagram } from 'lucide-react';
-import { fadeUp, staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
+import { staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
 
 const XIcon = (props) => (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>

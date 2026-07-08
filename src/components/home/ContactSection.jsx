@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Send, ArrowRight, CheckCircle, Linkedin, Phone } from 'lucide-react';
-import { fadeUp, fadeLeft, fadeRight, scaleUp } from '@/hooks/useFluidReveal';
+import { fadeUp, fadeLeft, fadeRight } from '@/hooks/useFluidReveal';
 import { submitLead } from '@/lib/submitLead';
+
+const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
 export default function ContactSection() {
     const [formData, setFormData] = useState({
@@ -18,15 +20,51 @@ export default function ContactSection() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [turnstileToken, setTurnstileToken] = useState(null);
+    const turnstileRef = useRef(null);
+    const widgetIdRef = useRef(null);
+
+    useEffect(() => {
+        if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return undefined;
+
+        const interval = window.setInterval(() => {
+            if (window.turnstile && turnstileRef.current && widgetIdRef.current === null) {
+                widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+                    sitekey: TURNSTILE_SITE_KEY,
+                    theme: 'dark',
+                    callback: (token) => setTurnstileToken(token),
+                    'expired-callback': () => setTurnstileToken(null),
+                    'error-callback': () => setTurnstileToken(null),
+                });
+                window.clearInterval(interval);
+            }
+        }, 200);
+
+        return () => window.clearInterval(interval);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
+
+        if (TURNSTILE_SITE_KEY && !turnstileToken) {
+            setError('Please complete the verification check.');
+            return;
+        }
+
         setIsLoading(true);
         try {
-            const { ok, message } = await submitLead(formData);
+            const { ok, message } = await submitLead({
+                ...formData,
+                'cf-turnstile-response': turnstileToken,
+                turnstileEnabled: Boolean(TURNSTILE_SITE_KEY),
+            });
             if (!ok) {
                 setError(message || 'Something went wrong. Please try again or email us directly.');
+                if (window.turnstile && widgetIdRef.current !== null) {
+                    window.turnstile.reset(widgetIdRef.current);
+                    setTurnstileToken(null);
+                }
                 return;
             }
             setIsSubmitted(true);
@@ -266,6 +304,9 @@ export default function ContactSection() {
                                         required
                                     />
                                 </div>
+                                {TURNSTILE_SITE_KEY && (
+                                    <div ref={turnstileRef} className="flex-shrink-0 min-h-[65px]" />
+                                )}
                                 {error && (
                                     <motion.p
                                         className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 flex-shrink-0"

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
-import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
+import { fadeUp } from '@/hooks/useFluidReveal';
 import SEOHead from '../components/SEOHead';
 
 export default function TermsAndConditions() {

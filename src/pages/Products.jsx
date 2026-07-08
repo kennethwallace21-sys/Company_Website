@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ExternalLink, BarChart3, Building2, Server, Database, Users, BrainCircuit, ShieldCheck, Briefcase } from 'lucide-react';
+import { ArrowRight, ExternalLink, BarChart3, Server, Database, Users, BrainCircuit, ShieldCheck, Briefcase } from 'lucide-react';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';

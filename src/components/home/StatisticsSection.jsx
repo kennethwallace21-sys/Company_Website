@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
+import { staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 
 const stats = [
     { label: 'Enterprise Deployments', value: '50+', suffix: '', subtext: 'Successfully delivered AI solutions' },

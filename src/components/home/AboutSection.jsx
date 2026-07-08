@@ -1,10 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
-import { Button } from "@/components/ui/button";
-import { Zap, Target, TrendingUp, Users, ArrowRight } from 'lucide-react';
-import { fadeLeft, fadeRight, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
+import { Zap, Target, TrendingUp, Users } from 'lucide-react';
+import { fadeLeft, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 
 const capabilities = [
     {

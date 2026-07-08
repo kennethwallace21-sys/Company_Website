@@ -4,25 +4,25 @@ Production marketing site for **Catalyst Applied AI (CAAi)**: *production AI dep
 inside your environment* (RAG, agentic workflows, workforce intelligence, and
 domain-trained AI agents; government and enterprise ready).
 
-React (Vite) SPA + serverless contact API. Cloudflare fronts the DNS/CDN for
+React (Vite) SPA + Cloudflare Worker contact API. Cloudflare fronts the DNS/CDN for
 [catalystappliedai.com](https://catalystappliedai.com).
 
-## Remotes and deploy reality (verified 2026-07-05)
+## Remotes and deploy reality (verified 2026-07-07)
 
 - **Two synced remotes, one codebase:**
-  - GitHub `kennethwallace21-sys/Company_Website` (Vercel deploys pull from here via CLI)
+  - GitHub `kennethwallace21-sys/Company_Website`
   - GitLab `caai-main-group/caai_website` (the original repo, used by CAAI's GitLab agents)
   Keep BOTH in sync: push every change to both remotes.
-- **Vercel:** project `caai_website` in team `catlaystappliedais-projects`
-  (production alias caaiwebsite.vercel.app). There is NO git auto-deploy connected;
-  deploy manually: `npx vercel link --yes --project caai_website --scope
-  catlaystappliedais-projects && npx vercel deploy --prod --yes`.
-- **The public domain** has historically been served by a Cloudflare Pages project built
-  from the GitLab repo (see the June 2026 incident notes in the CAAI social-media-manager
-  memory). If the apex shows stale content, check the Cloudflare zone's Workers & Pages
-  projects and its cache before assuming a deploy failed.
-- The GitLab `development` branch contains an unmerged migration of the contact API to
-  Cloudflare Pages Functions plus Turnstile/CORS hardening; evaluate before discarding.
+- **Live host:** Cloudflare Worker named `website`, built by Workers Builds from this
+  repo. Push to `main` on either synced remote and the live site deploys in about 5
+  minutes.
+- `wrangler.jsonc` must keep `name: "website"`, `main: "src/worker.js"`, and
+  `assets.directory: "./dist"`. The Worker serves `/api/send-email`; static assets and
+  SPA fallback are handled by Workers static assets.
+- **Vercel:** `caaiwebsite.vercel.app` is only a preview mirror and currently has no
+  production contact-form secrets. The public domain is not served from Vercel.
+- If HTML looks stale after a Cloudflare deploy, purge the zone cache before assuming
+  the build failed.
 
 > Older repos: GitHub `CAAi-company-website` (static HTML, GitHub Pages era) is
 > archived/retired. Do not use it.
@@ -32,11 +32,11 @@ React (Vite) SPA + serverless contact API. Cloudflare fronts the DNS/CDN for
 ## Stack
 
 - **Vite + React (JSX)**, Tailwind CSS, Radix UI / shadcn-style components
-- **Routing:** client-side; `vercel.json` rewrites all non-`/api` paths to `index.html`
-- **Serverless API:** `/api/*` (Vercel functions)
-- **Lead pipeline:** `api/send-email.js` → email via **Resend** + persistence in **MongoDB** (Mongoose)
-- **Deploy:** manual, via Vercel CLI (see "Remotes and deploy reality" above). Pushing to
-  git does NOT auto-deploy.
+- **Routing:** client-side; Workers static assets handle SPA fallback for non-asset paths
+- **Worker API:** `/api/send-email` in `src/worker.js`
+- **Lead pipeline:** Worker → **Resend** email, optional MongoDB Atlas Data API save,
+  client-side Web3Forms fallback
+- **Deploy:** Cloudflare Workers Builds from `main`
 
 ## Local development
 
@@ -48,22 +48,30 @@ npm run preview    # serve the build locally
 npm run lint
 ```
 
-Create a `.env` (and set the same vars in **Vercel → Project → Settings → Environment
-Variables**) — see below.
+Create a local `.env`/`.env.local` for build-time Vite vars. Set Worker runtime secrets
+with `wrangler secret put` or in the Cloudflare dashboard.
 
 ## Required environment variables
 
-The contact form silently degrades without these — **leads can be lost if they're unset.**
+The contact form falls back to Web3Forms without these, but Resend delivery will not be
+active until they are set.
 
 | Variable | Used by | Notes |
 |----------|---------|-------|
-| `RESEND_API_KEY` | `api/send-email.js` | Resend API key. Without it, email send fails. |
-| `RESEND_TO_EMAIL` | `api/send-email.js` | **Where leads are delivered.** Defaults to `delivered@resend.dev` (a black hole) if unset — set this to your real sales inbox. |
-| `RESEND_FROM_EMAIL` | `api/send-email.js` | Verified Resend sender. Defaults to `onboarding@resend.dev`. |
-| `MONGODB_URI` | `src/lib/mongodb.js` | MongoDB connection string. DB save is best-effort (email still sends if DB fails), but `mongodb.js` throws at import if unset. |
+| `RESEND_API_KEY` | `src/worker.js` | Resend API key. If unset, the browser falls back to Web3Forms. |
+| `RESEND_TO_EMAIL` | `src/worker.js` | Where leads are delivered. Set this to the real sales inbox. |
+| `RESEND_FROM_EMAIL` | `src/worker.js` | Verified Resend sender for `catalystappliedai.com` or a verified subdomain. |
+| `TURNSTILE_SECRET_KEY` | `src/worker.js` | Optional. Enables server-side Turnstile verification when set. |
+| `VITE_TURNSTILE_SITE_KEY` | Browser bundle | Optional. Build-time public site key that renders the Turnstile widget. |
+| `MONGODB_DATA_API_KEY` | `src/worker.js` | Optional. Enables best-effort lead persistence through MongoDB Atlas Data API. |
+| `MONGODB_DATA_API_URL` | `src/worker.js` | Optional. Atlas Data API endpoint ending before `/action/insertOne`. |
+| `MONGODB_DATA_SOURCE` | `src/worker.js` | Optional. Defaults to `CatalystAppliedAI`. |
+| `MONGODB_DATABASE` | `src/worker.js` | Optional. Defaults to `catalyst_db`. |
+| `MONGODB_COLLECTION` | `src/worker.js` | Optional. Defaults to `contacts`. |
 
-> ✅ Action for whoever owns deploy: confirm `RESEND_API_KEY` + `RESEND_TO_EMAIL` are set
-> in Vercel, then submit a real test from the live contact form to confirm delivery.
+After setting Resend/Turnstile values, submit a real browser test from the live contact
+form. Do not use curl or headless checks as the final proof; anti-abuse services can
+reject non-browser traffic.
 
 ## SEO & social
 
@@ -94,9 +102,8 @@ this site. They were returning 5xx errors as of last check — investigate separ
 
 ## Notes / backlog
 
-- [ ] Verify Resend env vars in Vercel and send a live test lead (see above).
-- [ ] If apex HTML preview looks stale after a deploy, **purge the Cloudflare cache**
-      (Cloudflare caches in front of Vercel).
+- [ ] Set the Worker Resend secrets/build vars and send a real live-browser test lead.
+- [ ] If apex HTML preview looks stale after a deploy, **purge the Cloudflare cache**.
 - [ ] Investigate the product subdomains' 5xx errors (caai-ops).
 - [ ] Consider server-side rendering / prerender for richer crawler content (currently
       client-rendered with a `<noscript>` fallback).

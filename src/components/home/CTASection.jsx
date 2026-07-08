@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MessageSquare, Zap } from 'lucide-react';
-import { fadeUp, scaleUp } from '@/hooks/useFluidReveal';
+import { scaleUp } from '@/hooks/useFluidReveal';
 
 export default function CTASection() {
     return (
