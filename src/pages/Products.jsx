@@ -9,7 +9,7 @@ import Footer from '../components/home/Footer';
 import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 import SEOHead from '../components/SEOHead';
 
-// Lazy iframe — only loads when scrolled into view
+// Lazy iframe: only loads when scrolled into view
 function LazyIframe({ src, title }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: '200px' });
@@ -41,8 +41,8 @@ const products = [
         id: 'agentic-aiva',
         name: 'Agentic AI Assistants',
         tagline: 'Highly Skilled Autonomous Agents',
-        description: 'Custom, truly agentic assistants (like AIVA for HR) featuring duplex voice capabilities. We build agents that execute complex, multi-step workflows to eliminate repetitive manual processing and reduce operational cycle times.',
-        status: 'Production Ready',
+        description: 'Custom, truly agentic assistants (like AIVA for HR) featuring duplex voice capabilities. We build agents that execute complex, multi-step workflows to reduce repetitive manual processing and operational cycle times.',
+        status: 'Available for deployment',
         url: null,
         icon: Users,
         hasPreview: false
@@ -52,7 +52,7 @@ const products = [
         name: 'Signals & Intelligence',
         tagline: 'Data Transformed into Narratives',
         description: 'We turn raw operational data into meaningful signals. Through AI-generated narratives, actionable insights, and recommendations, we enable leaders to make strategic resource allocations and move faster.',
-        status: 'Production Ready',
+        status: 'Available for deployment',
         url: null,
         icon: BarChart3,
         hasPreview: false
@@ -61,8 +61,8 @@ const products = [
         id: 'custom-rag',
         name: 'Custom RAG Systems',
         tagline: 'Secure Enterprise Knowledge',
-        description: 'Tailor-made Retrieval-Augmented Generation (RAG) systems that integrate securely with your proprietary documents. Get accurate, cited answers without your data ever leaving the perimeter.',
-        status: 'Production Ready',
+        description: 'Tailor-made Retrieval-Augmented Generation (RAG) systems that integrate securely with your proprietary documents. Get grounded, cited answers inside the environment you control.',
+        status: 'Available for deployment',
         url: null,
         icon: Database,
         hasPreview: false
@@ -74,7 +74,7 @@ export default function Products() {
         <div className="min-h-screen bg-[#060a14] overflow-hidden">
             <SEOHead
                 title="AI Products"
-                description="Explore Catalyst Applied AI production offerings: Agentic AI Assistants, Signals & Intelligence, and Custom RAG Systems deployed in your environment."
+                description="Explore Catalyst Applied AI product offerings:Agentic AI Assistants, Signals & Intelligence, and Custom RAG Systems deployed in your environment."
                 path="/Products"
             />
             <Navbar showNav={true} />
@@ -154,7 +154,7 @@ export default function Products() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            Explore our suite of AI-powered products designed to transform how businesses operate, 
+                            Explore the AI products we build and deploy for you, designed to transform how businesses operate,
                             make decisions, and drive growth.
                         </motion.p>
                     </motion.div>
@@ -205,7 +205,7 @@ export default function Products() {
                                             {/* Overlay to prevent interaction */}
                                             <div 
                                                 className="absolute inset-0 cursor-pointer"
-                                                onClick={() => window.open(product.url, '_blank')}
+                                                onClick={() => window.open(product.url, '_blank', 'noopener,noreferrer')}
                                             >
                                                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent" />
                                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
@@ -268,7 +268,7 @@ export default function Products() {
                                             {product.url ? (
                                                 <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                                                     <Button
-                                                        onClick={() => window.open(product.url, '_blank')}
+                                                        onClick={() => window.open(product.url, '_blank', 'noopener,noreferrer')}
                                                         size="sm"
                                                         className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 text-xs h-9"
                                                     >
@@ -378,26 +378,25 @@ export default function Products() {
                     custom={0}
                 >
                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                        More Products Coming Soon
+                        Need something specific?
                     </h2>
                     <p className="text-slate-300 text-lg mb-8">
-                        We're constantly building new AI-powered tools and platforms. 
-                        Subscribe to be the first to know when we launch new products.
+                        Tell us what you are building and we will scope it with you.
                     </p>
                     <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-block">
                         <Button
                             asChild
                             className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
                         >
-                            <Link to={contactUrl('Product Updates Subscription')}>
-                                Get Notified
+                            <Link to={contactUrl('Product Inquiry')}>
+                                Tell us what you need
                                 <ArrowRight className="ml-2 w-5 h-5" />
                             </Link>
                         </Button>
                     </motion.div>
                     <p className="mt-4 text-sm text-slate-400">
                         Or email us at{' '}
-                        <a href="mailto:sales@catalystappliedai.com?subject=Product%20Updates%20Subscription" className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
+                        <a href="mailto:sales@catalystappliedai.com?subject=Product%20Inquiry" className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
                             sales@catalystappliedai.com
                         </a>
                     </p>

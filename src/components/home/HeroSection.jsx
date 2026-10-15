@@ -165,7 +165,7 @@ export default function HeroSection() {
     const benefits = [
         "Deploys in your cloud tenant, including AWS GovCloud",
         "On-prem and air-gapped options",
-        "Your data never leaves your perimeter"
+        "Your data stays in the environment you control"
     ];
 
     const deploymentOptions = [

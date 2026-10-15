@@ -32,13 +32,13 @@ const servicesData = [
     },
     {
         id: 5,
-        title: 'AI Implementation',
+        title: 'AI Tools Implementation',
         imageUrl: '/services/ai-implementation.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=ai-implementation'
     },
     {
         id: 6,
-        title: 'Training & Support',
+        title: 'Training & Enablement',
         imageUrl: '/services/training-support.jpg',
         linkTo: createPageUrl('ServiceDetail') + '?service=training-support'
     },

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { createPageUrl, contactUrl } from '@/utils';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
@@ -98,8 +98,7 @@ const servicesData = {
         ],
         stats: [
             { value: 'Scalable', label: 'Enterprise-ready' },
-            { value: 'Robust', label: 'Reliable platforms' },
-            { value: 'Secure', label: 'High availability' }
+            { value: 'Robust', label: 'Reliable platforms' }
         ]
     },
     'ai-implementation': {
@@ -118,11 +117,6 @@ const servicesData = {
             { step: 2, title: 'Configuration', description: 'Set up security and compliance' },
             { step: 3, title: 'Integration', description: 'Connect with existing systems' },
             { step: 4, title: 'Rollout', description: 'Phased deployment with support' }
-        ],
-        stats: [
-            { value: 'Proven', label: 'Successful implementations' },
-            { value: 'Compliant', label: 'Full regulatory adherence' },
-            { value: 'Swift', label: 'Rapid deployment' }
         ]
     },
     'training-support': {
@@ -141,20 +135,26 @@ const servicesData = {
             { step: 2, title: 'Curriculum', description: 'Design role-based training programs' },
             { step: 3, title: 'Delivery', description: 'Interactive workshops and hands-on labs' },
             { step: 4, title: 'Support', description: 'Ongoing coaching and resources' }
-        ],
-        stats: [
-            { value: 'Expert', label: 'Professional training' },
-            { value: 'Trusted', label: 'Highly recommended' },
-            { value: 'Rated', label: 'Top-tier quality' }
         ]
     }
 };
 
+const DEFAULT_SERVICE = 'discovery-diagnostic';
+
 export default function ServiceDetail() {
     const location = useLocation();
     const urlParams = new URLSearchParams(location.search);
-    const serviceId = urlParams.get('service') || 'discovery-diagnostic';
-    const service = servicesData[serviceId] || servicesData['discovery-diagnostic'];
+    const requestedId = urlParams.get('service');
+
+    // Only real keys of servicesData are valid. Anything else (missing, unknown,
+    // or inherited names like "constructor") redirects to the default service so
+    // the canonical URL and JSON-LD always point at a real page.
+    if (!requestedId || !Object.hasOwn(servicesData, requestedId)) {
+        return <Navigate to={`/ServiceDetail?service=${DEFAULT_SERVICE}`} replace />;
+    }
+
+    const serviceId = requestedId;
+    const service = servicesData[serviceId];
 
     const serviceKeys = Object.keys(servicesData);
     const currentIndex = serviceKeys.indexOf(serviceId);
@@ -176,7 +176,7 @@ export default function ServiceDetail() {
                         '@type': 'Organization',
                         name: 'Catalyst Applied AI'
                     },
-                    url: `https://catalystappliedai.com/ServiceDetail?service=${serviceId}`
+                    url: `https://www.catalystappliedai.com/ServiceDetail?service=${serviceId}`
                 }}
             />
             <Navbar showNav={true} />
@@ -227,28 +227,30 @@ export default function ServiceDetail() {
             </section>
 
             {/* Stats Bar */}
-            <section className="bg-[#0d1425]/50 border-y border-blue-500/10">
-                <div className="max-w-7xl mx-auto px-4 py-8">
-                    <motion.div
-                        className="grid grid-cols-3 gap-8"
-                        variants={staggerContainer}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                    >
-                        {service.stats.map((stat, index) => (
-                            <motion.div
-                                key={`${serviceId}-stat-${index}`}
-                                variants={staggerItem}
-                                className="text-center"
-                            >
-                                <div className="text-3xl md:text-4xl font-bold text-blue-400">{stat.value}</div>
-                                <div className="text-slate-400 text-sm mt-1">{stat.label}</div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </div>
-            </section>
+            {service.stats?.length >= 2 && (
+                <section className="bg-[#0d1425]/50 border-y border-blue-500/10">
+                    <div className="max-w-7xl mx-auto px-4 py-8">
+                        <motion.div
+                            className={`grid gap-8 ${service.stats.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}
+                            variants={staggerContainer}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true }}
+                        >
+                            {service.stats.map((stat, index) => (
+                                <motion.div
+                                    key={`${serviceId}-stat-${index}`}
+                                    variants={staggerItem}
+                                    className="text-center"
+                                >
+                                    <div className="text-3xl md:text-4xl font-bold text-blue-400">{stat.value}</div>
+                                    <div className="text-slate-400 text-sm mt-1">{stat.label}</div>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
+                </section>
+            )}
 
             {/* Description & Benefits */}
             <section className="py-20 px-4">
@@ -351,10 +353,11 @@ export default function ServiceDetail() {
                         </Button>
                     </motion.div>
                     <p className="mt-4 text-sm text-slate-400">
-                        Or email us directly at{' '}
-                        <a href={`mailto:sales@catalystappliedai.com?subject=${encodeURIComponent(service.title)} Inquiry`} className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
-                            sales@catalystappliedai.com
-                        </a>
+                        Prefer to write first?{' '}
+                        <Link to={contactUrl(`${service.title} Inquiry`)} className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
+                            Send us a message
+                        </Link>
+                        {' '}or email sales@catalystappliedai.com.
                     </p>
                 </motion.div>
             </section>

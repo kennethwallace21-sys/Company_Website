@@ -76,7 +76,7 @@ reject non-browser traffic.
 ## SEO & social
 
 `index.html` holds the crawlable metadata (the SPA is client-rendered, so crawlers and
-link-preview bots mostly read this file — keep it in sync with the site's real
+link-preview bots mostly read this file, so keep it in sync with the site's real
 positioning). It includes title/description/keywords, Open Graph + Twitter cards,
 Organization/WebSite/Services/Products JSON-LD, and a `<noscript>` fallback.
 
@@ -94,16 +94,15 @@ Validate previews at <https://www.opengraph.xyz>. Other SEO files: `public/robot
 ## Related products / subdomains
 
 These are **separate deployments** (a FastAPI app in the `caai-ops` repo), not part of
-this site. They were returning 5xx errors as of last check — investigate separately:
+this site. Product subdomains are served from the caai-ops repo:
 
-- `commandcenter.catalystappliedai.com` — CAAi Command Center
-- `gov-products.catalystappliedai.com` — CAAi CLERK
-- `custom-models.catalystappliedai.com` — Catalyst Custom Models
+- `commandcenter.catalystappliedai.com`: CAAi Command Center
+- `gov-products.catalystappliedai.com`: CAAi CLERK
+- `custom-models.catalystappliedai.com`: Catalyst Custom Models
 
 ## Notes / backlog
 
 - [ ] Set the Worker Resend secrets/build vars and send a real live-browser test lead.
 - [ ] If apex HTML preview looks stale after a deploy, **purge the Cloudflare cache**.
-- [ ] Investigate the product subdomains' 5xx errors (caai-ops).
 - [ ] Consider server-side rendering / prerender for richer crawler content (currently
       client-rendered with a `<noscript>` fallback).

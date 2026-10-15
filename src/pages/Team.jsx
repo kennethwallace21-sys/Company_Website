@@ -6,6 +6,8 @@ import Footer from '../components/home/Footer';
 import { fadeUp, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 import SEOHead from '../components/SEOHead';
 
+// Only jessa.sailor@ follows the first.last@catalystappliedai.com pattern.
+// Verify mailbox exists before re-enabling: kennywallace@, harsha@, and mikedeason@ are unconfirmed.
 const teamMembers = [
     {
         name: 'Kenneth Wallace',
@@ -14,7 +16,7 @@ const teamMembers = [
         photo: '/kenny-wallace.png',
         email: 'KennyWallace@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/kennethwallace21/',
-        bio: 'Kenny started CAAi because he saw too many businesses getting sold on AI that never delivered. He sets the company\'s direction, closes the deals, and makes sure every product and engagement ties back to one thing — real, measurable results for the client.',
+        bio: 'Kenny started CAAi because he saw too many businesses getting sold on AI that never delivered. He sets the company\'s direction, closes the deals, and makes sure every product and engagement ties back to one thing: real, measurable results for the client.',
         responsibilities: ['Company vision & strategy', 'Client partnerships', 'Product roadmap', 'Business development'],
         gradient: 'from-blue-500 to-cyan-500',
     },
@@ -26,7 +28,7 @@ const teamMembers = [
         photoPosition: 'object-[50%_15%]',
         email: 'harsha@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/harsha-kolla-357a211a8/',
-        bio: 'Harsha leads engineering at CAAi, turning product ideas into production-ready platforms. He drives the technical architecture behind our agentic AI platforms, secure RAG systems, and custom model deployments — focused on building systems that are fast, secure, and built to scale.',
+        bio: 'Harsha leads engineering at CAAi, turning product ideas into production-ready platforms. He drives the technical architecture behind our agentic AI platforms, secure RAG systems, and custom model deployments, focused on building systems that are fast, secure, and built to scale.',
         responsibilities: ['Platform architecture', 'Full-stack development', 'AI/ML pipelines', 'DevOps & infrastructure'],
         gradient: 'from-blue-600 to-blue-400',
     },
@@ -37,7 +39,7 @@ const teamMembers = [
         photo: '/michael-deason.png',
         email: 'mikedeason@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/michael-deason-coss-804352143/',
-        bio: 'Mike keeps CAAi moving. He owns project delivery and operations — making sure client work ships on time, teams have what they need, and nothing falls through the cracks. As the company grows, he\'s the one building the systems to scale with it.',
+        bio: 'Mike keeps CAAi moving. He owns project delivery and operations, making sure client work ships on time, teams have what they need, and nothing falls through the cracks. As the company grows, he\'s the one building the systems to scale with it.',
         responsibilities: ['Project delivery', 'Resource planning', 'Process optimization', 'Client success'],
         gradient: 'from-sky-500 to-blue-500',
     },
@@ -48,7 +50,7 @@ const teamMembers = [
         photo: '/jessa-sailor.jpg',
         email: 'jessa.sailor@catalystappliedai.com',
         linkedin: 'https://www.linkedin.com/in/jessasailor/',
-        bio: 'Jessa is CAAi\'s bridge to government. She works directly with public sector agencies and regulated enterprises to identify where AI can cut through bureaucratic bottlenecks, deploying secure, air-gapped systems and document automation built for compliance-heavy environments.',
+        bio: 'Jessa is CAAi\'s bridge to government. She leads public sector strategy and scoping for regulated and air-gapped environments, identifying where AI can cut through bureaucratic bottlenecks and where document automation fits compliance-heavy workflows.',
         responsibilities: ['Public sector strategy', 'Government partnerships', 'Compliance & security', 'GovCloud & air-gap deployments'],
         responsibilitiesGrid: true,
         gradient: 'from-blue-400 to-sky-400',
@@ -92,7 +94,7 @@ export default function Team() {
                         </p>
                     </motion.div>
 
-                    {/* Founder — featured large card */}
+                    {/* Founder: featured large card */}
                     <motion.div
                         variants={staggerContainer}
                         initial="hidden"
@@ -153,7 +155,7 @@ export default function Team() {
                         </motion.div>
                     </motion.div>
 
-                    {/* Rest of the team — 3-column grid */}
+                    {/* Rest of the team: 3-column grid */}
                     <motion.div
                         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
                         variants={staggerContainer}

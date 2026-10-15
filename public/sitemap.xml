@@ -6,76 +6,84 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://catalystappliedai.com/</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Products -->
   <url>
-    <loc>https://catalystappliedai.com/Products</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/Products</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Contact -->
   <url>
-    <loc>https://catalystappliedai.com/Contact</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/Contact</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <!-- SERVICES_HIDDEN: Service Detail Pages. Remove this comment wrapper to restore.
   <url>
-    <loc>https://catalystappliedai.com/ServiceDetail?service=discovery-diagnostic</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/ServiceDetail?service=discovery-diagnostic</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://catalystappliedai.com/ServiceDetail?service=custom-ai-solutions</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/ServiceDetail?service=custom-ai-solutions</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://catalystappliedai.com/ServiceDetail?service=workflow-automation</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/ServiceDetail?service=workflow-automation</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://catalystappliedai.com/ServiceDetail?service=data-engineering</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/ServiceDetail?service=data-engineering</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://catalystappliedai.com/ServiceDetail?service=ai-implementation</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/ServiceDetail?service=ai-implementation</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://catalystappliedai.com/ServiceDetail?service=training-support</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/ServiceDetail?service=training-support</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   SERVICES_HIDDEN -->
 
-  <!-- Terms & Conditions -->
+  <!-- FAQ -->
   <url>
-    <loc>https://catalystappliedai.com/TermsAndConditions</loc>
-    <lastmod>2026-03-15</lastmod>
+    <loc>https://www.catalystappliedai.com/FAQ</loc>
+    <lastmod>2026-10-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://www.catalystappliedai.com/Privacy</loc>
+    <lastmod>2026-10-14</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

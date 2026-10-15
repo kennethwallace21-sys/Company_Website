@@ -10,6 +10,27 @@ const MAX_COMPANY = 100;
 const MAX_MESSAGE = 5000;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_MAX_ENTRIES = 5000;
+const MAX_BODY_BYTES = 32 * 1024;
+const UPSTREAM_TIMEOUT_MS = 10 * 1000;
+const IDEMPOTENCY_KEY_REGEX = /^[A-Za-z0-9-]{8,64}$/;
+const APEX_HOST = "catalystappliedai.com";
+const CANONICAL_ORIGIN = "https://www.catalystappliedai.com";
+
+const SECURITY_HEADERS = {
+    "Content-Security-Policy":
+        "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; "
+        + "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.unsplash.com; "
+        + "font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com; "
+        + "frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; "
+        + "form-action 'self'; object-src 'none'; upgrade-insecure-requests",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "Permissions-Policy": "geolocation=(), camera=(), microphone=(), payment=(), usb=()",
+    "Cross-Origin-Opener-Policy": "same-origin",
+    "X-Content-Type-Options": "nosniff",
+};
+
 // Soft anti-abuse only: this Map lives in isolate memory, so it resets on
 // Worker restarts and is not shared across edge locations. Acceptable tradeoff
 // for a low-traffic contact form where the goal is to deter casual spam, not
@@ -19,17 +40,34 @@ const rateLimitMap = new Map();
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
+
+        // Canonical host: apex redirects to www. localhost and *.workers.dev are untouched.
+        if (url.hostname === APEX_HOST) {
+            return Response.redirect(`${CANONICAL_ORIGIN}${url.pathname}${url.search}`, 301);
+        }
+
         if (url.pathname === "/api/send-email") {
             return handleSendEmail(request, env);
         }
 
         if (env.ASSETS) {
-            return env.ASSETS.fetch(request);
+            return withSecurityHeaders(await env.ASSETS.fetch(request));
         }
 
         return new Response("Not found", { status: 404 });
     },
 };
+
+function withSecurityHeaders(response) {
+    // WebSocket upgrade responses cannot be rebuilt.
+    if (response.webSocket) return response;
+
+    const wrapped = new Response(response.body, response);
+    for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+        wrapped.headers.set(name, value);
+    }
+    return wrapped;
+}
 
 async function handleSendEmail(request, env) {
     const origin = request.headers.get("Origin") || "";
@@ -61,10 +99,23 @@ async function handleSendEmail(request, env) {
         return json({ error: "Too many requests. Please try again later." }, 429, headers);
     }
 
+    const declaredLength = Number(request.headers.get("Content-Length"));
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_BODY_BYTES) {
+        return json({ error: "Your message is too large to send." }, 413, headers);
+    }
+
     let body;
     try {
-        body = await request.json();
+        const rawBody = await request.text();
+        // Content-Length can be absent or wrong (chunked uploads), so guard the real size too.
+        if (rawBody.length > MAX_BODY_BYTES) {
+            return json({ error: "Your message is too large to send." }, 413, headers);
+        }
+        body = JSON.parse(rawBody);
     } catch {
+        return json({ error: "Please submit the form again." }, 400, headers);
+    }
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
         return json({ error: "Please submit the form again." }, 400, headers);
     }
 
@@ -92,16 +143,18 @@ async function handleSendEmail(request, env) {
             {
                 success: false,
                 error: "Contact email is not configured yet.",
-                fallback: true,
             },
             503,
             headers
         );
     }
 
+    // Persistence is intentionally the mailbox only until a D1/KV store is added.
     const lead = validation.fields;
-    const dbSuccess = await saveLead(lead, env);
-    const emailResult = await sendLeadEmail(lead, env);
+    const idempotencyKey = typeof body.idempotencyKey === "string" && IDEMPOTENCY_KEY_REGEX.test(body.idempotencyKey)
+        ? body.idempotencyKey
+        : null;
+    const emailResult = await sendLeadEmail(lead, env, idempotencyKey);
 
     if (!emailResult.ok) {
         console.error("Resend delivery error:", emailResult.error);
@@ -109,8 +162,6 @@ async function handleSendEmail(request, env) {
             {
                 success: false,
                 error: "Failed to send message. Please try again later.",
-                dbSaved: dbSuccess,
-                fallback: true,
             },
             502,
             headers
@@ -121,7 +172,6 @@ async function handleSendEmail(request, env) {
         {
             success: true,
             id: emailResult.id,
-            dbSaved: dbSuccess,
         },
         200,
         headers
@@ -154,6 +204,13 @@ function corsHeaders(origin, requestUrl) {
 
 function checkRateLimit(ip) {
     const now = Date.now();
+    if (rateLimitMap.size > RATE_LIMIT_MAX_ENTRIES) {
+        for (const [key, value] of rateLimitMap) {
+            if (now - value.windowStart > RATE_LIMIT_WINDOW_MS) {
+                rateLimitMap.delete(key);
+            }
+        }
+    }
     const entry = rateLimitMap.get(ip);
     if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
         rateLimitMap.set(ip, { windowStart: now, count: 1 });
@@ -170,24 +227,13 @@ async function verifyTurnstile(body, request, env) {
         return { ok: true };
     }
 
+    // When verification is enforced, a missing token is always a hard 403.
     const token = body?.["cf-turnstile-response"];
-    const clientRenderedTurnstile = body?.turnstileEnabled === true;
-    if (!token) {
-        if (!clientRenderedTurnstile) {
-            return {
-                ok: false,
-                status: 503,
-                payload: {
-                    success: false,
-                    error: "Contact verification is not configured yet.",
-                    fallback: true,
-                },
-            };
-        }
+    if (!token || typeof token !== "string") {
         return {
             ok: false,
             status: 403,
-            payload: { error: "Bot verification failed. Please try again." },
+            payload: { success: false, error: "Bot verification failed. Please try again." },
         };
     }
 
@@ -199,10 +245,13 @@ async function verifyTurnstile(body, request, env) {
         form.append("remoteip", remoteIp);
     }
 
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
     try {
         const verifyRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
             method: "POST",
             body: form,
+            signal: controller.signal,
         });
         const verifyData = await verifyRes.json().catch(() => ({}));
         if (verifyData.success) {
@@ -216,8 +265,9 @@ async function verifyTurnstile(body, request, env) {
             status: serverMisconfigured ? 503 : 403,
             payload: {
                 success: false,
-                error: "Bot verification failed. Please try again.",
-                fallback: serverMisconfigured,
+                error: serverMisconfigured
+                    ? "Contact verification is temporarily unavailable."
+                    : "Bot verification failed. Please try again.",
             },
         };
     } catch (err) {
@@ -228,9 +278,10 @@ async function verifyTurnstile(body, request, env) {
             payload: {
                 success: false,
                 error: "Contact verification is temporarily unavailable.",
-                fallback: true,
             },
         };
+    } finally {
+        clearTimeout(timer);
     }
 }
 
@@ -275,62 +326,55 @@ function clean(value, limit) {
     return String(value ?? "").trim().slice(0, limit);
 }
 
-async function saveLead(lead, env) {
-    if (!env.MONGODB_DATA_API_KEY || !env.MONGODB_DATA_API_URL) {
-        return false;
+async function sendLeadEmail(lead, env, idempotencyKey) {
+    const emailHtml = buildLeadEmail(lead);
+    const subjectName = stripControlChars(lead.name);
+    const subjectCompany = stripControlChars(lead.company);
+    const requestHeaders = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${env.RESEND_API_KEY}`,
+    };
+    if (idempotencyKey) {
+        requestHeaders["Idempotency-Key"] = idempotencyKey;
     }
 
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
     try {
-        const res = await fetch(`${env.MONGODB_DATA_API_URL}/action/insertOne`, {
+        const res = await fetch("https://api.resend.com/emails", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "api-key": env.MONGODB_DATA_API_KEY,
-            },
+            headers: requestHeaders,
             body: JSON.stringify({
-                dataSource: env.MONGODB_DATA_SOURCE || "CatalystAppliedAI",
-                database: env.MONGODB_DATABASE || "catalyst_db",
-                collection: env.MONGODB_COLLECTION || "contacts",
-                document: {
-                    ...lead,
-                    createdAt: { $date: new Date().toISOString() },
-                },
+                from: env.RESEND_FROM_EMAIL,
+                to: [env.RESEND_TO_EMAIL],
+                subject: `New Lead: ${subjectName}${subjectCompany ? ` [${subjectCompany}]` : ""}`,
+                html: emailHtml,
             }),
+            signal: controller.signal,
         });
 
+        const data = await res.json().catch(() => ({}));
         if (!res.ok) {
-            console.error("MongoDB Data API error:", await res.text());
-            return false;
+            return { ok: false, error: data?.message || data?.error || `Resend returned ${res.status}` };
         }
-        return true;
+
+        return { ok: true, id: data?.id };
     } catch (err) {
-        console.error("MongoDB Data API save failed:", err?.message || err);
-        return false;
+        return { ok: false, error: err?.name === "AbortError" ? "Resend request timed out" : (err?.message || String(err)) };
+    } finally {
+        clearTimeout(timer);
     }
 }
 
-async function sendLeadEmail(lead, env) {
-    const emailHtml = buildLeadEmail(lead);
-    const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${env.RESEND_API_KEY}`,
-        },
-        body: JSON.stringify({
-            from: env.RESEND_FROM_EMAIL,
-            to: [env.RESEND_TO_EMAIL],
-            subject: `New Lead: ${lead.name}${lead.company ? ` [${lead.company}]` : ""}`,
-            html: emailHtml,
-        }),
-    });
-
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok) {
-        return { ok: false, error: data?.message || data?.error || `Resend returned ${res.status}` };
+// Replaces CR, LF, tab and every other character below 0x20 (plus DEL) with a
+// space so user input cannot inject header-like content into the subject line.
+function stripControlChars(value) {
+    let out = "";
+    for (const ch of String(value ?? "")) {
+        const code = ch.charCodeAt(0);
+        out += code < 0x20 || code === 0x7f ? " " : ch;
     }
-
-    return { ok: true, id: data?.id };
+    return out.replace(/ {2,}/g, " ").trim();
 }
 
 function buildLeadEmail({ name, email, company, message }) {
@@ -381,5 +425,12 @@ function escapeHtml(text) {
 }
 
 function json(payload, status, headers) {
-    return Response.json(payload, { status, headers });
+    return Response.json(payload, {
+        status,
+        headers: {
+            "X-Content-Type-Options": "nosniff",
+            "Referrer-Policy": "strict-origin-when-cross-origin",
+            ...headers,
+        },
+    });
 }

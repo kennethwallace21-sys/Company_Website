@@ -20,7 +20,7 @@ const allFaqs = [
             },
             {
                 question: "What makes you different from a generic software agency?",
-                answer: "We focus exclusively on Applied AI. Unlike general agencies, we understand the specific nuances of 'grounded' AI: ensuring your models don't hallucinate, your data stays private, and every tool we build has a measurable Return on Investment (ROI)."
+                answer: "We focus on Applied AI. Unlike general agencies, we understand the specific nuances of 'grounded' AI: reducing hallucinations by constraining answers to retrieved sources, keeping your data in an environment you control, and tying every tool we build to a measurable Return on Investment (ROI) target."
             },
             {
                 question: "Do you work with small businesses?",
@@ -58,7 +58,7 @@ const allFaqs = [
             },
             {
                 question: "What are Custom RAG Systems?",
-                answer: "Tailor-made Retrieval-Augmented Generation systems that connect securely to your proprietary documents. Your team gets cited, hallucination-free answers without your data ever leaving your secure environment."
+                answer: "Tailor-made Retrieval-Augmented Generation systems that connect securely to your proprietary documents. Your team gets grounded answers with citations to your source documents, which reduces but does not eliminate incorrect output."
             }
         ]
     },
@@ -67,19 +67,19 @@ const allFaqs = [
         items: [
             {
                 question: "Can you deploy in AWS GovCloud, on-premise, or air-gapped environments?",
-                answer: "Yes. We support three deployment models: managed secure cloud, client cloud tenant (including AWS GovCloud and Azure Government), and fully air-gapped on-premises hardware (such as NVIDIA NIM/DGX). Your proprietary data never leaves your defined perimeter."
+                answer: "Yes. We support three deployment models: managed secure cloud, client cloud tenant (including AWS GovCloud and Azure Government), and air-gapped on-premises hardware (such as NVIDIA NIM/DGX). In client-tenant and on-premises deployments, your proprietary data stays in the environment you operate."
             },
             {
                 question: "What government registrations and compliance standards do you meet?",
-                answer: "Catalyst Applied AI is a registered entity on SAM.gov (NAICS 541715, 541511), a member of NVIDIA Inception, and builds systems adhering to strict data sovereignty and auditability requirements for government and regulated enterprises."
+                answer: "Catalyst is registered on SAM.gov (NAICS 541715, 541511) and is an NVIDIA Inception Program member. We deploy into environments our customers control, including customer-owned AWS GovCloud (US) and Azure Government tenants and on-premises or air-gapped hardware, so the system boundary and its authorization remain with your organization. Tell us which framework applies (for example NIST SP 800-53 or SP 800-171) and we will map controls during scoping."
             },
             {
                 question: "Is my data used to train public models like ChatGPT?",
-                answer: "Never. We deploy private models inside your dedicated perimeter with strict trust layers. Your data is never exposed to public foundation model providers."
+                answer: "Customer data is not used to train public foundation models. In customer-tenant and on-premises deployments your data stays in the environment you operate; in a managed deployment it is processed in infrastructure under your contract terms, and nothing is shared with third-party model providers without your written approval."
             },
             {
-                question: "How do you prevent AI hallucinations?",
-                answer: "We use strict Grounded AI architectures and retrieval verification. The AI is restricted to citing verifiable excerpts from your indexed internal records and explicit guardrails."
+                question: "How do you reduce AI hallucinations?",
+                answer: "We use grounded AI architectures with retrieval verification. Answers are constrained to excerpts from your indexed internal records and carry citations so reviewers can check them against the source. Guardrails reduce incorrect output but cannot eliminate it, so we recommend human review for consequential decisions."
             }
         ]
     }
@@ -95,8 +95,11 @@ export default function FAQ() {
         return () => clearTimeout(timer);
     }, []);
 
-    const toggleFaq = (category, index) => {
-        const key = `${category}-${index}`;
+    // Open state is keyed by category + question text so it survives search filtering.
+    const faqKey = (category, question) => `${category}::${question}`;
+
+    const toggleFaq = (category, question) => {
+        const key = faqKey(category, question);
         setOpenIndices(prev => ({
             ...prev,
             [key]: !prev[key]
@@ -159,9 +162,9 @@ export default function FAQ() {
                 <div className="max-w-4xl mx-auto">
                     {filteredFaqs.length > 0 ? (
                         <div className="space-y-16">
-                            {filteredFaqs.map((category, catIdx) => (
+                            {filteredFaqs.map((category) => (
                                 <motion.div
-                                    key={catIdx}
+                                    key={category.category}
                                     variants={staggerContainer}
                                     initial="hidden"
                                     whileInView="visible"
@@ -171,11 +174,11 @@ export default function FAQ() {
                                         {category.category}
                                     </h2>
                                     <div className="space-y-4">
-                                        {category.items.map((item, idx) => {
-                                            const isOpen = openIndices[`${catIdx}-${idx}`];
+                                        {category.items.map((item) => {
+                                            const isOpen = openIndices[faqKey(category.category, item.question)];
                                             return (
                                                 <motion.div
-                                                    key={idx}
+                                                    key={item.question}
                                                     variants={staggerItem}
                                                     className={`rounded-2xl border transition-all duration-300 ${
                                                         isOpen 
@@ -184,7 +187,7 @@ export default function FAQ() {
                                                     }`}
                                                 >
                                                     <button
-                                                        onClick={() => toggleFaq(catIdx, idx)}
+                                                        onClick={() => toggleFaq(category.category, item.question)}
                                                         className="w-full px-6 py-5 flex items-center justify-between text-left group"
                                                     >
                                                         <span className={`text-lg font-semibold transition-colors ${isOpen ? 'text-blue-400' : 'text-slate-200 group-hover:text-white'}`}>

@@ -8,28 +8,24 @@ in about 5 minutes: no dashboard steps required. Keep GitHub
 pushed in lockstep (push both). `wrangler.jsonc` must keep `name: "website"` and
 `assets.directory: "./dist"`; removing either breaks the deploy step even though the
 build step still succeeds (bit us 2026-07-07: two failed deploys before both fields
-were correct). If HTML looks stale after a push, purge the zone cache with the token
-at `C:\Users\kenne\.cloudflare\claude-deploys.token` (zone id
-`457c5260bc5194207e0daf632f202993`). See README "Remotes and deploy reality".
+were correct). If HTML looks stale after a push, purge the zone cache using the
+Cloudflare deploy token stored outside the repo; zone id in the password manager.
+See README "Remotes and deploy reality".
 
-## Contact form status: Worker API ported, live secrets still required
+## Contact form status: Worker is the only intake, Resend configured
 
-- Implemented 2026-07-08: `/api/send-email` now runs through the Cloudflare Worker
-  (`src/worker.js`) instead of the old Vercel-format function. The Worker handles
+- `/api/send-email` runs through the Cloudflare Worker (`src/worker.js`). It handles
   CORS, rate limiting, honeypot rejection, input validation, optional Turnstile
-  verification, optional MongoDB Atlas Data API persistence, and Resend delivery.
-- `src/lib/submitLead.js` now tries the Worker first and falls back to Web3Forms when
-  the Worker, Turnstile service, Resend, or required Worker config is unavailable.
-  The Web3Forms path remains the stable client-side fallback verified 2026-07-06.
+  verification, an idempotency key, and Resend delivery. The Worker is the only intake
+  path: there is no client-side fallback and no database. Persistence is intentionally
+  the mailbox only until a D1/KV store is added.
+- Resend is confirmed configured in production as of 2026-10-14 (`RESEND_API_KEY`,
+  `RESEND_TO_EMAIL`, `RESEND_FROM_EMAIL`); a valid POST returned 200 with a message id.
 - `src/components/home/ContactSection.jsx` renders Cloudflare Turnstile only when
   `VITE_TURNSTILE_SITE_KEY` is present at build time. The Worker verifies Turnstile
-  only when `TURNSTILE_SECRET_KEY` is set, so the rollout can happen without breaking
-  the current fallback.
-- Still required before calling this live-complete: find the Resend login/API key and
-  set Worker secrets/vars (`RESEND_API_KEY`, `RESEND_TO_EMAIL`, `RESEND_FROM_EMAIL`,
-  optional `TURNSTILE_SECRET_KEY`, optional MongoDB Data API vars) plus the build var
-  `VITE_TURNSTILE_SITE_KEY` if Turnstile is enabled. Then verify with a real browser
-  submission from the live page.
+  only when `TURNSTILE_SECRET_KEY` is set. Turnstile remains optional until
+  `TURNSTILE_SECRET_KEY` and `VITE_TURNSTILE_SITE_KEY` are both set in the Cloudflare
+  dashboard.
 
 ## P3: Smaller cleanups
 
@@ -39,8 +35,7 @@ at `C:\Users\kenne\.cloudflare\claude-deploys.token` (zone id
       caai-ops (`ui/static/clerk.html`, `custom-models.html`). Decided 2026-07-07: not
       doing this for now, revisit only if asked.
 - [ ] `msv1.invalid` leftover MX record and GoDaddy-default DMARC rua on the domain;
-      now easy to clean up (CF token has DNS Read but not Write; add Write if pursuing
-      this).
+      now easy to clean up.
 - [ ] Legacy copy sweep: Terms/Privacy pages still carry a few em dashes and dated
       language outside the marketing surfaces addressed 2026-07-05.
 - [ ] Decide long-term host: the live Worker (current, working) vs the Vercel mirror

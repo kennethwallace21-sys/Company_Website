@@ -11,6 +11,31 @@ import { submitLead } from '@/lib/submitLead';
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
 const MAX_TOPIC = 80;
+const TURNSTILE_LOAD_TIMEOUT_MS = 8000;
+const SALES_EMAIL = 'sales@catalystappliedai.com';
+
+const topicMessage = (topic) => (topic ? `I'm interested in: ${topic}\n\n` : '');
+
+// Renders the server message as plain text. When the message already names the sales
+// address, that address becomes the mailto link; otherwise a link is appended.
+function ErrorMessage({ error }) {
+    const link = (
+        <a href={`mailto:${SALES_EMAIL}`} className="underline underline-offset-2 hover:text-red-300">
+            {SALES_EMAIL}
+        </a>
+    );
+    if (!error.showEmailFallback) return <>{error.message}</>;
+
+    const idx = error.message.indexOf(SALES_EMAIL);
+    if (idx === -1) return <>{error.message} {link}</>;
+    return (
+        <>
+            {error.message.slice(0, idx)}
+            {link}
+            {error.message.slice(idx + SALES_EMAIL.length)}
+        </>
+    );
+}
 
 export default function ContactSection() {
     const [searchParams] = useSearchParams();
@@ -19,33 +44,61 @@ export default function ContactSection() {
         name: '',
         email: '',
         company: '',
-        message: topic ? `I'm interested in: ${topic}\n\n` : '',
-        website: '', // Honeypot field — bots fill this, humans don't see it
+        message: topicMessage(topic),
+        website: '', // Honeypot field: bots fill this, humans don't see it
     });
+    const [messageTouched, setMessageTouched] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [turnstileToken, setTurnstileToken] = useState(null);
+    const [turnstileFailed, setTurnstileFailed] = useState(false);
     const turnstileRef = useRef(null);
     const widgetIdRef = useRef(null);
+
+    // App routes are keyed by pathname only, so a changed ?topic= does not remount this
+    // component. Re-sync the prefilled message unless the visitor has started typing.
+    useEffect(() => {
+        if (messageTouched) return;
+        setFormData((prev) => (prev.message === topicMessage(topic) ? prev : { ...prev, message: topicMessage(topic) }));
+    }, [topic, messageTouched]);
 
     useEffect(() => {
         if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return undefined;
 
-        const interval = window.setInterval(() => {
+        let interval = null;
+        let timeout = null;
+        const stopWaiting = () => {
+            window.clearInterval(interval);
+            window.clearTimeout(timeout);
+        };
+
+        interval = window.setInterval(() => {
             if (window.turnstile && turnstileRef.current && widgetIdRef.current === null) {
+                stopWaiting();
                 widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
                     sitekey: TURNSTILE_SITE_KEY,
                     theme: 'dark',
-                    callback: (token) => setTurnstileToken(token),
+                    callback: (token) => {
+                        stopWaiting();
+                        setTurnstileToken(token);
+                    },
                     'expired-callback': () => setTurnstileToken(null),
                     'error-callback': () => setTurnstileToken(null),
                 });
-                window.clearInterval(interval);
             }
         }, 200);
 
-        return () => window.clearInterval(interval);
+        // If the Turnstile script never appears (blocked, offline), stop waiting and
+        // tell the visitor how else to reach us.
+        timeout = window.setTimeout(() => {
+            window.clearInterval(interval);
+            if (!window.turnstile) {
+                setTurnstileFailed(true);
+            }
+        }, TURNSTILE_LOAD_TIMEOUT_MS);
+
+        return stopWaiting;
     }, []);
 
     const focusForm = () => {
@@ -58,20 +111,25 @@ export default function ContactSection() {
         e.preventDefault();
         setError(null);
 
-        if (TURNSTILE_SITE_KEY && !turnstileToken) {
-            setError('Please complete the verification check.');
+        // If the widget could not load, let the Worker decide: it enforces Turnstile
+        // whenever its secret is set and answers 403 with a clear message.
+        if (TURNSTILE_SITE_KEY && !turnstileToken && !turnstileFailed) {
+            setError({ message: 'Please complete the verification check.' });
             return;
         }
 
         setIsLoading(true);
         try {
-            const { ok, message } = await submitLead({
+            const { ok, message, showEmailFallback } = await submitLead({
                 ...formData,
                 'cf-turnstile-response': turnstileToken,
                 turnstileEnabled: Boolean(TURNSTILE_SITE_KEY),
             });
-            if (!ok) {
-                setError(message || 'Something went wrong. Please try again or email us directly.');
+            if (ok !== true) {
+                setError({
+                    message: message || 'Something went wrong. Please try again or email us directly.',
+                    showEmailFallback: showEmailFallback === true,
+                });
                 if (window.turnstile && widgetIdRef.current !== null) {
                     window.turnstile.reset(widgetIdRef.current);
                     setTurnstileToken(null);
@@ -80,6 +138,7 @@ export default function ContactSection() {
             }
             setIsSubmitted(true);
             setFormData({ name: '', email: '', company: '', message: '', website: '' });
+            setMessageTouched(false);
         } finally {
             setIsLoading(false);
         }
@@ -147,6 +206,7 @@ export default function ContactSection() {
                                     className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
                                     onClick={() => {
                                         if (!formData.message) {
+                                            setMessageTouched(true);
                                             setFormData({ ...formData, message: "I'm interested in: ROI Assessment\n\n" });
                                         }
                                         focusForm();
@@ -161,7 +221,7 @@ export default function ContactSection() {
                                     asChild
                                     className="mt-3 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl w-full sm:w-auto shadow-lg shadow-emerald-500/15 hover:shadow-emerald-500/30 transition-shadow"
                                 >
-                                    <a href="tel:+15024168342">Speak with a 24/7 Agent</a>
+                                    <a href="tel:+15024168342">Call us</a>
                                 </Button>
                             </motion.div>
                         </motion.div>
@@ -265,24 +325,28 @@ export default function ContactSection() {
                             </motion.div>
                         ) : (
                             <form id="contact-form" onSubmit={handleSubmit} className="scroll-mt-32 h-full p-8 rounded-2xl bg-[#0d1425]/50 border border-blue-500/10 flex flex-col gap-6">
-                                {/* Honeypot — hidden from real users, bots auto-fill it */}
+                                {/* Honeypot: hidden from real users, bots auto-fill it. The field name avoids
+                                    browser autofill; the value is still sent under the JSON key "website". */}
                                 <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }}>
-                                    <label htmlFor="website">Website</label>
+                                    <label htmlFor="company_website_url">Leave this field empty</label>
                                     <input
-                                        id="website"
-                                        name="website"
+                                        id="company_website_url"
+                                        name="company_website_url"
                                         type="text"
                                         tabIndex={-1}
                                         autoComplete="off"
+                                        required={false}
                                         value={formData.website}
                                         onChange={(e) => setFormData({ ...formData, website: e.target.value })}
                                     />
                                 </div>
                                 <div className="grid sm:grid-cols-2 gap-4 flex-shrink-0">
                                     <div>
-                                        <label className="text-sm text-slate-400 mb-2 block font-medium">Name</label>
+                                        <label htmlFor="contact-name" className="text-sm text-slate-400 mb-2 block font-medium">Name</label>
                                         <Input
+                                            id="contact-name"
                                             name="name"
+                                            autoComplete="name"
                                             placeholder="Your name"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -291,8 +355,11 @@ export default function ContactSection() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="text-sm text-slate-400 mb-2 block font-medium">Email</label>
+                                        <label htmlFor="contact-email" className="text-sm text-slate-400 mb-2 block font-medium">Email</label>
                                         <Input
+                                            id="contact-email"
+                                            name="email"
+                                            autoComplete="email"
                                             type="email"
                                             placeholder="you@company.com"
                                             value={formData.email}
@@ -303,8 +370,11 @@ export default function ContactSection() {
                                     </div>
                                 </div>
                                 <div className="flex-shrink-0">
-                                    <label className="text-sm text-slate-400 mb-2 block font-medium">Company</label>
+                                    <label htmlFor="contact-company" className="text-sm text-slate-400 mb-2 block font-medium">Company</label>
                                     <Input
+                                        id="contact-company"
+                                        name="company"
+                                        autoComplete="organization"
                                         placeholder="Your company name"
                                         value={formData.company}
                                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
@@ -312,11 +382,16 @@ export default function ContactSection() {
                                     />
                                 </div>
                                 <div className="flex-grow flex flex-col min-h-[160px]">
-                                    <label className="text-sm text-slate-400 mb-2 block font-medium">Message</label>
+                                    <label htmlFor="contact-message" className="text-sm text-slate-400 mb-2 block font-medium">Message</label>
                                     <Textarea
+                                        id="contact-message"
+                                        name="message"
                                         placeholder="Tell us about your project and how we can help..."
                                         value={formData.message}
-                                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                                        onChange={(e) => {
+                                            setMessageTouched(true);
+                                            setFormData({ ...formData, message: e.target.value });
+                                        }}
                                         className="flex-grow bg-slate-800 border-slate-700 text-white placeholder:text-slate-500 focus:border-blue-500 transition-all duration-300 resize-none p-4"
                                         required
                                     />
@@ -324,13 +399,28 @@ export default function ContactSection() {
                                 {TURNSTILE_SITE_KEY && (
                                     <div ref={turnstileRef} className="flex-shrink-0 min-h-[65px]" />
                                 )}
+                                {TURNSTILE_SITE_KEY && turnstileFailed && (
+                                    <p
+                                        role="status"
+                                        className="text-sm text-amber-300 bg-amber-500/10 border border-amber-500/20 rounded-lg px-4 py-3 flex-shrink-0"
+                                    >
+                                        Verification could not load. Email us at{' '}
+                                        <a
+                                            href={`mailto:${SALES_EMAIL}`}
+                                            className="underline underline-offset-2 hover:text-amber-200"
+                                        >
+                                            {SALES_EMAIL}
+                                        </a>
+                                    </p>
+                                )}
                                 {error && (
                                     <motion.p
+                                        role="alert"
                                         className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 flex-shrink-0"
                                         initial={{ opacity: 0, y: -8 }}
                                         animate={{ opacity: 1, y: 0 }}
                                     >
-                                        {error}
+                                        <ErrorMessage error={error} />
                                     </motion.p>
                                 )}
                                 <motion.div whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} className="flex-shrink-0">

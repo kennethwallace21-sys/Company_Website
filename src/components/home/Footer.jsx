@@ -99,7 +99,7 @@ export default function Footer() {
                         <h4 className="text-white font-semibold mb-4">Company</h4>
                         <ul className="space-y-2">
                             {[
-                                { label: 'Home', page: 'Home' },
+                                { label: 'Home', page: 'Home', to: '/' },
                                 { label: 'Products', page: 'Products' },
                                 { label: 'FAQ', page: 'FAQ' },
                                 { label: 'Terms & Conditions', page: 'TermsAndConditions' },
@@ -107,7 +107,7 @@ export default function Footer() {
                             ].map(item => (
                                 <li key={item.page}>
                                     <Link
-                                        to={createPageUrl(item.page)}
+                                        to={item.to || createPageUrl(item.page)}
                                         className="text-slate-400 hover:text-blue-400 transition-colors text-sm inline-block hover:translate-x-1 transition-transform duration-200"
                                     >
                                         {item.label}
@@ -135,14 +135,14 @@ export default function Footer() {
                             </li>
                             <li className="text-slate-400 text-sm flex items-start gap-2">
                                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-                                Kentucky, USA
+                                Louisville, KY
                             </li>
                         </ul>
                         
                     </motion.div>
                 </motion.div>
 
-                {/* NVIDIA Inception Partner Badge */}
+                {/* NVIDIA Inception Program Badge */}
                 <motion.div
                     className="flex justify-center my-8"
                     variants={scaleUp}
@@ -180,11 +180,12 @@ export default function Footer() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
+                    {/* Append the UEI and CAGE code to this line once they are available. */}
                     <p className="text-slate-400 text-sm">
-                        SAM.gov Registered (NAICS 541715, 541511) · NVIDIA Inception Member · Louisville, KY
+                        SAM.gov Registered (NAICS 541715, 541511) · NVIDIA Inception Program member · Louisville, KY
                     </p>
                     <p className="text-slate-500 text-xs mt-1">
-                        Copyright © {new Date().getFullYear()} Catalyst Applied AI, LLC - All Rights Reserved.
+                        Copyright © {new Date().getFullYear()} Catalyst Applied AI, LLC. All Rights Reserved.
                     </p>
                     <div className="flex justify-center gap-4 mt-2">
                         <p className="text-slate-500 text-xs">

@@ -7,7 +7,7 @@ const capabilities = [
     {
         icon: Zap,
         title: "Automation",
-        description: "Removing bottlenecks and streamlining operations"
+        description: "Reducing bottlenecks and streamlining operations"
     },
     {
         icon: Users,

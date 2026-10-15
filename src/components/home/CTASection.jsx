@@ -52,32 +52,32 @@ export default function CTASection() {
                         </h2>
                         
                         <p className="text-slate-300 text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-                            Don't leave your AI transformation to chance. Partner with builders who deploy production systems inside your secure perimeter.
+                            Don't leave your AI transformation to chance. Partner with builders who deploy production systems inside the environment you control.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-center">
-                            <Link to={contactUrl('ROI Assessment')}>
-                                <Button className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-10 py-7 rounded-2xl text-lg font-bold shadow-2xl shadow-blue-500/20 group transition-all duration-300">
+                            <Button asChild className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-10 py-7 rounded-2xl text-lg font-bold shadow-2xl shadow-blue-500/20 group transition-all duration-300">
+                                <Link to={contactUrl('ROI Assessment')}>
                                     Start Your ROI Assessment
                                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                </Button>
-                            </Link>
+                                </Link>
+                            </Button>
                             
-                            <a href="tel:+15024168342">
-                                <Button variant="outline" className="border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-slate-200 px-8 py-7 rounded-2xl text-lg font-semibold transition-all">
+                            <Button asChild variant="outline" className="border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-slate-200 px-8 py-7 rounded-2xl text-lg font-semibold transition-all">
+                                <a href="tel:+15024168342">
                                     <MessageSquare className="mr-2 w-5 h-5 text-blue-400" />
                                     Speak with an Expert
-                                </Button>
-                            </a>
+                                </a>
+                            </Button>
                         </div>
 
                         <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 text-slate-400 text-sm font-medium">
                             <div className="flex items-center gap-2">
                                 <ShieldCheck className="w-5 h-5 text-blue-400 shrink-0" />
-                                <span>Deployed in ~900 retail locations & government agencies</span>
+                                <span>Built and deployed for enterprise and public sector teams</span>
                             </div>
                             <span className="hidden sm:inline text-slate-600">•</span>
-                            <span className="text-slate-400">NVIDIA Inception Partner · SAM.gov Registered</span>
+                            <span className="text-slate-400">NVIDIA Inception Program member</span>
                         </div>
                     </div>
                 </motion.div>

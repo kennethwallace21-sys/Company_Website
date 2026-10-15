@@ -1,0 +1,4 @@
+Contact: mailto:sales@catalystappliedai.com
+Expires: 2027-10-14T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.catalystappliedai.com/.well-known/security.txt

@@ -1,0 +1,295 @@
+// FAQ intents and a pure, React-free matcher for the Catalyst FAQ Guide.
+//
+// Matching rules:
+//  - The message is lowercased and split into tokens on anything that is not a
+//    letter or digit.
+//  - A keyword matches only as a whole token or a whole contiguous phrase of
+//    tokens. There is no substring matching.
+//  - Keywords are tokenized the same way, so "on-prem" and "on prem" are equal
+//    and "sam.gov" is the phrase [sam, gov].
+//  - An intent's score is the sum of the token counts of its matched keywords
+//    (a multi-word phrase outweighs a single word). At least one hit is
+//    required. Ties go to the intent listed first.
+//  - Greeting, thanks and goodbye detection runs only for messages of 4 or
+//    fewer tokens that match no FAQ intent.
+//
+// Answers use **bold** markers, rendered as React <strong> elements by the
+// component. They must stay truthful: nothing here claims a certification or
+// an authorization.
+
+export const FALLBACK_TEXT =
+    'I do not have a verified answer for that. Send it to our team and a person will reply.';
+
+export const CERTIFICATION_DISCLAIMER =
+    'We do not represent any certification or authorization on this site. Ask us directly and we will tell you exactly what we have and how we work inside your authorized boundary.';
+
+export const intents = [
+    {
+        id: 'deployment',
+        question: 'Can you deploy in AWS GovCloud, on-premises, or air-gapped environments?',
+        answer:
+            'We deploy into environments you control: your own cloud tenant (including AWS GovCloud and Azure Government), on-premises hardware, or air-gapped systems. The system is built so your data stays inside the environment you define, which also determines where it is hosted. Tell us your residency and network requirements and we confirm the right model during scoping.',
+        keywords: [
+            'govcloud', 'gov cloud', 'aws', 'azure', 'airgap', 'airgapped', 'air gap', 'air gapped', 'air-gapped',
+            'on-prem', 'on prem', 'onprem', 'on-premise', 'on premise', 'on-premises', 'on premises',
+            'premise', 'premises', 'deploy', 'deployed', 'deployment', 'deployments', 'hosted', 'hosting', 'host',
+            'hardware', 'tenant', 'perimeter', 'infrastructure', 'cloud', 'residency', 'dgx', 'nvidia nim',
+            'in the us', 'within the us'
+        ]
+    },
+    {
+        id: 'about',
+        question: 'What does Catalyst Applied AI do?',
+        answer:
+            'We build production AI systems and deploy them inside your environment. Our three products are **Agentic AI Assistants**, **Signals & Intelligence**, and **Custom RAG Systems**. We focus on measurable business ROI.',
+        keywords: [
+            'what do you do', 'what you do', 'overview', 'about catalyst', 'who are you', 'service', 'services',
+            'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst'
+        ]
+    },
+    {
+        id: 'agents',
+        question: 'What are your Agentic AI Assistants?',
+        answer:
+            'Custom agents, such as AIVA for HR, that can use duplex voice. They execute multi-step workflows, manage tasks, and coordinate with your internal systems to reduce repetitive operational work.',
+        keywords: [
+            'agent', 'agents', 'agentic', 'aiva', 'assistant', 'assistants', 'voice', 'duplex', 'workflow',
+            'workflows', 'automate', 'automation', 'chatbot', 'chatbots', 'bot', 'bots'
+        ]
+    },
+    {
+        id: 'signals',
+        question: 'What is Signals & Intelligence?',
+        answer:
+            'An operational intelligence system that turns raw enterprise data into narratives, predictive insights, and recommendations for decision-makers.',
+        keywords: [
+            'signal', 'signals', 'intelligence', 'narrative', 'narratives', 'analytics', 'dashboard', 'dashboards',
+            'predictive', 'insights', 'forecast', 'forecasting'
+        ]
+    },
+    {
+        id: 'rag',
+        question: 'What are Custom RAG Systems?',
+        answer:
+            'Retrieval-Augmented Generation systems connected to your own documents. They give your team grounded, cited answers; this reduces but does not eliminate errors, so we design in citations and guardrails so people can check the source.',
+        keywords: [
+            'rag', 'retrieval', 'knowledge base', 'knowledge', 'document', 'documents', 'vector', 'unstructured',
+            'citation', 'citations', 'cited', 'grounded', 'hallucinate', 'hallucination', 'hallucinations',
+            'accuracy', 'accurate', 'guardrail', 'guardrails'
+        ]
+    },
+    {
+        id: 'registrations',
+        question: 'What government registrations do you have?',
+        answer:
+            'Catalyst Applied AI is registered on SAM.gov (NAICS 541715 and 541511) and is an NVIDIA Inception Program member. We deploy into environments you control where your organization holds the authorization. Tell us the framework, for example NIST SP 800-53 or 800-171, and we map controls during scoping.',
+        keywords: [
+            'sam gov', 'sam', 'naics', '541715', '541511', 'government', 'federal', 'gsa', 'inception',
+            'nvidia', 'registered', 'registration', 'registrations'
+        ]
+    },
+    {
+        id: 'compliance',
+        question: 'Are you FedRAMP, CMMC, SOC 2, or otherwise certified?',
+        answer: CERTIFICATION_DISCLAIMER,
+        contact: true,
+        keywords: [
+            'fedramp', 'cmmc', 'nist', 'soc', 'soc2', 'iso', 'hipaa', 'itar', 'cui', 'fisma', 'il4', 'il5',
+            'stig', 'pci', 'gdpr', 'clearance', 'clearances', 'cleared', 'certification', 'certifications',
+            'certified', 'certificate', 'accreditation', 'accredited', 'authorized', 'authorization', 'ato',
+            'audit', 'audits', 'audited', 'third party', 'compliance', 'compliant', '800 53', '800 171'
+        ]
+    },
+    {
+        id: 'security',
+        question: 'How is my data protected? Is it used to train public models?',
+        answer:
+            'Our practices: encryption in transit, least-privilege access, and deployment into customer-controlled environments. We do not train public models on customer data.',
+        keywords: [
+            'security', 'secure', 'safe', 'safety', 'privacy', 'private', 'confidential', 'encrypted', 'encryption',
+            'chatgpt', 'openai', 'public model', 'public models', 'leak', 'protect', 'protected', 'least privilege',
+            'access control', 'rbac', 'train on', 'trained on', 'train models'
+        ]
+    },
+    {
+        id: 'pricing',
+        question: 'How much does it cost?',
+        answer:
+            'Pricing is scoped per engagement. Start with a free ROI Assessment and we will size the work and the cost with you.',
+        contact: true,
+        keywords: [
+            'price', 'prices', 'pricing', 'cost', 'costs', 'budget', 'quote', 'rates', 'fee', 'fees', 'expensive',
+            'pilot', 'pilots', 'statement of work', 'sow', 'proposal', 'estimate', 'how much'
+        ]
+    },
+    {
+        id: 'timeline',
+        question: 'How long does a project take?',
+        answer:
+            'Timelines depend on scope and the environment you deploy into. We start with a short scoping step that ends in a concrete build plan, and that plan includes a timeline.',
+        contact: true,
+        keywords: [
+            'timeline', 'timelines', 'how long', 'duration', 'timeframe', 'turnaround', 'weeks', 'months',
+            'time to deploy', 'time frame', 'schedule'
+        ]
+    },
+    {
+        id: 'start',
+        question: 'How do I get started or contact you?',
+        answer:
+            'The best way to start is a free ROI Assessment. Use the contact page, email sales@catalystappliedai.com, or call +1-502-416-8342.',
+        contact: true,
+        direct: true,
+        keywords: [
+            'get started', 'getting started', 'start', 'begin', 'contact', 'reach', 'email', 'call', 'phone', 'talk',
+            'hire', 'sales', 'book', 'meeting', 'demo', 'consultation', 'rfp', 'rfq', 'rfi', 'solicitation',
+            'roi assessment', 'assessment', 'discovery', 'diagnostic', 'scoping'
+        ]
+    },
+    {
+        id: 'integrations',
+        question: 'Do you offer custom integrations?',
+        answer:
+            'Yes. We connect AI systems into your existing stack, such as ERP, CRM, databases, APIs, and custom software. For specific requirements such as single sign-on, tell us which systems and identity provider you use and we confirm what is needed during scoping.',
+        keywords: [
+            'integrate', 'integrates', 'integration', 'integrations', 'connect', 'api', 'apis', 'salesforce',
+            'database', 'databases', 'crm', 'erp', 'existing system', 'existing systems', 'sso', 'saml', 'okta',
+            'single sign on', 'active directory', 'sharepoint'
+        ]
+    },
+    {
+        id: 'training',
+        question: 'Do you offer training for our staff?',
+        answer:
+            'Yes. User training and handover can be included in an engagement. Tell us who needs to be trained and on what, and we scope it together with the rest of the work.',
+        contact: true,
+        keywords: [
+            'training', 'enablement', 'staff', 'onboarding', 'workshop', 'workshops', 'upskill', 'upskilling',
+            'handover', 'train our team', 'train my team', 'train our staff', 'train staff'
+        ]
+    },
+    {
+        id: 'support',
+        question: 'What support do you provide after launch?',
+        answer:
+            'Ongoing support and maintenance are set per engagement. Tell us what you need after go-live and we confirm what is included during scoping.',
+        contact: true,
+        keywords: [
+            'maintenance', 'sla', 'slas', 'ongoing', 'post launch', 'after launch', 'after deployment',
+            'after go live', 'technical support', 'customer support', 'help desk', 'support plan', 'support options'
+        ]
+    },
+    {
+        id: 'team',
+        question: 'Who are you and where are you located?',
+        answer:
+            'Catalyst Applied AI is based in Louisville, Kentucky, USA, and works with enterprise and government clients.',
+        keywords: [
+            'location', 'located', 'where are you', 'kentucky', 'louisville', 'office', 'headquarters', 'hq', 'team',
+            'company', 'founder', 'founders', 'leadership', 'about us'
+        ]
+    },
+    {
+        id: 'references',
+        question: 'Do you have case studies or references?',
+        answer:
+            'Case studies and references are available on request under NDA.',
+        contact: true,
+        keywords: [
+            'case study', 'case studies', 'reference', 'references', 'customer', 'customers', 'client', 'clients',
+            'testimonial', 'testimonials', 'portfolio', 'past performance'
+        ]
+    }
+];
+
+const SMALL_TALK = [
+    {
+        id: 'thanks',
+        answer: 'You are welcome. Is there anything else I can help you find?',
+        keywords: ['thanks', 'thank', 'thx', 'appreciate', 'cheers']
+    },
+    {
+        id: 'bye',
+        answer:
+            'Goodbye. If you have more questions or want to discuss a deployment, reach our team at sales@catalystappliedai.com.',
+        keywords: ['bye', 'goodbye', 'see you', 'take care']
+    },
+    {
+        id: 'greeting',
+        answer:
+            'Hello. I am the Catalyst FAQ Guide, an automated FAQ search. Ask about deployment, our products, security, or pricing, or pick a question below.',
+        keywords: ['hi', 'hello', 'hey', 'howdy', 'good morning', 'good afternoon', 'good evening', 'whats up', 'what s up']
+    }
+];
+
+export function tokenize(text) {
+    return String(text || '')
+        .toLowerCase()
+        .split(/[^a-z0-9]+/)
+        .filter(Boolean);
+}
+
+function compile(list) {
+    return list.map((item) => ({
+        ...item,
+        compiled: item.keywords.map((kw) => tokenize(kw)).filter((t) => t.length > 0)
+    }));
+}
+
+const COMPILED_INTENTS = compile(intents);
+const COMPILED_SMALL_TALK = compile(SMALL_TALK);
+
+function hasPhrase(tokens, phrase) {
+    if (phrase.length === 1) return tokens.includes(phrase[0]);
+    for (let i = 0; i + phrase.length <= tokens.length; i++) {
+        let ok = true;
+        for (let j = 0; j < phrase.length; j++) {
+            if (tokens[i + j] !== phrase[j]) {
+                ok = false;
+                break;
+            }
+        }
+        if (ok) return true;
+    }
+    return false;
+}
+
+function score(tokens, item) {
+    let total = 0;
+    for (const phrase of item.compiled) {
+        if (hasPhrase(tokens, phrase)) total += phrase.length;
+    }
+    return total;
+}
+
+/**
+ * Resolve a user message to an intent.
+ * @param {string} message
+ * @returns {{id: string, answer: string, contact: boolean, direct: boolean} | {id: 'fallback', answer: string, contact: true, direct: true}}
+ */
+export function matchIntent(message) {
+    const tokens = tokenize(message);
+
+    let best = null;
+    let bestScore = 0;
+    for (const item of COMPILED_INTENTS) {
+        const s = score(tokens, item);
+        if (s > bestScore) {
+            best = item;
+            bestScore = s;
+        }
+    }
+    if (best) {
+        return { id: best.id, answer: best.answer, contact: Boolean(best.contact), direct: Boolean(best.direct) };
+    }
+
+    if (tokens.length > 0 && tokens.length <= 4) {
+        for (const item of COMPILED_SMALL_TALK) {
+            if (score(tokens, item) > 0) {
+                return { id: item.id, answer: item.answer, contact: false, direct: false };
+            }
+        }
+    }
+
+    return { id: 'fallback', answer: FALLBACK_TEXT, contact: true, direct: true };
+}

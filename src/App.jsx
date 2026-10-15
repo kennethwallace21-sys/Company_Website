@@ -1,19 +1,15 @@
 import React, { Suspense, lazy } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from "@/components/ui/toaster"
-import { QueryClientProvider } from '@tanstack/react-query'
-import { queryClientInstance } from '@/lib/query-client'
-import NavigationTracker from '@/lib/NavigationTracker'
 import { pagesConfig } from './pages.config'
 import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
-import { AuthProvider, useAuth } from '@/lib/AuthContext';
-import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollToTop from '@/components/ScrollToTop';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { SHOW_SERVICES } from '@/config/features';
 
-// Lazy-load chatbot — not needed on first paint
+// Lazy-load chatbot: not needed on first paint
 const FaqChatbot = lazy(() => import('@/components/FaqChatbot'));
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -48,90 +44,73 @@ const PageWrapper = ({ children }) => (
     </motion.div>
 );
 
-const AuthenticatedApp = () => {
-    const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+const AppRoutes = () => {
     const location = useLocation();
 
-    if (isLoadingPublicSettings || isLoadingAuth) {
-        return <PageLoader />;
-    }
-
-    if (authError) {
-        if (authError.type === 'user_not_registered') {
-            return <UserNotRegisteredError />;
-        } else if (authError.type === 'auth_required') {
-            navigateToLogin();
-            return null;
-        }
-    }
-
     return (
-        <Suspense fallback={<PageLoader />}>
-            <AnimatePresence mode="wait">
-                <Routes location={location} key={location.pathname}>
-                    <Route path="/" element={
-                        <LayoutWrapper currentPageName={mainPageKey}>
-                            <PageWrapper>
-                                <MainPage />
-                            </PageWrapper>
-                        </LayoutWrapper>
-                    } />
-                    <Route path="/Team" element={<Navigate to="/" replace />} />
-                    <Route path="/team" element={<Navigate to="/" replace />} />
-                    {!SHOW_SERVICES && (
-                        <>
-                            <Route path="/ServiceDetail" element={<Navigate to="/Products" replace />} />
-                            <Route path="/servicedetail" element={<Navigate to="/Products" replace />} />
-                        </>
-                    )}
-                    {Object.entries(Pages).map(([path, Page]) => (
-                        <React.Fragment key={path}>
-                            <Route
-                                path={`/${path}`}
-                                element={
-                                    <LayoutWrapper currentPageName={path}>
-                                        <PageWrapper>
-                                            <Page />
-                                        </PageWrapper>
-                                    </LayoutWrapper>
-                                }
-                            />
-                            {/* Fallback for lowercase URLs */}
-                            <Route
-                                path={`/${path.toLowerCase()}`}
-                                element={
-                                    <LayoutWrapper currentPageName={path}>
-                                        <PageWrapper>
-                                            <Page />
-                                        </PageWrapper>
-                                    </LayoutWrapper>
-                                }
-                            />
-                        </React.Fragment>
-                    ))}
-                    <Route path="*" element={<PageNotFound />} />
-                </Routes>
-            </AnimatePresence>
-        </Suspense>
+        <ErrorBoundary resetKey={`${location.pathname}${location.search}`}>
+            <Suspense fallback={<PageLoader />}>
+                <AnimatePresence mode="wait">
+                    <Routes location={location} key={location.pathname}>
+                        <Route path="/" element={
+                            <LayoutWrapper currentPageName={mainPageKey}>
+                                <PageWrapper>
+                                    <MainPage />
+                                </PageWrapper>
+                            </LayoutWrapper>
+                        } />
+                        <Route path="/Team" element={<Navigate to="/" replace />} />
+                        <Route path="/team" element={<Navigate to="/" replace />} />
+                        {!SHOW_SERVICES && (
+                            <>
+                                <Route path="/ServiceDetail" element={<Navigate to="/Products" replace />} />
+                                <Route path="/servicedetail" element={<Navigate to="/Products" replace />} />
+                            </>
+                        )}
+                        {Object.entries(Pages).map(([path, Page]) => (
+                            <React.Fragment key={path}>
+                                <Route
+                                    path={`/${path}`}
+                                    element={
+                                        <LayoutWrapper currentPageName={path}>
+                                            <PageWrapper>
+                                                <Page />
+                                            </PageWrapper>
+                                        </LayoutWrapper>
+                                    }
+                                />
+                                {/* Fallback for lowercase URLs */}
+                                <Route
+                                    path={`/${path.toLowerCase()}`}
+                                    element={
+                                        <LayoutWrapper currentPageName={path}>
+                                            <PageWrapper>
+                                                <Page />
+                                            </PageWrapper>
+                                        </LayoutWrapper>
+                                    }
+                                />
+                            </React.Fragment>
+                        ))}
+                        <Route path="*" element={<PageNotFound />} />
+                    </Routes>
+                </AnimatePresence>
+            </Suspense>
+        </ErrorBoundary>
     );
 };
 
 function App() {
     return (
         <HelmetProvider>
-            <AuthProvider>
-                <QueryClientProvider client={queryClientInstance}>
-                    <Router>
-                        <ScrollToTop />
-                        <NavigationTracker />
-                        <AuthenticatedApp />
-                        <Suspense fallback={null}>
-                            <FaqChatbot />
-                        </Suspense>
-                    </Router>
-                    <Toaster />
-                </QueryClientProvider>
-            </AuthProvider>
+            <Router>
+                <ScrollToTop />
+                <AppRoutes />
+                <Suspense fallback={null}>
+                    <FaqChatbot />
+                </Suspense>
+            </Router>
+            <Toaster />
         </HelmetProvider>
     )
 }
