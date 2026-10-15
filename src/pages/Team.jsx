@@ -81,7 +81,7 @@ export default function Team() {
                         className="text-center mb-16"
                     >
                         <span className="text-blue-400 text-sm font-semibold tracking-widest uppercase">
-                            Louisville, Kentucky · SAM.gov Registered
+                            Louisville, Kentucky
                         </span>
                         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-4 mb-4 sm:mb-6">
                             Meet Our{' '}

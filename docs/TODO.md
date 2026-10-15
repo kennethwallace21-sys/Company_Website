@@ -12,6 +12,13 @@ were correct). If HTML looks stale after a push, purge the zone cache using the
 Cloudflare deploy token stored outside the repo; zone id in the password manager.
 See README "Remotes and deploy reality".
 
+## Owner decisions 2026-10-15
+
+- (a) Public git history exposure of the former Web3Forms key and the Cloudflare zone id is
+  accepted as-is (no history rewrite); the key is to be rotated instead.
+- (b) The SAM.gov registration claim is removed from the site until UEI and CAGE are
+  available.
+
 ## Contact form status: Worker is the only intake, Resend configured
 
 - `/api/send-email` runs through the Cloudflare Worker (`src/worker.js`). It handles

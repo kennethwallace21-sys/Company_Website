@@ -71,7 +71,7 @@ const allFaqs = [
             },
             {
                 question: "What government registrations and compliance standards do you meet?",
-                answer: "Catalyst is registered on SAM.gov (NAICS 541715, 541511) and is an NVIDIA Inception Program member. We deploy into environments our customers control, including customer-owned AWS GovCloud (US) and Azure Government tenants and on-premises or air-gapped hardware, so the system boundary and its authorization remain with your organization. Tell us which framework applies (for example NIST SP 800-53 or SP 800-171) and we will map controls during scoping."
+                answer: "Catalyst is an NVIDIA Inception Program member. We deploy into environments our customers control, including customer-owned AWS GovCloud (US) and Azure Government tenants and on-premises or air-gapped hardware, so the system boundary and its authorization remain with your organization. Tell us which framework applies (for example NIST SP 800-53 or SP 800-171) and we will map controls during scoping."
             },
             {
                 question: "Is my data used to train public models like ChatGPT?",

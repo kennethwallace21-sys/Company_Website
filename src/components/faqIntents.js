@@ -92,8 +92,9 @@ export const intents = [
     {
         id: 'registrations',
         question: 'What government registrations do you have?',
+        contact: true,
         answer:
-            'Catalyst Applied AI is registered on SAM.gov (NAICS 541715 and 541511) and is an NVIDIA Inception Program member. We deploy into environments you control where your organization holds the authorization. Tell us the framework, for example NIST SP 800-53 or 800-171, and we map controls during scoping.',
+            'We do not publish federal registration identifiers on this site. Ask us directly for our SAM.gov status, UEI and CAGE code. We deploy into environments you control where your organization holds the authorization. Tell us the framework, for example NIST SP 800-53 or 800-171, and we map controls during scoping.',
         keywords: [
             'sam gov', 'sam', 'naics', '541715', '541511', 'government', 'federal', 'gsa', 'inception',
             'nvidia', 'registered', 'registration', 'registrations'

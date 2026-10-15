@@ -180,9 +180,7 @@ export default function Footer() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    {/* Append the UEI and CAGE code to this line once they are available. */}
                     <p className="text-slate-400 text-sm">
-                        SAM.gov Registered (NAICS 541715, 541511) ·{' '}
                         <a
                             href="https://www.nvidia.com/en-us/startups/"
                             target="_blank"
