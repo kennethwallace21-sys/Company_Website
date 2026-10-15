@@ -14,6 +14,8 @@ See README "Remotes and deploy reality".
 
 ## Owner decisions 2026-10-15
 
+- (d) Cloudflare Web Analytics stays enabled; it is allowed in the CSP and disclosed in the Privacy policy.
+
 - (a) Public git history exposure of the former Web3Forms key and the Cloudflare zone id is
   accepted as-is (no history rewrite); the key is to be rotated instead.
 - (b) The SAM.gov registration claim is removed from the site until UEI and CAGE are
@@ -45,7 +47,7 @@ See README "Remotes and deploy reality".
 - [ ] Legacy copy sweep: Terms/Privacy pages still carry a few em dashes and dated
       language outside the marketing surfaces addressed 2026-07-05.
 - [ ] Vercel project: decommission or leave as an inert mirror.
-- [ ] Owner risk acceptance pending: leads are stored only in the sales mailbox (no
+- [x] Owner risk acceptance 2026-10-15: leads are stored only in the sales mailbox (no database). Accepted by the owner in chat on 2026-10-15; revisit if lead volume or retention requirements change. Controls CP-9, AU-12.
       database). Accept in writing or schedule a D1/KV store. Controls CP-9, AU-12.
 - [ ] Rotate the old Web3Forms access key in the Web3Forms dashboard (still present in
       public git history).
