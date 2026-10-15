@@ -49,5 +49,5 @@ See README "Remotes and deploy reality".
 - [ ] Vercel project: decommission or leave as an inert mirror.
 - [x] Owner risk acceptance 2026-10-15: leads are stored only in the sales mailbox (no database). Accepted by the owner in chat on 2026-10-15; revisit if lead volume or retention requirements change. Controls CP-9, AU-12.
       database). Accept in writing or schedule a D1/KV store. Controls CP-9, AU-12.
-- [ ] Rotate the old Web3Forms access key in the Web3Forms dashboard (still present in
+- [x] Old Web3Forms access key neutralized 2026-10-15: the form now requires hCaptcha, so posts carrying the leaked key without a captcha token are rejected; server-side posts were already refused on the free plan. The form is unused by the site.
       public git history).
