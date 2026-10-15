@@ -69,7 +69,6 @@ const navItems = [
             }
         ]
     },
-    { label: 'Team', path: '/Team' },
     { label: 'Contact', path: '/Contact' }
 ];
 
