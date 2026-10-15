@@ -106,9 +106,11 @@ function App() {
             <Router>
                 <ScrollToTop />
                 <AppRoutes />
-                <Suspense fallback={null}>
-                    <FaqChatbot />
-                </Suspense>
+                <ErrorBoundary fallback={null}>
+                    <Suspense fallback={null}>
+                        <FaqChatbot />
+                    </Suspense>
+                </ErrorBoundary>
             </Router>
             <Toaster />
         </HelmetProvider>

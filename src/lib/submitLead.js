@@ -55,6 +55,8 @@ export async function submitLead(fields) {
             return {
                 ok: false,
                 message: data?.error || "Please check the form and try again.",
+                // A 403 (bot check or blocked origin) is not something the visitor can fix, so offer email.
+                ...(res.status === 403 ? { showEmailFallback: true } : {}),
             };
         }
         return { ok: false, message: FALLBACK_MESSAGE, showEmailFallback: true };

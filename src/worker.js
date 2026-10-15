@@ -19,9 +19,9 @@ const CANONICAL_ORIGIN = "https://www.catalystappliedai.com";
 
 const SECURITY_HEADERS = {
     "Content-Security-Policy":
-        "default-src 'self'; script-src 'self' https://challenges.cloudflare.com; "
+        "default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.cloudflareinsights.com; "
         + "style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.unsplash.com; "
-        + "font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com; "
+        + "font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://cloudflareinsights.com; "
         + "frame-src https://challenges.cloudflare.com; frame-ancestors 'none'; base-uri 'self'; "
         + "form-action 'self'; object-src 'none'; upgrade-insecure-requests",
     "X-Frame-Options": "DENY",
@@ -30,6 +30,21 @@ const SECURITY_HEADERS = {
     "Cross-Origin-Opener-Policy": "same-origin",
     "X-Content-Type-Options": "nosniff",
 };
+
+// Client-side routes served by the SPA shell. Compared case-insensitively on the
+// pathname (query and hash are not part of it). Anything else without a file
+// extension that the asset layer answers with the SPA HTML is a soft 404.
+const SPA_ROUTES = new Set([
+    "/",
+    "/home",
+    "/contact",
+    "/products",
+    "/servicedetail",
+    "/termsandconditions",
+    "/faq",
+    "/privacy",
+    "/team",
+]);
 
 // Soft anti-abuse only: this Map lives in isolate memory, so it resets on
 // Worker restarts and is not shared across edge locations. Acceptable tradeoff
@@ -51,12 +66,74 @@ export default {
         }
 
         if (env.ASSETS) {
-            return withSecurityHeaders(await env.ASSETS.fetch(request));
+            return serveAsset(request, url, env);
         }
 
         return new Response("Not found", { status: 404 });
     },
 };
+
+function normalizeRoutePath(pathname) {
+    const trimmed = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+    return (trimmed || "/").toLowerCase();
+}
+
+function hasFileExtension(pathname) {
+    const lastSegment = pathname.slice(pathname.lastIndexOf("/") + 1);
+    return lastSegment.includes(".");
+}
+
+async function serveAsset(request, url, env) {
+    const pathname = url.pathname;
+    const isFileRequest = hasFileExtension(pathname);
+    const isUnknownRoute = !isFileRequest
+        && !pathname.startsWith("/assets/")
+        && !SPA_ROUTES.has(normalizeRoutePath(pathname));
+
+    let assetRequest = request;
+    if (isUnknownRoute && (request.headers.has("If-None-Match") || request.headers.has("If-Modified-Since"))) {
+        // A 304 would tell the browser to reuse a cached 200 for a path that is now a 404.
+        const headers = new Headers(request.headers);
+        headers.delete("If-None-Match");
+        headers.delete("If-Modified-Since");
+        assetRequest = new Request(request, { headers });
+    }
+
+    const response = await env.ASSETS.fetch(assetRequest);
+    if (response.webSocket) return response;
+
+    const contentType = (response.headers.get("Content-Type") || "").toLowerCase();
+    const servedHtml = response.status === 200 && contentType.startsWith("text/html");
+    if (!servedHtml) return withSecurityHeaders(response);
+
+    // Missing hashed assets and other file requests fall through to the SPA shell
+    // (200 HTML). That breaks open tabs after a deploy, so answer with a real 404.
+    if ((pathname.startsWith("/assets/") || isFileRequest) && !pathname.endsWith(".html")) {
+        return withSecurityHeaders(
+            new Response("Not Found", {
+                status: 404,
+                headers: {
+                    "Content-Type": "text/plain; charset=utf-8",
+                    "Cache-Control": "no-store",
+                },
+            })
+        );
+    }
+
+    // Unknown client-side routes: keep the SPA HTML (so the app can render its own
+    // not-found view) but report 404 instead of a soft 200.
+    if (isUnknownRoute) {
+        const headers = new Headers(response.headers);
+        headers.set("Cache-Control", "no-store");
+        headers.delete("ETag");
+        headers.delete("Last-Modified");
+        return withSecurityHeaders(
+            new Response(response.body, { status: 404, statusText: "Not Found", headers })
+        );
+    }
+
+    return withSecurityHeaders(response);
+}
 
 function withSecurityHeaders(response) {
     // WebSocket upgrade responses cannot be rebuilt.
@@ -108,7 +185,7 @@ async function handleSendEmail(request, env) {
     try {
         const rawBody = await request.text();
         // Content-Length can be absent or wrong (chunked uploads), so guard the real size too.
-        if (rawBody.length > MAX_BODY_BYTES) {
+        if (new TextEncoder().encode(rawBody).length > MAX_BODY_BYTES) {
             return json({ error: "Your message is too large to send." }, 413, headers);
         }
         body = JSON.parse(rawBody);
@@ -193,13 +270,16 @@ function isAllowedOrigin(origin, requestUrl) {
 }
 
 function corsHeaders(origin, requestUrl) {
-    const allowedOrigin = isAllowedOrigin(origin, requestUrl) ? origin : "https://catalystappliedai.com";
-    return {
-        "Access-Control-Allow-Origin": allowedOrigin,
+    // A rejected origin gets no Access-Control-Allow-Origin header at all.
+    const headers = {
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
         "Vary": "Origin",
     };
+    if (isAllowedOrigin(origin, requestUrl)) {
+        headers["Access-Control-Allow-Origin"] = origin;
+    }
+    return headers;
 }
 
 function checkRateLimit(ip) {
@@ -347,6 +427,7 @@ async function sendLeadEmail(lead, env, idempotencyKey) {
             body: JSON.stringify({
                 from: env.RESEND_FROM_EMAIL,
                 to: [env.RESEND_TO_EMAIL],
+                reply_to: [lead.email],
                 subject: `New Lead: ${subjectName}${subjectCompany ? ` [${subjectCompany}]` : ""}`,
                 html: emailHtml,
             }),
@@ -366,13 +447,20 @@ async function sendLeadEmail(lead, env, idempotencyKey) {
     }
 }
 
-// Replaces CR, LF, tab and every other character below 0x20 (plus DEL) with a
-// space so user input cannot inject header-like content into the subject line.
+// Replaces CR, LF, tab and every other character below 0x20 (plus DEL), the Unicode
+// line/paragraph separators and bidi control characters with a space so user input
+// cannot inject header-like content or reorder the subject line.
 function stripControlChars(value) {
     let out = "";
     for (const ch of String(value ?? "")) {
         const code = ch.charCodeAt(0);
-        out += code < 0x20 || code === 0x7f ? " " : ch;
+        const blocked = code < 0x20
+            || code === 0x7f
+            || code === 0x2028
+            || code === 0x2029
+            || (code >= 0x202a && code <= 0x202e)
+            || (code >= 0x2066 && code <= 0x2069);
+        out += blocked ? " " : ch;
     }
     return out.replace(/ {2,}/g, " ").trim();
 }

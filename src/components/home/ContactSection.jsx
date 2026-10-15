@@ -12,6 +12,8 @@ const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
 const MAX_TOPIC = 80;
 const TURNSTILE_LOAD_TIMEOUT_MS = 8000;
+const TURNSTILE_SCRIPT_ID = 'cf-turnstile-api';
+const TURNSTILE_SCRIPT_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 const SALES_EMAIL = 'sales@catalystappliedai.com';
 
 const topicMessage = (topic) => (topic ? `I'm interested in: ${topic}\n\n` : '');
@@ -55,6 +57,7 @@ export default function ContactSection() {
     const [turnstileFailed, setTurnstileFailed] = useState(false);
     const turnstileRef = useRef(null);
     const widgetIdRef = useRef(null);
+    const successHeadingRef = useRef(null);
 
     // App routes are keyed by pathname only, so a changed ?topic= does not remount this
     // component. Re-sync the prefilled message unless the visitor has started typing.
@@ -63,8 +66,23 @@ export default function ContactSection() {
         setFormData((prev) => (prev.message === topicMessage(topic) ? prev : { ...prev, message: topicMessage(topic) }));
     }, [topic, messageTouched]);
 
+    // Move focus to the confirmation heading so keyboard and screen reader users land on it.
+    useEffect(() => {
+        if (isSubmitted) successHeadingRef.current?.focus();
+    }, [isSubmitted]);
+
     useEffect(() => {
         if (!TURNSTILE_SITE_KEY || !turnstileRef.current) return undefined;
+
+        // Load the Turnstile API only when a site key is configured (and only once).
+        if (!document.getElementById(TURNSTILE_SCRIPT_ID) && !window.turnstile) {
+            const script = document.createElement('script');
+            script.id = TURNSTILE_SCRIPT_ID;
+            script.src = TURNSTILE_SCRIPT_SRC;
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
 
         let interval = null;
         let timeout = null;
@@ -84,7 +102,10 @@ export default function ContactSection() {
                         setTurnstileToken(token);
                     },
                     'expired-callback': () => setTurnstileToken(null),
-                    'error-callback': () => setTurnstileToken(null),
+                    'error-callback': () => {
+                        setTurnstileToken(null);
+                        setTurnstileFailed(true);
+                    },
                 });
             }
         }, 200);
@@ -169,9 +190,9 @@ export default function ContactSection() {
                     className="text-center mb-16"
                 >
                     <span className="text-blue-400 text-sm font-semibold tracking-widest uppercase">Get In Touch</span>
-                    <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
+                    <h1 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
                         Contact Us
-                    </h2>
+                    </h1>
                     <p className="text-slate-400 max-w-2xl mx-auto text-lg">
                         Ready to unlock AI for your business? Book your ROI assessment today
                         and discover how much time and money you can save.
@@ -303,6 +324,8 @@ export default function ContactSection() {
                     >
                         {isSubmitted ? (
                             <motion.div
+                                role="status"
+                                aria-live="polite"
                                 className="h-full flex items-center justify-center p-8 rounded-2xl bg-slate-900/50 border border-slate-800"
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
@@ -317,7 +340,13 @@ export default function ContactSection() {
                                     >
                                         <CheckCircle className="w-8 h-8 text-blue-400" />
                                     </motion.div>
-                                    <h3 className="text-xl font-bold text-white mb-2">Thank You!</h3>
+                                    <h3
+                                        ref={successHeadingRef}
+                                        tabIndex={-1}
+                                        className="text-xl font-bold text-white mb-2 outline-none"
+                                    >
+                                        Thank You!
+                                    </h3>
                                     <p className="text-slate-400">
                                         We've received your message and will get back to you shortly.
                                     </p>

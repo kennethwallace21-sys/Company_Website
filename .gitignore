@@ -29,3 +29,6 @@ Thumbs.db
 
 # Wrangler build artifacts
 .wrangler/
+
+# Local Wrangler secrets
+.dev.vars

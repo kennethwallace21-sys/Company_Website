@@ -67,7 +67,7 @@ const allFaqs = [
         items: [
             {
                 question: "Can you deploy in AWS GovCloud, on-premise, or air-gapped environments?",
-                answer: "Yes. We support three deployment models: managed secure cloud, client cloud tenant (including AWS GovCloud and Azure Government), and air-gapped on-premises hardware (such as NVIDIA NIM/DGX). In client-tenant and on-premises deployments, your proprietary data stays in the environment you operate."
+                answer: "Yes. We support three deployment models: managed secure cloud, client cloud tenant (including AWS GovCloud and Azure Government), and air-gapped on-premises hardware (such as NVIDIA NIM/DGX). In client-tenant and on-premises deployments, your proprietary data stays in the environment you operate. In the managed option, your data is processed in infrastructure that Catalyst operates under your contract terms; in the other two it stays in the environment you operate."
             },
             {
                 question: "What government registrations and compliance standards do you meet?",

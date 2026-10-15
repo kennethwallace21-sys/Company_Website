@@ -25,6 +25,17 @@ export const CERTIFICATION_DISCLAIMER =
 
 export const intents = [
     {
+        id: 'meta',
+        question: 'Is this a bot or a person?',
+        answer:
+            'This is an automated FAQ search, not a live agent or an AI model. For a person, use the contact page or email sales@catalystappliedai.com.',
+        contact: true,
+        keywords: [
+            'is this a bot', 'are you a bot', 'are you human', 'are you a real person', 'is this ai',
+            'is this automated', 'are you an ai'
+        ]
+    },
+    {
         id: 'deployment',
         question: 'Can you deploy in AWS GovCloud, on-premises, or air-gapped environments?',
         answer:
@@ -54,7 +65,7 @@ export const intents = [
             'Custom agents, such as AIVA for HR, that can use duplex voice. They execute multi-step workflows, manage tasks, and coordinate with your internal systems to reduce repetitive operational work.',
         keywords: [
             'agent', 'agents', 'agentic', 'aiva', 'assistant', 'assistants', 'voice', 'duplex', 'workflow',
-            'workflows', 'automate', 'automation', 'chatbot', 'chatbots', 'bot', 'bots'
+            'workflows', 'automate', 'automation', 'chatbot', 'chatbots', 'bots'
         ]
     },
     {
@@ -97,7 +108,8 @@ export const intents = [
             'fedramp', 'cmmc', 'nist', 'soc', 'soc2', 'iso', 'hipaa', 'itar', 'cui', 'fisma', 'il4', 'il5',
             'stig', 'pci', 'gdpr', 'clearance', 'clearances', 'cleared', 'certification', 'certifications',
             'certified', 'certificate', 'accreditation', 'accredited', 'authorized', 'authorization', 'ato',
-            'audit', 'audits', 'audited', 'third party', 'compliance', 'compliant', '800 53', '800 171'
+            'audit', 'audits', 'audited', 'third party', 'compliance', 'compliant', '800 53', '800 171',
+            'baa', 'business associate'
         ]
     },
     {
@@ -106,7 +118,7 @@ export const intents = [
         answer:
             'Our practices: encryption in transit, least-privilege access, and deployment into customer-controlled environments. We do not train public models on customer data.',
         keywords: [
-            'security', 'secure', 'safe', 'safety', 'privacy', 'private', 'confidential', 'encrypted', 'encryption',
+            'security', 'secure', 'safe', 'safety', 'privacy', 'private', 'confidential', 'encrypt', 'encrypted', 'encryption', 'in transit', 'at rest',
             'chatgpt', 'openai', 'public model', 'public models', 'leak', 'protect', 'protected', 'least privilege',
             'access control', 'rbac', 'train on', 'trained on', 'train models'
         ]
@@ -119,7 +131,24 @@ export const intents = [
         contact: true,
         keywords: [
             'price', 'prices', 'pricing', 'cost', 'costs', 'budget', 'quote', 'rates', 'fee', 'fees', 'expensive',
-            'pilot', 'pilots', 'statement of work', 'sow', 'proposal', 'estimate', 'how much'
+            'pilot', 'pilots', 'statement of work', 'sow', 'proposal', 'estimate',
+            'how much does', 'how much is', 'how much do you charge'
+        ]
+    },
+    {
+        id: 'start',
+        question: 'How do I get started or contact you?',
+        answer:
+            'The best way to start is a free ROI Assessment. Use the contact page, email sales@catalystappliedai.com, or call +1-502-416-8342.',
+        contact: true,
+        direct: true,
+        keywords: [
+            'get started', 'getting started', 'start', 'begin', 'contact', 'reach', 'email', 'call', 'phone',
+            'talk to someone', 'talk to sales', 'talk to a person',
+            'hire', 'sales', 'book', 'meeting', 'demo', 'consultation', 'rfp', 'rfq', 'rfi', 'solicitation',
+            'schedule a demo', 'book a demo', 'request a demo', 'set up a demo', 'schedule a call',
+            'capability statement', 'capabilities statement',
+            'roi assessment', 'assessment', 'discovery', 'diagnostic', 'scoping'
         ]
     },
     {
@@ -131,19 +160,6 @@ export const intents = [
         keywords: [
             'timeline', 'timelines', 'how long', 'duration', 'timeframe', 'turnaround', 'weeks', 'months',
             'time to deploy', 'time frame', 'schedule'
-        ]
-    },
-    {
-        id: 'start',
-        question: 'How do I get started or contact you?',
-        answer:
-            'The best way to start is a free ROI Assessment. Use the contact page, email sales@catalystappliedai.com, or call +1-502-416-8342.',
-        contact: true,
-        direct: true,
-        keywords: [
-            'get started', 'getting started', 'start', 'begin', 'contact', 'reach', 'email', 'call', 'phone', 'talk',
-            'hire', 'sales', 'book', 'meeting', 'demo', 'consultation', 'rfp', 'rfq', 'rfi', 'solicitation',
-            'roi assessment', 'assessment', 'discovery', 'diagnostic', 'scoping'
         ]
     },
     {
@@ -196,8 +212,9 @@ export const intents = [
             'Case studies and references are available on request under NDA.',
         contact: true,
         keywords: [
-            'case study', 'case studies', 'reference', 'references', 'customer', 'customers', 'client', 'clients',
-            'testimonial', 'testimonials', 'portfolio', 'past performance'
+            'case study', 'case studies', 'reference', 'references', 'customer', 'customers', 'client references', 'other clients', 'past clients',
+            'clients', 'testimonial', 'testimonials', 'portfolio', 'past performance',
+            'sample', 'samples', 'sample of your work', 'examples of your work'
         ]
     }
 ];

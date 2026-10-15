@@ -82,9 +82,11 @@ export default function Privacy() {
                         </li>
                     </ul>
                     <p>
-                        We do not collect anything else through the Site. The Site does not set cookies and does not run
-                        analytics or advertising trackers. Our FAQ assistant runs entirely in your browser. It does not
-                        transmit or store the questions you type.
+                        We do not collect anything else through the Site. The Site uses Cloudflare Web Analytics, a
+                        cookieless, aggregate measurement service that records page views and basic performance metrics
+                        without identifying you. The Site does not set cookies and does not run advertising trackers.
+                        Our FAQ assistant runs entirely in your browser. It does not transmit or store the questions you
+                        type.
                     </p>
                 </Section>
 
@@ -105,7 +107,10 @@ export default function Privacy() {
                             <strong className="text-white">Resend:</strong> delivers contact form submissions to us by email. We do not store submissions in a separate database.
                         </li>
                         <li>
-                            <strong className="text-white">Cloudflare Turnstile:</strong> bot protection on the contact form, when enabled.
+                            <strong className="text-white">Cloudflare Web Analytics:</strong> cookieless, aggregate measurement of page views and basic performance metrics.
+                        </li>
+                        <li>
+                            <strong className="text-white">Cloudflare Turnstile:</strong> bot protection on the contact form, loaded only on that page and only when enabled.
                         </li>
                         <li>
                             <strong className="text-white">Unsplash:</strong> images on some pages may be loaded from Unsplash (images.unsplash.com). Unsplash receives your IP address when those images load.

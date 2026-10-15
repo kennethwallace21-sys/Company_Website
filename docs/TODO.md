@@ -4,7 +4,7 @@ Deploy pipeline (verified end-to-end 2026-07-07): the live domain is served by a
 Cloudflare **Worker** named `website` (static assets + SPA fallback), auto-built by
 **Workers Builds** from this repo. Push to `main` on either remote and it deploys live
 in about 5 minutes: no dashboard steps required. Keep GitHub
-`kennethwallace21-sys/Company_Website` and GitLab `caai-main-group/caai_website` main
+`Company_Website` and GitLab `caai-main-group/caai_website` main
 pushed in lockstep (push both). `wrangler.jsonc` must keep `name: "website"` and
 `assets.directory: "./dist"`; removing either breaks the deploy step even though the
 build step still succeeds (bit us 2026-07-07: two failed deploys before both fields
@@ -34,11 +34,11 @@ See README "Remotes and deploy reality".
 - [ ] Mirror the footer social badges onto the product subdomain pages served by
       caai-ops (`ui/static/clerk.html`, `custom-models.html`). Decided 2026-07-07: not
       doing this for now, revisit only if asked.
-- [ ] `msv1.invalid` leftover MX record and GoDaddy-default DMARC rua on the domain;
-      now easy to clean up.
+- [ ] Mail DNS cleanup: see the private ops notes.
 - [ ] Legacy copy sweep: Terms/Privacy pages still carry a few em dashes and dated
       language outside the marketing surfaces addressed 2026-07-05.
-- [ ] Decide long-term host: the live Worker (current, working) vs the Vercel mirror
-      (`caaiwebsite.vercel.app`, has zero env vars, its `api/send-email.js` path is
-      dead). Vercel is currently just a preview mirror; either formally keep it as
-      that or decommission to end the split-brain.
+- [ ] Vercel project: decommission or leave as an inert mirror.
+- [ ] Owner risk acceptance pending: leads are stored only in the sales mailbox (no
+      database). Accept in writing or schedule a D1/KV store. Controls CP-9, AU-12.
+- [ ] Rotate the old Web3Forms access key in the Web3Forms dashboard (still present in
+      public git history).

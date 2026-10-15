@@ -77,12 +77,14 @@ export default function FaqChatbot() {
     const uid = useId();
     const searchId = `${uid}-search`;
     const inputId = `${uid}-message`;
+    const titleId = `${uid}-title`;
     const isTyping = pending > 0;
 
     const filteredFaqs = useMemo(() => {
         const query = searchQuery.trim().toLowerCase();
-        if (!query) return intents;
-        return intents.filter(
+        const suggestable = intents.filter((faq) => faq.id !== 'meta');
+        if (!query) return suggestable;
+        return suggestable.filter(
             (faq) => faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query)
         );
     }, [searchQuery]);
@@ -126,7 +128,15 @@ export default function FaqChatbot() {
     // Simple focus trap: Tab cycles within the panel.
     const handlePanelKeyDown = (e) => {
         if (e.key !== 'Tab' || !panelRef.current) return;
-        const items = Array.from(panelRef.current.querySelectorAll(FOCUSABLE));
+        // Recomputed on every keydown: framer-motion adds tabindex="0" to
+        // disabled motion buttons, and the visible set changes as the UI does.
+        const items = [...panelRef.current.querySelectorAll(FOCUSABLE)].filter(
+            (el) =>
+                !el.disabled &&
+                el.tabIndex >= 0 &&
+                el.getAttribute('aria-hidden') !== 'true' &&
+                el.offsetParent !== null
+        );
         if (items.length === 0) return;
         const first = items[0];
         const last = items[items.length - 1];
@@ -249,7 +259,7 @@ export default function FaqChatbot() {
                         ref={panelRef}
                         role="dialog"
                         aria-modal="true"
-                        aria-label="Catalyst FAQ Guide"
+                        aria-labelledby={titleId}
                         onKeyDown={handlePanelKeyDown}
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -271,21 +281,32 @@ export default function FaqChatbot() {
                                         />
                                     </div>
                                     <div>
-                                        <h2 className="text-white font-semibold text-base leading-tight">Catalyst FAQ Guide</h2>
+                                        <h2 id={titleId} className="text-white font-semibold text-base leading-tight">Catalyst FAQ Guide</h2>
                                         <p className="text-blue-100 text-xs">Automated FAQ search. Not a live agent.</p>
                                     </div>
                                 </div>
-                                {messages.length > 1 && (
+                                <div className="flex items-center gap-1 shrink-0">
+                                    {messages.length > 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={resetChat}
+                                            className="text-white/70 hover:text-white transition-colors p-1"
+                                            aria-label="Reset conversation"
+                                            title="Reset conversation"
+                                        >
+                                            <RotateCcw className="w-4 h-4" aria-hidden="true" />
+                                        </button>
+                                    )}
                                     <button
                                         type="button"
-                                        onClick={resetChat}
+                                        onClick={closePanel}
                                         className="text-white/70 hover:text-white transition-colors p-1"
-                                        aria-label="Reset conversation"
-                                        title="Reset conversation"
+                                        aria-label="Close FAQ guide"
+                                        title="Close FAQ guide"
                                     >
-                                        <RotateCcw className="w-4 h-4" aria-hidden="true" />
+                                        <X className="w-5 h-5" aria-hidden="true" />
                                     </button>
-                                )}
+                                </div>
                             </div>
                         </div>
 

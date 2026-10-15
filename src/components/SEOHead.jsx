@@ -63,12 +63,12 @@ export default function SEOHead({
                     : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
             />
 
-            {/* Canonical */}
-            <link rel="canonical" href={canonicalUrl} />
+            {/* Canonical (omitted on noindex pages) */}
+            {!noindex && <link rel="canonical" href={canonicalUrl} />}
 
             {/* Open Graph */}
             <meta property="og:type" content={type} />
-            <meta property="og:url" content={canonicalUrl} />
+            {!noindex && <meta property="og:url" content={canonicalUrl} />}
             <meta property="og:title" content={fullTitle} />
             {description && <meta property="og:description" content={description} />}
             <meta property="og:image" content={image} />
@@ -82,7 +82,7 @@ export default function SEOHead({
 
             {/* Twitter */}
             <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content={canonicalUrl} />
+            {!noindex && <meta property="twitter:url" content={canonicalUrl} />}
             <meta property="twitter:title" content={fullTitle} />
             {description && <meta property="twitter:description" content={description} />}
             <meta property="twitter:image" content={image} />
