@@ -37,7 +37,7 @@ export default function Footer() {
                             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                         >
                             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                                <img src="/logo.jpg" alt="Catalyst Applied AI" className="w-full h-full object-cover" loading="lazy" />
+                                <img src="/logo-mark.png" width="40" height="40" alt="Catalyst Applied AI" className="w-full h-full object-cover" loading="lazy" />
                             </div>
                             <span className="text-xl font-bold text-white">
                                 Catalyst Applied AI
