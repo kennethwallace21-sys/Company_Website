@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, ChevronDown, Cloud, Building2, ServerCog } from 'lucide-react';
 import { contactUrl } from '@/utils';
+import { SHOW_SERVICES } from '@/config/features';
+
+// Section the hero scrolls to; #services only exists while the Services accordion is shown.
+const NEXT_SECTION_ID = SHOW_SERVICES ? 'services' : 'about';
 
 const shaderSource = `#version 300 es
 precision highp float;
@@ -267,12 +271,21 @@ export default function HeroSection() {
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
-                        <Button
-                            onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
-                            className="border border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/15 text-blue-300 hover:text-blue-200 px-8 py-6 text-lg rounded-xl backdrop-blur-sm transition-all"
-                        >
-                            Explore Our Services
-                        </Button>
+                        {SHOW_SERVICES ? (
+                            <Button
+                                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="border border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/15 text-blue-300 hover:text-blue-200 px-8 py-6 text-lg rounded-xl backdrop-blur-sm transition-all"
+                            >
+                                Explore Our Services
+                            </Button>
+                        ) : (
+                            <Button
+                                asChild
+                                className="border border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/15 text-blue-300 hover:text-blue-200 px-8 py-6 text-lg rounded-xl backdrop-blur-sm transition-all"
+                            >
+                                <Link to="/Products">Explore Our Products</Link>
+                            </Button>
+                        )}
                     </motion.div>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -315,7 +328,7 @@ export default function HeroSection() {
             >
                 <button
                     type="button"
-                    onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
+                    onClick={() => document.getElementById(NEXT_SECTION_ID)?.scrollIntoView({ behavior: 'smooth' })}
                     className="group flex flex-col items-center gap-1.5 text-slate-500 hover:text-blue-400 transition-colors"
                 >
                     <span className="text-xs tracking-widest uppercase">Scroll</span>

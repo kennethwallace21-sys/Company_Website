@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Mail, MapPin, Linkedin, Phone } from 'lucide-react';
 import { staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
+import { SHOW_SERVICES } from '@/config/features';
 
 const XIcon = (props) => (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
@@ -22,7 +23,7 @@ export default function Footer() {
         >
             <div className="max-w-7xl mx-auto">
                 <motion.div
-                    className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8"
+                    className={`grid grid-cols-1 ${SHOW_SERVICES ? 'md:grid-cols-4' : 'md:grid-cols-3'} gap-8 mb-8`}
                     variants={staggerContainer}
                     initial="hidden"
                     whileInView="visible"
@@ -68,6 +69,7 @@ export default function Footer() {
                     </motion.div>
 
                     {/* Services Links */}
+                    {SHOW_SERVICES && (
                     <motion.div variants={staggerItem}>
                         <h4 className="text-white font-semibold mb-4">Services</h4>
                         <ul className="space-y-2">
@@ -90,6 +92,7 @@ export default function Footer() {
                             ))}
                         </ul>
                     </motion.div>
+                    )}
 
                     {/* Company Links */}
                     <motion.div variants={staggerItem}>

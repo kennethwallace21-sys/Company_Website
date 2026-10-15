@@ -8,6 +8,7 @@ import SEOHead from '../components/SEOHead';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { Button } from "@/components/ui/button";
+import { SHOW_SERVICES } from '@/config/features';
 
 const allFaqs = [
     {
@@ -102,7 +103,7 @@ export default function FAQ() {
         }));
     };
 
-    const filteredFaqs = allFaqs.map(cat => ({
+    const filteredFaqs = allFaqs.filter(cat => SHOW_SERVICES || cat.category !== 'Services').map(cat => ({
         ...cat,
         items: cat.items.filter(item => 
             item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||

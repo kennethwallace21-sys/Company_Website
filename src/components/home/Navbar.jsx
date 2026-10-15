@@ -3,14 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { contactUrl } from '@/utils';
+import { SHOW_SERVICES } from '@/config/features';
 import {
     Menu, X, ChevronDown, ChevronRight,
     Search, GraduationCap, Cpu, Database,
     Zap, Layout, Bot, Box, BarChart3, Users, CalendarCheck, MessageSquare
 } from 'lucide-react';
 
-const navItems = [
-    {
+// Kept as a standalone constant so it is dropped from the production bundle when SHOW_SERVICES is false.
+const servicesNavItem = {
         label: 'Services',
         featured: { label: 'All Services', path: '/#services' },
         columns: [
@@ -47,7 +48,10 @@ const navItems = [
                 ]
             }
         ]
-    },
+};
+
+const navItems = [
+    ...(SHOW_SERVICES ? [servicesNavItem] : []),
     {
         label: 'Products',
         featured: { label: 'Products overview', path: '/Products' },

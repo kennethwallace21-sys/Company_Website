@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Navbar from '../components/home/Navbar';
 import HeroSection from '../components/home/HeroSection';
-import ServicesAccordion from '../components/home/ServicesAccordion';
 import AboutSection from '../components/home/AboutSection';
 import CTASection from '../components/home/CTASection';
 import Footer from '../components/home/Footer';
 import SEOHead from '../components/SEOHead';
+import { SHOW_SERVICES } from '@/config/features';
+
+// Lazy and flag-gated so the Services accordion is not built into the bundle while hidden.
+const ServicesAccordion = SHOW_SERVICES ? lazy(() => import('../components/home/ServicesAccordion')) : null;
 
 export default function Home() {
     const [showNav, setShowNav] = useState(false);
@@ -30,7 +33,11 @@ export default function Home() {
             <HeroSection />
 
             {/* Services Section */}
-            <ServicesAccordion />
+            {SHOW_SERVICES && (
+                <Suspense fallback={null}>
+                    <ServicesAccordion />
+                </Suspense>
+            )}
 
             {/* About Section */}
             <div id="about">

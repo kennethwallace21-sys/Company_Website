@@ -11,11 +11,13 @@
  */
 import { lazy } from 'react';
 import Home from './pages/Home';
+import { SHOW_SERVICES } from './config/features';
 
 // Lazy-load all non-home pages for code splitting
 const Contact = lazy(() => import('./pages/Contact'));
 const Products = lazy(() => import('./pages/Products'));
-const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
+// Only create the ServiceDetail lazy chunk when Services are enabled (flag is a build-time constant).
+const ServiceDetail = SHOW_SERVICES ? lazy(() => import('./pages/ServiceDetail')) : null;
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const Privacy = lazy(() => import('./pages/Privacy'));
@@ -24,7 +26,7 @@ export const PAGES = {
     "Contact": Contact,
     "Home": Home,
     "Products": Products,
-    "ServiceDetail": ServiceDetail,
+    ...(SHOW_SERVICES ? { "ServiceDetail": ServiceDetail } : {}),
     "TermsAndConditions": TermsAndConditions,
     "FAQ": FAQ,
     "Privacy": Privacy,

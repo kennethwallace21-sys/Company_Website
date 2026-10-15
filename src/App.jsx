@@ -11,6 +11,7 @@ import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollToTop from '@/components/ScrollToTop';
+import { SHOW_SERVICES } from '@/config/features';
 
 // Lazy-load chatbot — not needed on first paint
 const FaqChatbot = lazy(() => import('@/components/FaqChatbot'));
@@ -77,6 +78,12 @@ const AuthenticatedApp = () => {
                     } />
                     <Route path="/Team" element={<Navigate to="/" replace />} />
                     <Route path="/team" element={<Navigate to="/" replace />} />
+                    {!SHOW_SERVICES && (
+                        <>
+                            <Route path="/ServiceDetail" element={<Navigate to="/Products" replace />} />
+                            <Route path="/servicedetail" element={<Navigate to="/Products" replace />} />
+                        </>
+                    )}
                     {Object.entries(Pages).map(([path, Page]) => (
                         <React.Fragment key={path}>
                             <Route

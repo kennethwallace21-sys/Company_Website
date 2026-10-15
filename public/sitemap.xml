@@ -28,7 +28,7 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- Service Detail Pages -->
+  <!-- SERVICES_HIDDEN: Service Detail Pages. Remove this comment wrapper to restore.
   <url>
     <loc>https://catalystappliedai.com/ServiceDetail?service=discovery-diagnostic</loc>
     <lastmod>2026-03-15</lastmod>
@@ -70,6 +70,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  SERVICES_HIDDEN -->
 
   <!-- Terms & Conditions -->
   <url>
