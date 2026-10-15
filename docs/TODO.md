@@ -34,7 +34,6 @@ See README "Remotes and deploy reality".
   `VITE_TURNSTILE_SITE_KEY` is present at build time. The Worker verifies Turnstile
   only when `TURNSTILE_SECRET_KEY` is set. Turnstile is enforced since 2026-10-15: the public site key ships via .env.production and
   TURNSTILE_SECRET_KEY is set on the Worker; a POST without a valid token returns 403 (verified live).
-  dashboard.
 
 ## P3: Smaller cleanups
 
