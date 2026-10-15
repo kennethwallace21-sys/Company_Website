@@ -32,8 +32,8 @@ See README "Remotes and deploy reality".
   `RESEND_TO_EMAIL`, `RESEND_FROM_EMAIL`); a valid POST returned 200 with a message id.
 - `src/components/home/ContactSection.jsx` renders Cloudflare Turnstile only when
   `VITE_TURNSTILE_SITE_KEY` is present at build time. The Worker verifies Turnstile
-  only when `TURNSTILE_SECRET_KEY` is set. Turnstile remains optional until
-  `TURNSTILE_SECRET_KEY` and `VITE_TURNSTILE_SITE_KEY` are both set in the Cloudflare
+  only when `TURNSTILE_SECRET_KEY` is set. Turnstile is enforced since 2026-10-15: the public site key ships via .env.production and
+  TURNSTILE_SECRET_KEY is set on the Worker; a POST without a valid token returns 403 (verified live).
   dashboard.
 
 ## P3: Smaller cleanups
