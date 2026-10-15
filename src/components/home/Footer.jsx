@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Mail, MapPin, Linkedin, Phone, Facebook, Instagram } from 'lucide-react';
+import { Mail, MapPin, Linkedin, Phone } from 'lucide-react';
 import { staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
 
 const XIcon = (props) => (
@@ -64,24 +64,6 @@ export default function Footer() {
                             >
                                 <XIcon className="w-6 h-6" />
                             </a>
-                            <a
-                                href="https://www.facebook.com/Catalystappliedai"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Facebook"
-                                className="text-slate-300 hover:text-blue-400 transition-colors"
-                            >
-                                <Facebook className="w-6 h-6" />
-                            </a>
-                            <a
-                                href="https://www.instagram.com/catalystappliedai/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Instagram"
-                                className="text-slate-300 hover:text-blue-400 transition-colors"
-                            >
-                                <Instagram className="w-6 h-6" />
-                            </a>
                         </div>
                     </motion.div>
 
@@ -116,8 +98,10 @@ export default function Footer() {
                             {[
                                 { label: 'Home', page: 'Home' },
                                 { label: 'Products', page: 'Products' },
+                                { label: 'Team', page: 'Team' },
                                 { label: 'FAQ', page: 'FAQ' },
                                 { label: 'Terms & Conditions', page: 'TermsAndConditions' },
+                                { label: 'Privacy Policy', page: 'Privacy' },
                             ].map(item => (
                                 <li key={item.page}>
                                     <Link
@@ -195,7 +179,10 @@ export default function Footer() {
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
                     <p className="text-slate-400 text-sm">
-                        Copyright © {new Date().getFullYear()} Catalyst Applied AI - All Rights Reserved.
+                        SAM.gov Registered (NAICS 541715, 541511) · NVIDIA Inception Member · Louisville, KY
+                    </p>
+                    <p className="text-slate-500 text-xs mt-1">
+                        Copyright © {new Date().getFullYear()} Catalyst Applied AI, LLC - All Rights Reserved.
                     </p>
                     <div className="flex justify-center gap-4 mt-2">
                         <p className="text-slate-500 text-xs">

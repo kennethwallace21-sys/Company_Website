@@ -82,8 +82,6 @@ export default function AboutSection() {
                                 </motion.div>
                             ))}
                         </motion.div>
-
-// AboutSection simplified (Full About page removed)
                     </motion.div>
 
                     {/* Right Content - Capabilities */}

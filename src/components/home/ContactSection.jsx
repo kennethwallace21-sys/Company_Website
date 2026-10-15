@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,12 +10,16 @@ import { submitLead } from '@/lib/submitLead';
 
 const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || '';
 
+const MAX_TOPIC = 80;
+
 export default function ContactSection() {
+    const [searchParams] = useSearchParams();
+    const topic = (searchParams.get('topic') || '').trim().slice(0, MAX_TOPIC);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         company: '',
-        message: '',
+        message: topic ? `I'm interested in: ${topic}\n\n` : '',
         website: '', // Honeypot field — bots fill this, humans don't see it
     });
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -42,6 +47,12 @@ export default function ContactSection() {
 
         return () => window.clearInterval(interval);
     }, []);
+
+    const focusForm = () => {
+        const form = document.getElementById('contact-form');
+        form?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        form?.querySelector('input[name="name"]')?.focus({ preventScroll: true });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -134,7 +145,12 @@ export default function ContactSection() {
                             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                                 <Button
                                     className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
-                                    onClick={() => window.location.href = 'mailto:sales@catalystappliedai.com?subject=Request%20for%20Information'}
+                                    onClick={() => {
+                                        if (!formData.message) {
+                                            setFormData({ ...formData, message: "I'm interested in: ROI Assessment\n\n" });
+                                        }
+                                        focusForm();
+                                    }}
                                 >
                                     Book Your ROI Assessment
                                     <ArrowRight className="ml-2 w-5 h-5" />
@@ -142,10 +158,10 @@ export default function ContactSection() {
                             </motion.div>
                             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
                                 <Button
+                                    asChild
                                     className="mt-3 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl w-full sm:w-auto shadow-lg shadow-emerald-500/15 hover:shadow-emerald-500/30 transition-shadow"
-                                    onClick={() => window.location.href = 'mailto:sales@catalystappliedai.com?subject=Speak%20with%20a%2024%2F7%20Agent'}
                                 >
-                                    Speak with a 24/7 Agent
+                                    <a href="tel:+15024168342">Speak with a 24/7 Agent</a>
                                 </Button>
                             </motion.div>
                         </motion.div>
@@ -248,7 +264,7 @@ export default function ContactSection() {
                                 </div>
                             </motion.div>
                         ) : (
-                            <form onSubmit={handleSubmit} className="h-full p-8 rounded-2xl bg-[#0d1425]/50 border border-blue-500/10 flex flex-col gap-6">
+                            <form id="contact-form" onSubmit={handleSubmit} className="scroll-mt-32 h-full p-8 rounded-2xl bg-[#0d1425]/50 border border-blue-500/10 flex flex-col gap-6">
                                 {/* Honeypot — hidden from real users, bots auto-fill it */}
                                 <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', height: 0, overflow: 'hidden' }}>
                                     <label htmlFor="website">Website</label>
@@ -266,6 +282,7 @@ export default function ContactSection() {
                                     <div>
                                         <label className="text-sm text-slate-400 mb-2 block font-medium">Name</label>
                                         <Input
+                                            name="name"
                                             placeholder="Your name"
                                             value={formData.name}
                                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}

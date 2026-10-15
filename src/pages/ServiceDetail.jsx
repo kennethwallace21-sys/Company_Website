@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
+import { createPageUrl, contactUrl } from '@/utils';
 import Navbar from '../components/home/Navbar';
 import Footer from '../components/home/Footer';
 import { fadeUp, fadeLeft, fadeRight, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
@@ -341,13 +341,21 @@ export default function ServiceDetail() {
                     </p>
                     <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="inline-block">
                         <Button
-                            onClick={() => window.location.href = `mailto:sales@catalystappliedai.com?subject=${encodeURIComponent(service.title)} Inquiry`}
+                            asChild
                             className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-10 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
                         >
-                            Book a Demo
-                            <ArrowRight className="ml-2 w-5 h-5" />
+                            <Link to={contactUrl(`${service.title} Demo`)}>
+                                Book a Demo
+                                <ArrowRight className="ml-2 w-5 h-5" />
+                            </Link>
                         </Button>
                     </motion.div>
+                    <p className="mt-4 text-sm text-slate-400">
+                        Or email us directly at{' '}
+                        <a href={`mailto:sales@catalystappliedai.com?subject=${encodeURIComponent(service.title)} Inquiry`} className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
+                            sales@catalystappliedai.com
+                        </a>
+                    </p>
                 </motion.div>
             </section>
 

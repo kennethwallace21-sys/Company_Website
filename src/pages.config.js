@@ -18,6 +18,8 @@ const Products = lazy(() => import('./pages/Products'));
 const ServiceDetail = lazy(() => import('./pages/ServiceDetail'));
 const TermsAndConditions = lazy(() => import('./pages/TermsAndConditions'));
 const FAQ = lazy(() => import('./pages/FAQ'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Team = lazy(() => import('./pages/Team'));
 
 export const PAGES = {
     "Contact": Contact,
@@ -26,6 +28,8 @@ export const PAGES = {
     "ServiceDetail": ServiceDetail,
     "TermsAndConditions": TermsAndConditions,
     "FAQ": FAQ,
+    "Privacy": Privacy,
+    "Team": Team,
 }
 
 export const pagesConfig = {

@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, ChevronDown } from 'lucide-react';
+import { ArrowRight, CheckCircle, ChevronDown, Cloud, Building2, ServerCog } from 'lucide-react';
+import { contactUrl } from '@/utils';
 
 const shaderSource = `#version 300 es
 precision highp float;
@@ -157,9 +159,15 @@ export default function HeroSection() {
     const canvasRef = useShaderBackground(sectionRef);
 
     const benefits = [
-        "Save on operational costs",
-        "Automate repetitive workflows",
-        "Data-driven decision making"
+        "Deploys in your cloud tenant, including AWS GovCloud",
+        "On-prem and air-gapped options",
+        "Your data never leaves your perimeter"
+    ];
+
+    const deploymentOptions = [
+        { label: 'Managed cloud', icon: Cloud },
+        { label: 'Your tenant / GovCloud', icon: Building2 },
+        { label: 'On-prem / air-gapped', icon: ServerCog },
     ];
 
     return (
@@ -185,7 +193,7 @@ export default function HeroSection() {
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 mb-8"
                     >
                         <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                        <span className="text-blue-300 text-sm font-medium">Where Intelligence Meets Execution</span>
+                        <span className="text-blue-300 text-sm font-medium">We Are Builders, Not Consultants</span>
                     </motion.div>
 
                     {/* Headline */}
@@ -195,7 +203,6 @@ export default function HeroSection() {
                         transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
                         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight mb-6"
                     >
-                        Unlock the Power of{' '}
                         <motion.span
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -204,7 +211,7 @@ export default function HeroSection() {
                         >
                             AI
                         </motion.span>{' '}
-                        for Your Business
+                        that runs where your data lives.
                     </motion.h1>
 
                     {/* Subheadline */}
@@ -214,8 +221,8 @@ export default function HeroSection() {
                         transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className="text-lg sm:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed"
                     >
-                        We build production AI systems and deploy them inside your environment: RAG,
-                        agentic workflows, and domain-trained AI agents. Save time. Cut costs. Keep your data yours.
+                        Governed. Auditable. Yours. We build production AI systems (RAG, agentic workflows,
+                        and domain-trained agents) and deploy them inside your environment.
                     </motion.p>
 
                     {/* Benefits */}
@@ -252,11 +259,13 @@ export default function HeroSection() {
                         className="flex flex-col sm:flex-row gap-4"
                     >
                         <Button
-                            onClick={() => window.location.href = 'mailto:sales@catalystappliedai.com?subject=ROI%20Assessment%20Request'}
+                            asChild
                             className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 group"
                         >
-                            Book Your Free ROI Assessment
-                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            <Link to={contactUrl('ROI Assessment')}>
+                                Book Your Free ROI Assessment
+                                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
                         </Button>
                         <Button
                             onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })}
@@ -265,6 +274,17 @@ export default function HeroSection() {
                             Explore Our Services
                         </Button>
                     </motion.div>
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.6, delay: 0.6 }}
+                        className="mt-4 text-sm text-slate-400"
+                    >
+                        Or email us at{' '}
+                        <a href="mailto:sales@catalystappliedai.com?subject=ROI%20Assessment%20Request" className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
+                            sales@catalystappliedai.com
+                        </a>
+                    </motion.p>
 
                     {/* Trust Indicators */}
                     <motion.div
@@ -273,11 +293,14 @@ export default function HeroSection() {
                         transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
                         className="mt-12 pt-8 border-t border-white/10"
                     >
-                        <p className="text-slate-500 text-sm mb-4">Trusted by forward-thinking companies</p>
-                        <div className="flex items-center gap-8 opacity-60">
-                            <div className="text-white font-semibold text-lg">Enterprise</div>
-                            <div className="text-white font-semibold text-lg">Startups</div>
-                            <div className="text-white font-semibold text-lg">SMBs</div>
+                        <p className="text-slate-500 text-sm mb-4">Deploy where your data lives</p>
+                        <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+                            {deploymentOptions.map(({ label, icon: Icon }) => (
+                                <div key={label} className="flex items-center gap-2 text-white/80 font-semibold">
+                                    <Icon className="w-5 h-5 text-blue-400" />
+                                    {label}
+                                </div>
+                            ))}
                         </div>
                     </motion.div>
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { InteractiveImageAccordion } from '../ui/interactive-image-accordion';
-import { createPageUrl } from '@/utils';
+import { createPageUrl, contactUrl } from '@/utils';
 import { fadeUp } from '@/hooks/useFluidReveal';
 
 // Catalyst Applied AI Services with relevant images and links
@@ -64,7 +64,7 @@ export default function ServicesAccordion() {
                 }
                 subtitle="We scope it, build it, and deploy it in your environment. Click any service to learn more."
                 ctaText="Book Your ROI Assessment"
-                ctaHref="mailto:sales@catalystappliedai.com?subject=Request%20for%20Information"
+                ctaHref={contactUrl('ROI Assessment')}
                 defaultActiveIndex={1}
                 className="bg-[#060a14] text-white"
             />

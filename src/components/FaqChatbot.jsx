@@ -4,88 +4,112 @@ import { MessageCircle, X, ChevronRight, Search, Send, RotateCcw } from 'lucide-
 
 const faqs = [
     {
+        question: "Can you deploy in AWS GovCloud, on-premise, or air-gapped environments?",
+        answer: "Yes. We support three deployment models: managed secure cloud, client cloud tenant (including AWS GovCloud and Azure Government), and fully air-gapped on-premises hardware (such as NVIDIA NIM/DGX). Your proprietary data never leaves your defined perimeter.",
+        keywords: ['govcloud', 'gov cloud', 'aws', 'airgap', 'air gap', 'air-gap', 'on-prem', 'on-premise', 'onprem', 'premise', 'deploy', 'deployment', 'where', 'hardware', 'tenant', 'perimeter', 'infrastructure']
+    },
+    {
         question: "What exactly does Catalyst Applied AI do?",
-        answer: "We build production AI systems and deploy them inside your environment: things like automating manual document reviews or extracting intelligence from internal records. We focus on ROI, not hype."
+        answer: "We build production AI systems and deploy them inside your environment: Agentic AI Assistants, Signals & Intelligence, and Custom RAG Systems. We focus on measurable business ROI, not hype.",
+        keywords: ['what do you do', 'what you do', 'overview', 'about catalyst', 'who are you', 'company', 'service', 'services', 'offer', 'offerings']
     },
     {
-        question: "What is CAAi CLERK?",
-        answer: "CAAi CLERK is our specialized tool for government and administrative offices. It securely triages FOIA requests, summarizes public meetings, and reviews permit packets."
+        question: "What are your Agentic AI Assistants?",
+        answer: "Custom autonomous agents (such as AIVA for HR) featuring duplex voice capabilities. We build agents that execute multi-step workflows, manage complex tasks, and coordinate with internal systems to reduce repetitive operational overhead.",
+        keywords: ['agent', 'agents', 'agentic', 'aiva', 'assistant', 'voice', 'duplex', 'workflow', 'automate', 'chatbot', 'bot']
     },
     {
-        question: "What is the CAAi Command Center?",
-        answer: "It is a unified dashboard that lets you monitor and manage all your different custom AI agents and their performance in one place."
+        question: "What is Signals & Intelligence?",
+        answer: "An operational intelligence system that turns raw enterprise data into actionable narratives, predictive insights, and automated recommendations for executive decision-making.",
+        keywords: ['signal', 'signals', 'intelligence', 'narrative', 'data', 'analytics', 'dashboard', 'operational', 'predictive']
     },
     {
-        question: "Tell me about Catalyst Custom Models.",
-        answer: "We build fully managed AI deployments using techniques like RAG and restricted trust layers to ensure your AI only uses your private data and never makes things up."
+        question: "What are Custom RAG Systems?",
+        answer: "Tailor-made Retrieval-Augmented Generation systems that connect securely to your proprietary documents. Your team gets cited, hallucination-free answers without your data ever leaving your secure environment.",
+        keywords: ['rag', 'retrieval', 'knowledge', 'document', 'search', 'vector', 'documents', 'unstructured', 'citation']
     },
     {
-        question: "What is the 'Discovery & Diagnostic' service?",
-        answer: "It's a short scoping engagement where we map exactly where AI can save you the most time and money in your current workflows, and end with a concrete build plan."
+        question: "What government registrations and compliance standards do you meet?",
+        answer: "Catalyst Applied AI is a registered entity on SAM.gov (NAICS 541715, 541511), an NVIDIA Inception program member, and builds architectures that adhere to strict government and regulated enterprise data sovereignty requirements.",
+        keywords: ['sam.gov', 'sam', 'naics', 'government', 'fedramp', 'compliance', 'regulated', 'certifications', 'ciso', '541715', '541511']
     },
     {
         question: "Is my data used to train public models like ChatGPT?",
-        answer: "No. We implement private instances and secure trust layers so your data stays entirely within your control and is never shared with external models."
+        answer: "Never. We deploy private models inside your dedicated perimeter with strict trust layers. Your data is never exposed to public foundation model providers.",
+        keywords: ['security', 'secure', 'safe', 'safety', 'privacy', 'nda', 'confidential', 'chatgpt', 'public model', 'train', 'training', 'leak', 'protect', 'data safe']
     },
     {
-        question: "Do you offer custom integrations?",
-        answer: "Yes. We specialize in connecting AI solutions directly into your existing systems like Salesforce, HubSpot, or custom internal databases."
+        question: "How do you prevent AI hallucinations?",
+        answer: "We use strict Grounded AI architectures and retrieval verification. The AI is restricted to citing verifiable excerpts from your indexed internal records and explicit guardrails.",
+        keywords: ['hallucinate', 'hallucination', 'hallucinations', 'accuracy', 'accurate', 'wrong', 'lies', 'invent', 'guardrail', 'guardrails']
+    },
+    {
+        question: "What is the 'Discovery & Diagnostic' service?",
+        answer: "It is a short scoping engagement where we map exactly where AI can save you the most time and money in your current workflows, and end with a concrete build plan.",
+        keywords: ['discovery', 'diagnostic', 'scoping', 'roadmap', 'assessment', 'audit', 'strategy', 'plan', 'timeline', 'how long']
     },
     {
         question: "How do I get started?",
-        answer: "The best way is to book an ROI Assessment. You can email sales@catalystappliedai.com or use the 'Contact' page to message us directly."
+        answer: "The best way is to book a free ROI Assessment through our Contact page or call us directly at +1-502-416-8342.",
+        keywords: ['get started', 'start', 'begin', 'contact', 'reach', 'email', 'call', 'talk', 'hire', 'sales', 'roi assessment', 'book']
+    },
+    {
+        question: "Do you offer custom integrations?",
+        answer: "Yes. We connect AI solutions directly into your existing enterprise systems (ERP, CRM, databases, APIs, and custom software stacks).",
+        keywords: ['integrate', 'integration', 'connect', 'api', 'salesforce', 'database', 'crm', 'erp', 'existing system']
+    },
+    {
+        question: "Where are you located?",
+        answer: "Catalyst Applied AI is based in Louisville, Kentucky, USA, and serves enterprise and government clients nationwide.",
+        keywords: ['location', 'located', 'where are you', 'kentucky', 'louisville', 'office', 'remote', 'onsite', 'on-site']
     }
 ];
 
-// Simple keyword matching to find the best FAQ answer for a user message
+// Keyword and semantic scoring to find the best FAQ answer for a user message
 function findBestMatch(userMessage) {
     const msg = userMessage.toLowerCase().trim();
 
     // Greetings
     const greetings = ['hi', 'hello', 'hey', 'howdy', 'good morning', 'good afternoon', 'good evening', 'whats up', "what's up", 'sup'];
     if (greetings.some(g => msg === g || msg.startsWith(g + ' ') || msg.startsWith(g + '!'))) {
-        return "Hi there! 👋 I'm the Catalyst AI Assistant. I can help answer questions about our services, pricing, security, and more. What would you like to know?";
+        return "Hi there! 👋 I'm the Catalyst FAQ Guide. I can help answer questions about our GovCloud/on-prem deployments, custom products, security, and services. What would you like to know?";
     }
 
     // Thanks
     const thanks = ['thank', 'thanks', 'thx', 'appreciate', 'ty'];
     if (thanks.some(t => msg.includes(t))) {
-        return "You're welcome! 😊 Is there anything else I can help you with?";
+        return "You're welcome! 😊 Is there anything else I can help you find?";
     }
 
     // Bye
     const byes = ['bye', 'goodbye', 'see you', 'later', 'take care'];
     if (byes.some(b => msg.includes(b))) {
-        return "Goodbye! 👋 If you have more questions in the future, don't hesitate to reach out. Have a great day!";
+        return "Goodbye! 👋 If you have more questions or want to discuss a deployment, don't hesitate to reach out to our team at sales@catalystappliedai.com. Have a great day!";
     }
 
-    // Direct keyword → FAQ index mapping (index into faqs array)
-    // This catches the most common queries immediately
-    const keywordMap = [
-        { keywords: ['service', 'services', 'offer', 'offerings', 'what do you do', 'what you do'], index: 0 },
-        { keywords: ['how long', 'timeline', 'duration', 'time', 'take'], index: 1 },
-        { keywords: ['small business', 'small businesses', 'startup', 'startups', 'smb'], index: 2 },
-        { keywords: ['industry', 'industries', 'sector', 'sectors', 'healthcare', 'finance', 'retail'], index: 3 },
-        { keywords: ['get started', 'start', 'begin', 'contact', 'reach', 'email'], index: 4 },
-        { keywords: ['different', 'unique', 'why you', 'why choose', 'stand out', 'special'], index: 5 },
-        { keywords: ['support', 'ongoing', 'maintenance', 'after'], index: 6 },
-        { keywords: ['price', 'pricing', 'cost', 'costs', 'expensive', 'cheap', 'affordable', 'pay', 'payment', 'charge', 'fee', 'fees', 'budget'], index: 7 },
-        { keywords: ['training', 'train', 'workshop', 'learn', 'coaching', 'enablement', 'teach'], index: 8 },
-        { keywords: ['security', 'secure', 'safe', 'safety', 'data safe', 'nda', 'confidential', 'privacy', 'protect'], index: 9 },
-        { keywords: ['integrate', 'integration', 'existing system', 'crm', 'erp', 'connect', 'api'], index: 10 },
-        { keywords: ['doesnt work', "doesn't work", 'not work', 'fail', 'feasibility', 'risk'], index: 11 },
-        { keywords: ['location', 'located', 'based', 'where are you', 'office', 'remote', 'kentucky', 'onsite', 'on-site'], index: 12 },
-        { keywords: ['chatbot', 'virtual assistant', 'conversational', 'chat bot', 'bot'], index: 13 },
-        { keywords: ['measure', 'success', 'kpi', 'metric', 'roi', 'results', 'track'], index: 14 },
-        { keywords: ['strategy', 'roadmap', 'scoping', 'architecture', 'guidance', 'plan', 'without building'], index: 15 },
-    ];
+    // Check keyword lists per FAQ item
+    let topFaq = null;
+    let topScore = 0;
 
-    // Check keyword map first (highest priority)
-    for (const entry of keywordMap) {
-        // Guard against out-of-bounds indices if faqs array is shorter than the map
-        if (entry.index < faqs.length && entry.keywords.some(kw => msg.includes(kw))) {
-            return faqs[entry.index].answer;
+    for (const faq of faqs) {
+        let score = 0;
+        for (const kw of faq.keywords) {
+            if (msg.includes(kw)) {
+                // Longer keyword match gives higher score
+                score += kw.includes(' ') ? 5 : 3;
+            }
         }
+        if (faq.question.toLowerCase().includes(msg)) {
+            score += 10;
+        }
+        if (score > topScore) {
+            topScore = score;
+            topFaq = faq;
+        }
+    }
+
+    if (topFaq && topScore >= 3) {
+        return topFaq.answer;
     }
 
     // Fallback: weighted scoring with question match priority
@@ -147,7 +171,7 @@ export default function FaqChatbot() {
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
     const [messages, setMessages] = useState([
-        { type: 'bot', text: "Hi! 👋 I'm here to help answer your questions about Catalyst Applied AI. Type a message or choose a topic below!" }
+        { type: 'bot', text: "Hi! 👋 I'm the Catalyst FAQ Guide. Search our frequently asked questions below or ask about our GovCloud/on-prem deployments, custom products, and services!" }
     ]);
 
     const filteredFaqs = useMemo(() => {
@@ -217,7 +241,7 @@ export default function FaqChatbot() {
 
     const resetChat = () => {
         setMessages([
-            { type: 'bot', text: "Hi! 👋 I'm here to help answer your questions about Catalyst Applied AI. Type a message or choose a topic below!" }
+            { type: 'bot', text: "Hi! 👋 I'm the Catalyst FAQ Guide. Search our frequently asked questions below or ask about our GovCloud/on-prem deployments, custom products, and services!" }
         ]);
         setSelectedFaq(null);
         setSearchQuery('');
@@ -297,10 +321,10 @@ export default function FaqChatbot() {
                                     <img src="/chatbot.jpg" alt="AI Assistant" className="w-full h-full object-cover" />
                                 </div>
                                 <div>
-                                    <h3 className="text-white font-semibold">Catalyst AI Assistant</h3>
+                                    <h3 className="text-white font-semibold">Catalyst FAQ Guide</h3>
                                     <div className="flex items-center gap-1.5">
                                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                                        <p className="text-blue-100 text-xs">Online • Ask me anything</p>
+                                        <p className="text-blue-100 text-xs">Knowledge Base • Instant Answers</p>
                                     </div>
                                 </div>
                             </div>

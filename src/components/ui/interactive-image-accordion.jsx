@@ -116,14 +116,18 @@ export function InteractiveImageAccordion({
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.3, duration: 0.5 }}
                             >
-                                <motion.a
-                                    href={ctaHref}
-                                    className="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 transition-shadow"
+                                <motion.div
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.97 }}
+                                    className="inline-block"
                                 >
-                                    {ctaText}
-                                </motion.a>
+                                    <Link
+                                        to={ctaHref}
+                                        className="inline-block bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-semibold px-8 py-4 rounded-xl shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 transition-shadow"
+                                    >
+                                        {ctaText}
+                                    </Link>
+                                </motion.div>
                             </motion.div>
                         )}
                     </motion.div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
+import { contactUrl } from '@/utils';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MessageSquare, Zap } from 'lucide-react';
+import { ArrowRight, MessageSquare, Zap, ShieldCheck } from 'lucide-react';
 import { scaleUp } from '@/hooks/useFluidReveal';
 
 export default function CTASection() {
@@ -52,11 +52,11 @@ export default function CTASection() {
                         </h2>
                         
                         <p className="text-slate-300 text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-                            Don't leave your AI transformation to chance. Join forward-thinking organizations using Catalyst Applied AI to automate, optimize, and scale.
+                            Don't leave your AI transformation to chance. Partner with builders who deploy production systems inside your secure perimeter.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-center">
-                            <Link to={createPageUrl('Contact')}>
+                            <Link to={contactUrl('ROI Assessment')}>
                                 <Button className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-10 py-7 rounded-2xl text-lg font-bold shadow-2xl shadow-blue-500/20 group transition-all duration-300">
                                     Start Your ROI Assessment
                                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -71,15 +71,13 @@ export default function CTASection() {
                             </a>
                         </div>
 
-                        <div className="mt-12 flex items-center gap-6 text-slate-500 text-sm font-medium">
-                            <div className="flex -space-x-2">
-                                {[1,2,3,4].map(i => (
-                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-[#0d1425] bg-slate-800 flex items-center justify-center overflow-hidden">
-                                        <img src={`https://i.pravatar.cc/100?u=${i}`} alt="User" />
-                                    </div>
-                                ))}
+                        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 text-slate-400 text-sm font-medium">
+                            <div className="flex items-center gap-2">
+                                <ShieldCheck className="w-5 h-5 text-blue-400 shrink-0" />
+                                <span>Deployed in ~900 retail locations & government agencies</span>
                             </div>
-                            <span>Trusted by innovative teams worldwide</span>
+                            <span className="hidden sm:inline text-slate-600">•</span>
+                            <span className="text-slate-400">NVIDIA Inception Partner · SAM.gov Registered</span>
                         </div>
                     </div>
                 </motion.div>

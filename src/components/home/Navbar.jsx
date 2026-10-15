@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { contactUrl } from '@/utils';
 import {
     Menu, X, ChevronDown, ChevronRight,
     Search, GraduationCap, Cpu, Database,
-    Wrench, Zap, Layout, Bot, Box, BarChart3
+    Zap, Layout, Bot, Box, BarChart3, Users, CalendarCheck, MessageSquare
 } from 'lucide-react';
 
 const navItems = [
@@ -52,36 +53,23 @@ const navItems = [
         featured: { label: 'Products overview', path: '/Products' },
         columns: [
             {
-                heading: 'Core Offerings',
+                heading: 'Products',
                 links: [
-                    { label: 'Agentic AI Assistants', path: '/Products', description: 'AIVA & voice agents', icon: Bot },
+                    { label: 'Agentic AI Assistants', path: '/Products', description: 'AIVA & voice agents', icon: Users },
                     { label: 'Signals & Intelligence', path: '/Products', description: 'Data narratives', icon: BarChart3 },
                     { label: 'Custom RAG Systems', path: '/Products', description: 'Secure retrieval', icon: Database },
                 ]
             },
             {
-                heading: 'Models',
+                heading: 'Get Started',
                 links: [
-                    { label: 'Catalyst Base Models', path: '/Products', description: 'Foundation intelligence', icon: Box },
-                    { label: 'Domain Adapters', path: '/Products', description: 'Specialized tuning', icon: Database },
-                ]
-            },
-            {
-                heading: 'Safety',
-                links: [
-                    { label: 'AI Guardrails', path: '/Products', description: 'Ethics & safety rules', icon: Search },
-                    { label: 'Compliance Monitoring', path: '/Products', description: 'Regulatory tracking', icon: Layout },
-                ]
-            },
-            {
-                heading: 'Integration',
-                links: [
-                    { label: 'API Gateway', path: '/Products', description: 'Seamless connectivity', icon: Zap },
-                    { label: 'SDKs & Tools', path: '/Products', description: 'Developer resource', icon: Wrench },
+                    { label: 'ROI Assessment', path: contactUrl('ROI Assessment'), description: 'Find your fastest payback', icon: CalendarCheck },
+                    { label: 'Request a Demo', path: contactUrl('Product demo'), description: 'See a live deployment', icon: MessageSquare },
                 ]
             }
         ]
     },
+    { label: 'Team', path: '/Team' },
     { label: 'Contact', path: '/Contact' }
 ];
 
@@ -212,10 +200,12 @@ export default function Navbar({ showNav }) {
                                     >
                                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full blur opacity-0 group-hover/btn:opacity-40 transition-opacity duration-300" />
                                         <Button
-                                            onClick={() => { window.location.href = 'mailto:sales@catalystappliedai.com?subject=Request%20for%20Information'; }}
+                                            asChild
                                             className="relative bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-full px-5 py-2 text-sm shadow-xl shadow-blue-500/20"
                                         >
-                                            Book ROI Assessment
+                                            <Link to={contactUrl('ROI Assessment')} onClick={() => setActiveItem(null)}>
+                                                Book ROI Assessment
+                                            </Link>
                                         </Button>
                                     </motion.div>
                                 </div>
@@ -288,10 +278,12 @@ export default function Navbar({ showNav }) {
                                         ))}
                                         <div className="pt-3">
                                             <Button
-                                                onClick={() => { window.location.href = 'mailto:sales@catalystappliedai.com?subject=Request%20for%20Information'; }}
+                                                asChild
                                                 className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl"
                                             >
-                                                Book ROI Assessment
+                                                <Link to={contactUrl('ROI Assessment')} onClick={() => setIsMobileMenuOpen(false)}>
+                                                    Book ROI Assessment
+                                                </Link>
                                             </Button>
                                         </div>
                                     </div>

@@ -48,29 +48,37 @@ const allFaqs = [
         category: "Products",
         items: [
             {
-                question: "What is the CAAi Command Center?",
-                answer: "It is a unified dashboard for the enterprise. It allows you to monitor, manage, and orchestrate all your custom AI agents in one place, giving you visibility into their performance and the data they are processing."
+                question: "What are your Agentic AI Assistants?",
+                answer: "Custom autonomous agents (like AIVA for HR) featuring duplex voice capabilities. We build agents that execute multi-step workflows, manage complex tasks, and coordinate with internal systems to reduce repetitive operational overhead."
             },
             {
-                question: "What is CAAi CLERK?",
-                answer: "CAAi CLERK (County Language Engine for Records and Knowledge) is our specialized product for government and large administrative offices. it helps triage FOIA requests, summarize public meetings, and review permit packets with high security."
+                question: "What is Signals & Intelligence?",
+                answer: "An operational intelligence system that turns raw enterprise data into actionable narratives, predictive insights, and automated recommendations for executive decision-making."
             },
             {
-                question: "What are Catalyst Custom Models?",
-                answer: "These are fully managed AI deployments. We handle the infrastructure, the model tuning (using NVIDIA-powered technologies), and the security layers so you can have enterprise-grade AI that is grounded entirely in your company's own private data."
+                question: "What are Custom RAG Systems?",
+                answer: "Tailor-made Retrieval-Augmented Generation systems that connect securely to your proprietary documents. Your team gets cited, hallucination-free answers without your data ever leaving your secure environment."
             }
         ]
     },
     {
-        category: "Security & Trust",
+        category: "Security & Deployment",
         items: [
             {
-                question: "Is my data secure?",
-                answer: "Absolutely. We are NVIDIA Inception partners and follow enterprise-grade security standards. We use private cloud architectures and RAG (Retrieval-Augmented Generation) to ensure your data stays within your control and is never used to train public AI models."
+                question: "Can you deploy in AWS GovCloud, on-premise, or air-gapped environments?",
+                answer: "Yes. We support three deployment models: managed secure cloud, client cloud tenant (including AWS GovCloud and Azure Government), and fully air-gapped on-premises hardware (such as NVIDIA NIM/DGX). Your proprietary data never leaves your defined perimeter."
             },
             {
-                question: "How do you prevent AI from 'hallucinating' (making things up)?",
-                answer: "We use our proprietary CAAi Trust Layer and Grounded AI techniques. By forcing the AI to reference only your specific verified documents, we ensure that every answer it provides is accurate and citeable."
+                question: "What government registrations and compliance standards do you meet?",
+                answer: "Catalyst Applied AI is a registered entity on SAM.gov (NAICS 541715, 541511), a member of NVIDIA Inception, and builds systems adhering to strict data sovereignty and auditability requirements for government and regulated enterprises."
+            },
+            {
+                question: "Is my data used to train public models like ChatGPT?",
+                answer: "Never. We deploy private models inside your dedicated perimeter with strict trust layers. Your data is never exposed to public foundation model providers."
+            },
+            {
+                question: "How do you prevent AI hallucinations?",
+                answer: "We use strict Grounded AI architectures and retrieval verification. The AI is restricted to citing verifiable excerpts from your indexed internal records and explicit guardrails."
             }
         ]
     }
