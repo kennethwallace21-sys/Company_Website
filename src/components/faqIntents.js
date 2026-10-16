@@ -128,7 +128,7 @@ export const intents = [
         id: 'pricing',
         question: 'How much does it cost?',
         answer:
-            'Pricing is scoped per engagement. Start with a free ROI Assessment and we will size the work and the cost with you.',
+            'Pricing is scoped per engagement. Contact us and we will size the work and the cost with you.',
         contact: true,
         keywords: [
             'price', 'prices', 'pricing', 'cost', 'costs', 'budget', 'quote', 'rates', 'fee', 'fees', 'expensive',
@@ -140,7 +140,7 @@ export const intents = [
         id: 'start',
         question: 'How do I get started or contact you?',
         answer:
-            'The best way to start is a free ROI Assessment. Use the contact page, email sales@catalystappliedai.com, or call +1-502-416-8342.',
+            'Use the contact page, email sales@catalystappliedai.com, or call +1-502-416-8342.',
         contact: true,
         direct: true,
         keywords: [

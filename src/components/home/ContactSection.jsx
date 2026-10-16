@@ -202,8 +202,7 @@ export default function ContactSection() {
                     >
                         <h2 className="text-2xl font-bold text-white mb-4">Email or call</h2>
                         <p className="text-slate-300 mb-6">
-                            If you would rather not use the form, reach us directly. To request an ROI
-                            assessment, mention it in your message.
+                            If you would rather not use the form, reach us directly.
                         </p>
                         <dl className="space-y-3">
                             <div>

@@ -57,8 +57,8 @@ export default function CTASection() {
 
                         <div className="flex flex-col sm:flex-row gap-4 items-center">
                             <Button asChild className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-10 py-7 rounded-2xl text-lg font-bold shadow-2xl shadow-blue-500/20 group transition-all duration-300">
-                                <Link to={contactUrl('ROI Assessment')}>
-                                    Start Your ROI Assessment
+                                <Link to={contactUrl()}>
+                                    Contact us
                                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </Link>
                             </Button>

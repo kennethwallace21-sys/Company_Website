@@ -9,7 +9,7 @@ export default function Contact() {
         <div className="min-h-screen bg-[#060a14]">
             <SEOHead
                 title="Contact Us"
-                description="Get in touch with Catalyst Applied AI. Book a free ROI assessment, discuss your AI needs, or reach out at sales@catalystappliedai.com."
+                description="Contact Catalyst Applied AI about building and deploying AI in your environment, or email sales@catalystappliedai.com."
                 path="/Contact"
                 jsonLd={{
                     '@context': 'https://schema.org',

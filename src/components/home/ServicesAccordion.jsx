@@ -32,8 +32,8 @@ export default function ServicesAccordion() {
                     </>
                 }
                 subtitle="We scope it, build it, and deploy it in your environment. Choose any service to learn more."
-                ctaText="Book Your ROI Assessment"
-                ctaHref={contactUrl('ROI Assessment')}
+                ctaText="Contact us"
+                ctaHref={contactUrl()}
                 defaultActiveIndex={1}
                 className="bg-[#060a14] text-white"
             />

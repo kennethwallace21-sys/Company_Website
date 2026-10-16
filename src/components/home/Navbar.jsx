@@ -54,7 +54,6 @@ const navItems = [
             }
         ]
     },
-    { label: 'Contact', path: '/Contact' }
 ];
 
 
@@ -101,7 +100,7 @@ export default function Navbar({ showNav }) {
     };
 
     const isLinkActive = (path) => location.pathname === path;
-    // On /Contact the form is already on screen, so the Book ROI button would only point back at it.
+    // On /Contact the form is already on screen, so the Contact us button would only point back at it.
     const showBookCta = location.pathname.toLowerCase() !== '/contact';
 
     return (
@@ -191,8 +190,8 @@ export default function Navbar({ showNav }) {
                                                     asChild
                                                     className="relative bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-full px-5 py-2 text-sm shadow-xl shadow-blue-500/20"
                                                 >
-                                                    <Link to={contactUrl('ROI Assessment')} onClick={() => setActiveItem(null)}>
-                                                        Book ROI Assessment
+                                                    <Link to={contactUrl()} onClick={() => setActiveItem(null)}>
+                                                        Contact us
                                                     </Link>
                                                 </Button>
                                             </motion.div>
@@ -272,8 +271,8 @@ export default function Navbar({ showNav }) {
                                                     asChild
                                                     className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl"
                                                 >
-                                                    <Link to={contactUrl('ROI Assessment')} onClick={() => setIsMobileMenuOpen(false)}>
-                                                        Book ROI Assessment
+                                                    <Link to={contactUrl()} onClick={() => setIsMobileMenuOpen(false)}>
+                                                        Contact us
                                                     </Link>
                                                 </Button>
                                             </div>

@@ -234,8 +234,8 @@ export default function HeroSection() {
                             asChild
                             className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 group"
                         >
-                            <Link to={contactUrl('ROI Assessment')}>
-                                Book Your Free ROI Assessment
+                            <Link to={contactUrl()}>
+                                Contact us
                                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
@@ -262,7 +262,7 @@ export default function HeroSection() {
                         className="mt-4 text-sm text-slate-400"
                     >
                         Or email us at{' '}
-                        <a href="mailto:sales@catalystappliedai.com?subject=ROI%20Assessment%20Request" className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
+                        <a href="mailto:sales@catalystappliedai.com" className="text-blue-300 hover:text-blue-200 underline underline-offset-4">
                             sales@catalystappliedai.com
                         </a>
                     </motion.p>
