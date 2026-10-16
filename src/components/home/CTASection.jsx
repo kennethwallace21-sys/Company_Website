@@ -71,13 +71,9 @@ export default function CTASection() {
                             </Button>
                         </div>
 
-                        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3 text-slate-400 text-sm font-medium">
-                            <div className="flex items-center gap-2">
-                                <ShieldCheck className="w-5 h-5 text-blue-400 shrink-0" />
-                                <span>Built and deployed for enterprise and public sector teams</span>
-                            </div>
-                            <span className="hidden sm:inline text-slate-600">•</span>
-                            <span className="text-slate-400">NVIDIA Inception Program member</span>
+                        <div className="mt-12 flex items-center justify-center gap-2 text-slate-400 text-sm font-medium">
+                            <ShieldCheck className="w-5 h-5 text-blue-400 shrink-0" />
+                            <span>Built and deployed for enterprise and public sector teams</span>
                         </div>
                     </div>
                 </motion.div>

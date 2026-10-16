@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, ChevronDown, Cloud, Building2, ServerCog } from 'lucide-react';
+import { ArrowRight, ChevronDown, Cloud, Building2, ServerCog } from 'lucide-react';
 import { contactUrl } from '@/utils';
 import { SHOW_SERVICES } from '@/config/features';
 
@@ -162,12 +162,6 @@ export default function HeroSection() {
     const sectionRef = useRef(null);
     const canvasRef = useShaderBackground(sectionRef);
 
-    const benefits = [
-        "Deploys in your cloud tenant, including AWS GovCloud",
-        "On-prem and air-gapped options",
-        "Your data stays in the environment you control"
-    ];
-
     const deploymentOptions = [
         { label: 'Managed cloud', icon: Cloud },
         { label: 'Your tenant / GovCloud', icon: Building2 },
@@ -223,37 +217,11 @@ export default function HeroSection() {
                         initial={{ opacity: 0, y: 24 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-lg sm:text-xl text-slate-300 mb-8 max-w-2xl leading-relaxed"
+                        className="text-lg sm:text-xl text-slate-300 mb-10 max-w-2xl leading-relaxed"
                     >
                         Governed. Auditable. Yours. We build production AI systems (RAG, agentic workflows,
                         and domain-trained agents) and deploy them inside your environment.
                     </motion.p>
-
-                    {/* Benefits */}
-                    <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            hidden: {},
-                            visible: { transition: { staggerChildren: 0.08, delayChildren: 0.32 } }
-                        }}
-                        className="flex flex-wrap gap-4 mb-10"
-                    >
-                        {benefits.map((benefit, index) => (
-                            <motion.div
-                                key={index}
-                                variants={{
-                                    hidden: { opacity: 0, x: -16 },
-                                    visible: { opacity: 1, x: 0 }
-                                }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="flex items-center gap-2 text-slate-300"
-                            >
-                                <CheckCircle className="w-5 h-5 text-blue-400 shrink-0" />
-                                <span className="text-sm sm:text-base">{benefit}</span>
-                            </motion.div>
-                        ))}
-                    </motion.div>
 
                     {/* CTA Buttons */}
                     <motion.div
@@ -306,7 +274,7 @@ export default function HeroSection() {
                         transition={{ duration: 0.6, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
                         className="mt-12 pt-8 border-t border-white/10"
                     >
-                        <p className="text-slate-500 text-sm mb-4">Deploy where your data lives</p>
+                        <p className="text-slate-500 text-sm mb-4">Deployment options</p>
                         <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
                             {deploymentOptions.map(({ label, icon: Icon }) => (
                                 <div key={label} className="flex items-center gap-2 text-white/80 font-semibold">

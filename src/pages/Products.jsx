@@ -80,7 +80,7 @@ export default function Products() {
             <Navbar showNav={true} />
 
             {/* Hero Section */}
-            <section className="relative pt-32 pb-20 overflow-hidden">
+            <section className="relative pt-40 pb-20 overflow-hidden">
                 {/* Animated Background */}
                 <div className="absolute inset-0 z-0">
                     <div className="absolute inset-0 bg-gradient-to-br from-blue-600/8 via-transparent to-blue-500/5" />
@@ -131,16 +131,8 @@ export default function Products() {
                         animate="visible"
                         custom={0}
                     >
-                        <motion.span 
-                            className="text-blue-400 text-sm font-semibold tracking-widest uppercase inline-block"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
-                        >
-                            Our Products
-                        </motion.span>
                         <motion.h1 
-                            className="text-4xl md:text-6xl font-bold text-white mt-4 mb-6"
+                            className="text-4xl md:text-6xl font-bold text-white mb-6"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -186,12 +178,13 @@ export default function Products() {
                         {products.map((product) => (
                             <motion.div
                                 key={product.id}
+                                id={product.id}
                                 variants={staggerItem}
                                 whileHover={{ 
                                     y: -12,
                                     transition: { type: "spring", stiffness: 300, damping: 20 }
                                 }}
-                                className="group"
+                                className="group scroll-mt-40"
                             >
                                 {/* Product Card */}
                                 <div className="relative bg-gradient-to-b from-[#0d1425]/80 to-[#080e1c]/80 rounded-xl border border-blue-500/10 overflow-hidden h-full flex flex-col transition-all duration-500 hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/10">
@@ -290,17 +283,6 @@ export default function Products() {
                                                     </Button>
                                                 </motion.div>
                                             )}
-                                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                                                <Button
-                                                    asChild
-                                                    size="sm"
-                                                    className="bg-gradient-to-b from-slate-700 to-slate-800 border border-slate-600 text-slate-100 hover:from-slate-600 hover:to-slate-700 hover:border-slate-500 transition-all duration-300 text-xs h-9"
-                                                >
-                                                    <Link to={contactUrl(`${product.name} Inquiry`)}>
-                                                        Inquire
-                                                    </Link>
-                                                </Button>
-                                            </motion.div>
                                         </div>
                                     </div>
                                 </div>
