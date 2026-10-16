@@ -46,10 +46,12 @@ const SPA_ROUTES = new Set([
     "/team",
 ]);
 
-// Soft anti-abuse only: this Map lives in isolate memory, so it resets on
-// Worker restarts and is not shared across edge locations. Acceptable tradeoff
-// for a low-traffic contact form where the goal is to deter casual spam, not
-// provide a hard guarantee.
+// Rate limiting for /api/send-email. Production uses the Workers Rate Limiting
+// binding CONTACT_RATE_LIMIT (wrangler.jsonc "ratelimits": RATE_LIMIT_MAX requests
+// per 60 s per client IP), whose counters are shared by every isolate in a
+// Cloudflare location. Where the binding is absent (local dev, tests) or throws,
+// this per-isolate Map is the fallback: it resets on Worker restarts and is not
+// shared between isolates.
 const rateLimitMap = new Map();
 
 export default {
@@ -172,7 +174,7 @@ async function handleSendEmail(request, env) {
     const clientIp = request.headers.get("CF-Connecting-IP")
         || request.headers.get("X-Forwarded-For")?.split(",")[0]?.trim()
         || "unknown";
-    if (!checkRateLimit(clientIp)) {
+    if (!(await checkRateLimit(clientIp, env))) {
         return json({ error: "Too many requests. Please try again later." }, 429, headers);
     }
 
@@ -282,7 +284,20 @@ function corsHeaders(origin, requestUrl) {
     return headers;
 }
 
-function checkRateLimit(ip) {
+async function checkRateLimit(ip, env) {
+    const limiter = env?.CONTACT_RATE_LIMIT;
+    if (limiter && typeof limiter.limit === "function") {
+        try {
+            const { success } = await limiter.limit({ key: `send-email:${ip}` });
+            return success === true;
+        } catch (err) {
+            console.error("Rate limit binding error, using in-memory fallback:", err?.message || err);
+        }
+    }
+    return checkRateLimitInMemory(ip);
+}
+
+function checkRateLimitInMemory(ip) {
     const now = Date.now();
     if (rateLimitMap.size > RATE_LIMIT_MAX_ENTRIES) {
         for (const [key, value] of rateLimitMap) {
@@ -302,7 +317,9 @@ function checkRateLimit(ip) {
 }
 
 async function verifyTurnstile(body, request, env) {
-    const turnstileSecret = env.TURNSTILE_SECRET_KEY;
+    // Trimmed because a secret saved with a trailing newline or space (for example
+    // piped into `wrangler secret put`) is rejected by siteverify as invalid-input-secret.
+    const turnstileSecret = typeof env.TURNSTILE_SECRET_KEY === "string" ? env.TURNSTILE_SECRET_KEY.trim() : "";
     if (!turnstileSecret) {
         return { ok: true };
     }
@@ -340,6 +357,10 @@ async function verifyTurnstile(body, request, env) {
 
         const errors = Array.isArray(verifyData["error-codes"]) ? verifyData["error-codes"] : [];
         const serverMisconfigured = errors.includes("invalid-input-secret") || errors.includes("missing-input-secret");
+        if (serverMisconfigured || !verifyRes.ok) {
+            // Visible in Workers observability logs; a bad TURNSTILE_SECRET_KEY otherwise fails silently.
+            console.error(`Turnstile siteverify rejected the request: HTTP ${verifyRes.status}, error-codes ${JSON.stringify(errors)}`);
+        }
         return {
             ok: false,
             status: serverMisconfigured ? 503 : 403,
