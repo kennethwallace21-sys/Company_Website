@@ -3,6 +3,8 @@ import { Helmet } from 'react-helmet-async';
 
 const SITE_URL = 'https://www.catalystappliedai.com';
 const DEFAULT_IMAGE = `${SITE_URL}/og-cover.png`;
+const DEFAULT_DESCRIPTION =
+    'AI assistants, operational reporting and RAG systems for enterprise and public sector teams, deployed in your cloud tenant, GovCloud, on premises or managed.';
 
 // Head tags that index.html ships statically for non-JS crawlers. Helmet only
 // removes tags it created itself (marked with data-rh), so once React is
@@ -29,7 +31,7 @@ const STATIC_DUPLICATE_SELECTOR = [
  */
 export default function SEOHead({
     title,
-    description,
+    description = DEFAULT_DESCRIPTION,
     path = '',
     image = DEFAULT_IMAGE,
     type = 'website',
@@ -75,7 +77,7 @@ export default function SEOHead({
             {isDefaultImage && <meta property="og:image:width" content="1200" />}
             {isDefaultImage && <meta property="og:image:height" content="630" />}
             {isDefaultImage && (
-                <meta property="og:image:alt" content="Catalyst Applied AI: production AI deployed inside your environment" />
+                <meta property="og:image:alt" content="Catalyst Applied AI: AI systems deployed in the environment you choose" />
             )}
             <meta property="og:site_name" content="Catalyst Applied AI" />
             <meta property="og:locale" content="en_US" />

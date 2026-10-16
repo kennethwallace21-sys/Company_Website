@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { contactUrl } from '@/utils';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MessageSquare, Zap, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Phone, Zap, ShieldCheck } from 'lucide-react';
 import { scaleUp } from '@/hooks/useFluidReveal';
 
 export default function CTASection() {
@@ -48,11 +48,11 @@ export default function CTASection() {
                         </motion.div>
 
                         <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                            Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-300">Catalyze</span> Your Growth?
+                            Tell us what you need <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-300">to build</span>
                         </h2>
                         
                         <p className="text-slate-300 text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-                            Don't leave your AI transformation to chance. Partner with builders who deploy production systems inside the environment you control.
+                            Describe the use case, the data involved and where the system has to run. We will tell you which product fits, what a first deployment involves and what we need from your team.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -65,15 +65,15 @@ export default function CTASection() {
                             
                             <Button asChild variant="outline" className="border-slate-700 bg-slate-900/50 hover:bg-slate-800 text-slate-200 px-8 py-7 rounded-2xl text-lg font-semibold transition-all">
                                 <a href="tel:+15024168342">
-                                    <MessageSquare className="mr-2 w-5 h-5 text-blue-400" />
-                                    Speak with an Expert
+                                    <Phone className="mr-2 w-5 h-5 text-blue-400" />
+                                    Call us
                                 </a>
                             </Button>
                         </div>
 
                         <div className="mt-12 flex items-center justify-center gap-2 text-slate-400 text-sm font-medium">
                             <ShieldCheck className="w-5 h-5 text-blue-400 shrink-0" />
-                            <span>Built and deployed for enterprise and public sector teams</span>
+                            <span>Built for enterprise and public sector environments</span>
                         </div>
                     </div>
                 </motion.div>

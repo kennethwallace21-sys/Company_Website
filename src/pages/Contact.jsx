@@ -16,7 +16,7 @@ export default function Contact() {
                     '@type': 'ContactPage',
                     name: 'Contact Catalyst Applied AI',
                     description: 'Get in touch about building and deploying AI in your environment.',
-                    url: 'https://catalystappliedai.com/Contact',
+                    url: 'https://www.catalystappliedai.com/Contact',
                     mainEntity: {
                         '@type': 'Organization',
                         name: 'Catalyst Applied AI',

@@ -43,7 +43,7 @@ function jsonLdBlock() {
         '@context': 'https://schema.org',
         '@type': 'ItemList',
         name: 'AI Build & Deployment Services',
-        description: 'Production AI systems built and deployed in your environment',
+        description: 'AI assistants, operational reporting and RAG systems deployed where you choose',
         itemListElement: offerings.map((o, i) => ({
             '@type': 'Service',
             position: i + 1,

@@ -40,8 +40,8 @@ const products = [
     {
         id: 'agentic-aiva',
         name: 'Agentic AI Assistants',
-        tagline: 'Highly Skilled Autonomous Agents',
-        description: 'Custom, truly agentic assistants (like AIVA for HR) featuring duplex voice capabilities. We build agents that execute complex, multi-step workflows to reduce repetitive manual processing and operational cycle times.',
+        tagline: 'Assistants that carry out multi-step work',
+        description: 'Assistants that take a request and work through the steps across your internal systems, such as AIVA, our HR assistant, with optional two-way voice. Each agent is scoped to the systems and permissions you approve.',
         status: 'Available for deployment',
         url: null,
         icon: Users,
@@ -50,8 +50,8 @@ const products = [
     {
         id: 'operational-intelligence',
         name: 'Signals & Intelligence',
-        tagline: 'Data Transformed into Narratives',
-        description: 'We turn raw operational data into meaningful signals. Through AI-generated narratives, actionable insights, and recommendations, we enable leaders to make strategic resource allocations and move faster.',
+        tagline: 'Plain-language reporting on operational data',
+        description: 'Reads your operational data and writes up what changed: summaries, trends, flagged exceptions and suggested next steps, so program and operations leaders can act without building a report by hand.',
         status: 'Available for deployment',
         url: null,
         icon: BarChart3,
@@ -60,8 +60,8 @@ const products = [
     {
         id: 'custom-rag',
         name: 'Custom RAG Systems',
-        tagline: 'Secure Enterprise Knowledge',
-        description: 'Tailor-made Retrieval-Augmented Generation (RAG) systems that integrate securely with your proprietary documents. Get grounded, cited answers inside the environment you control.',
+        tagline: 'Cited answers from your documents',
+        description: 'Retrieval-augmented generation (RAG) over your own documents and records. Answers cite the passages they came from so reviewers can check them. Deployed in the environment you choose.',
         status: 'Available for deployment',
         url: null,
         icon: Database,
@@ -74,7 +74,7 @@ export default function Products() {
         <div className="min-h-screen bg-[#060a14] overflow-hidden">
             <SEOHead
                 title="AI Products"
-                description="Explore Catalyst Applied AI product offerings:Agentic AI Assistants, Signals & Intelligence, and Custom RAG Systems deployed in your environment."
+                description="Agentic AI Assistants, Signals & Intelligence and Custom RAG Systems, deployed in your cloud tenant, GovCloud, on premises or managed."
                 path="/Products"
             />
             <Navbar showNav={true} />
@@ -137,8 +137,8 @@ export default function Products() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            AI Products Built for
-                            <span className="bg-gradient-to-r from-blue-400 to-blue-300 bg-clip-text text-transparent"> Business Impact</span>
+                            Three products,
+                            <span className="bg-gradient-to-r from-blue-400 to-blue-300 bg-clip-text text-transparent"> deployed where you choose</span>
                         </motion.h1>
                         <motion.p 
                             className="text-xl text-slate-300 max-w-3xl mx-auto"
@@ -146,8 +146,8 @@ export default function Products() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            Explore the AI products we build and deploy for you, designed to transform how businesses operate,
-                            make decisions, and drive growth.
+                            Each one is built on your data and configured for your workflows. Deploy it in your cloud tenant,
+                            in AWS GovCloud or Azure Government, on premises, or in a managed environment we operate.
                         </motion.p>
                     </motion.div>
                 </div>
@@ -277,7 +277,7 @@ export default function Products() {
                                                         className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 text-xs h-9"
                                                     >
                                                         <Link to={contactUrl(`${product.name} Demo`)}>
-                                                            Request Demo
+                                                            Request a demo
                                                             <ArrowRight className="ml-1.5 w-3.5 h-3.5" />
                                                         </Link>
                                                     </Button>
@@ -292,7 +292,7 @@ export default function Products() {
                 </div>
             </section>
 
-            {/* Industries Section */}
+            {/* Functions Section */}
             <section className="py-20 px-4 relative z-10 border-y border-blue-500/10 bg-[#060a14]">
                 <div className="max-w-6xl mx-auto">
                     <motion.div 
@@ -303,10 +303,10 @@ export default function Products() {
                         viewport={{ once: true }}
                     >
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                            We Are Builders, Not Consultants.
+                            Built for these functions
                         </h2>
                         <p className="text-slate-300 text-lg max-w-3xl mx-auto">
-                            We build and deploy custom AI solutions engineered specifically for the complexities of your domain.
+                            We configure each product for the records, rules and approvals of the team that uses it.
                         </p>
                     </motion.div>
 
@@ -317,7 +317,7 @@ export default function Products() {
                             { name: 'Finance', icon: BarChart3 },
                             { name: 'Procurement', icon: Briefcase },
                             { name: 'Government', icon: ShieldCheck },
-                            { name: 'Project Mgmt', icon: Server }
+                            { name: 'Program Management', icon: Server }
                         ].map((industry, i) => (
                             <motion.div 
                                 key={industry.name}

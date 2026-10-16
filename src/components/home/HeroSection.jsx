@@ -190,8 +190,8 @@ export default function HeroSection() {
                         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                         className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 backdrop-blur-sm border border-blue-400/20 mb-8"
                     >
-                        <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
-                        <span className="text-blue-300 text-sm font-medium">We Are Builders, Not Consultants</span>
+                        <span className="w-2 h-2 rounded-full bg-blue-400" />
+                        <span className="text-blue-300 text-sm font-medium">For enterprise and public sector teams</span>
                     </motion.div>
 
                     {/* Headline */}
@@ -219,8 +219,9 @@ export default function HeroSection() {
                         transition={{ duration: 0.65, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className="text-lg sm:text-xl text-slate-300 mb-10 max-w-2xl leading-relaxed"
                     >
-                        Governed. Auditable. Yours. We build production AI systems (RAG, agentic workflows,
-                        and domain-trained agents) and deploy them inside your environment.
+                        We build AI assistants, operational reporting and cited document search, and deploy them
+                        in your cloud tenant, AWS GovCloud or Azure Government, on premises, or a managed
+                        environment we run.
                     </motion.p>
 
                     {/* CTA Buttons */}
@@ -251,7 +252,7 @@ export default function HeroSection() {
                                 asChild
                                 className="border border-blue-500/20 bg-blue-500/10 hover:bg-blue-500/15 text-blue-300 hover:text-blue-200 px-8 py-6 text-lg rounded-xl backdrop-blur-sm transition-all"
                             >
-                                <Link to="/Products">Explore Our Products</Link>
+                                <Link to="/Products">See our products</Link>
                             </Button>
                         )}
                     </motion.div>

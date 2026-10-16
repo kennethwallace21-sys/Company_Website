@@ -41,15 +41,15 @@ const navItems = [
             {
                 heading: 'Products',
                 links: [
-                    { label: 'Agentic AI Assistants', path: '/Products#agentic-aiva', description: 'AIVA & voice agents', icon: Users },
-                    { label: 'Signals & Intelligence', path: '/Products#operational-intelligence', description: 'Data narratives', icon: BarChart3 },
-                    { label: 'Custom RAG Systems', path: '/Products#custom-rag', description: 'Secure retrieval', icon: Database },
+                    { label: 'Agentic AI Assistants', path: '/Products#agentic-aiva', description: 'Assistants that carry out tasks', icon: Users },
+                    { label: 'Signals & Intelligence', path: '/Products#operational-intelligence', description: 'Reporting on operational data', icon: BarChart3 },
+                    { label: 'Custom RAG Systems', path: '/Products#custom-rag', description: 'Cited answers from your documents', icon: Database },
                 ]
             },
             {
                 heading: 'Get Started',
                 links: [
-                    { label: 'Request a Demo', path: contactUrl('Product demo'), description: 'See a live deployment', icon: MessageSquare },
+                    { label: 'Request a demo', path: contactUrl('Product demo'), description: 'Walk through a product with us', icon: MessageSquare },
                 ]
             }
         ]
@@ -131,7 +131,7 @@ export default function Navbar({ showNav }) {
                                     <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform">
                                         <img src="/logo-mark-96.png" srcSet="/logo-mark-96.png 1x, /logo-mark-144.png 2x" width="48" height="48" alt="Catalyst Applied AI" className="w-full h-full object-cover" />
                                     </div>
-                                    <span className="text-xl font-bold text-white hidden sm:block">
+                                    <span className="text-lg sm:text-xl font-bold text-white">
                                         Catalyst Applied AI
                                     </span>
                                 </Link>
@@ -202,6 +202,7 @@ export default function Navbar({ showNav }) {
                                 {/* Mobile Menu Button */}
                                 <button
                                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                                    aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
                                     className="md:hidden p-2 text-white"
                                 >
                                     {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

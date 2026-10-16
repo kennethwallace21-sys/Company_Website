@@ -23,7 +23,7 @@ export default function Home() {
         <div className="min-h-screen bg-[#060a14]">
             <SEOHead
                 title={null}
-                description="We engineer custom AI solutions, agentic voice assistants, and secure RAG systems that drive real business value."
+                description="AI assistants, operational reporting and RAG systems for enterprise and public sector teams, deployed in your cloud tenant, GovCloud, on premises or managed."
                 path="/"
             />
             {/* Navbar */}
