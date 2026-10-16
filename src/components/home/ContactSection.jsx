@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Send, ArrowRight, CheckCircle, Linkedin, Phone } from 'lucide-react';
+import { Send, CheckCircle } from 'lucide-react';
 import { fadeUp, fadeLeft, fadeRight } from '@/hooks/useFluidReveal';
 import { submitLead } from '@/lib/submitLead';
 
@@ -122,12 +122,6 @@ export default function ContactSection() {
         return stopWaiting;
     }, []);
 
-    const focusForm = () => {
-        const form = document.getElementById('contact-form');
-        form?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        form?.querySelector('input[name="name"]')?.focus({ preventScroll: true });
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
@@ -166,7 +160,7 @@ export default function ContactSection() {
     };
 
     return (
-        <section id="contact" className="py-24 px-4 bg-[#060a14] relative overflow-hidden">
+        <section id="contact" className="pt-36 pb-24 px-4 bg-[#060a14] relative overflow-hidden">
             {/* Background decoration */}
             <motion.div
                 className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2"
@@ -189,13 +183,11 @@ export default function ContactSection() {
                     custom={0}
                     className="text-center mb-16"
                 >
-                    <span className="text-blue-400 text-sm font-semibold tracking-widest uppercase">Get In Touch</span>
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6">
-                        Contact Us
+                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                        Contact us
                     </h1>
                     <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-                        Ready to unlock AI for your business? Book your ROI assessment today
-                        and discover how much time and money you can save.
+                        Tell us what you are working on and where AI could help, and we will get back to you.
                     </p>
                 </motion.div>
 
@@ -207,110 +199,30 @@ export default function ContactSection() {
                         whileInView="visible"
                         viewport={{ once: true, margin: '-80px' }}
                         custom={0.1}
-                        className="space-y-8"
                     >
-                        {/* CTA Card */}
-                        <motion.div
-                            className="p-8 rounded-2xl bg-gradient-to-br from-blue-500/10 to-blue-600/10 border border-blue-500/15"
-                            whileHover={{ borderColor: 'rgba(59, 130, 246, 0.35)' }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <h3 className="text-2xl font-bold text-white mb-4">
-                                See How Much Time You Can Save!
-                            </h3>
-                            <p className="text-slate-300 mb-6">
-                                Schedule a free ROI assessment and get a personalized report
-                                on the potential impact AI can have on your business.
-                            </p>
-                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                                <Button
-                                    className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/35 transition-shadow"
-                                    onClick={() => {
-                                        if (!formData.message) {
-                                            setMessageTouched(true);
-                                            setFormData({ ...formData, message: "I'm interested in: ROI Assessment\n\n" });
-                                        }
-                                        focusForm();
-                                    }}
-                                >
-                                    Book Your ROI Assessment
-                                    <ArrowRight className="ml-2 w-5 h-5" />
-                                </Button>
-                            </motion.div>
-                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                                <Button
-                                    asChild
-                                    className="mt-3 bg-gradient-to-r from-emerald-500 to-blue-500 hover:from-emerald-600 hover:to-blue-600 text-white px-8 py-6 text-lg rounded-xl w-full sm:w-auto shadow-lg shadow-emerald-500/15 hover:shadow-emerald-500/30 transition-shadow"
-                                >
-                                    <a href="tel:+15024168342">Call us</a>
-                                </Button>
-                            </motion.div>
-                        </motion.div>
-
-                        {/* Contact Details */}
-                        <div className="space-y-4">
-                            <motion.a
-                                href="mailto:sales@catalystappliedai.com"
-                                className="flex items-center gap-4 p-4 rounded-xl bg-[#0d1425]/50 border border-blue-500/10 group"
-                                whileHover={{
-                                    y: -3,
-                                    borderColor: 'rgba(59, 130, 246, 0.35)',
-                                    transition: { duration: 0.25 },
-                                }}
-                            >
-                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                                    <Mail className="w-5 h-5 text-blue-400" />
-                                </div>
-                                <div>
-                                    <div className="text-sm text-slate-400">Email us at</div>
-                                    <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
-                                        sales@catalystappliedai.com
-                                    </div>
-                                </div>
-                            </motion.a>
-
-                            <motion.a
-                                href="tel:+15024168342"
-                                className="flex items-center gap-4 p-4 rounded-xl bg-[#0d1425]/50 border border-blue-500/10 group"
-                                whileHover={{
-                                    y: -3,
-                                    borderColor: 'rgba(59, 130, 246, 0.35)',
-                                    transition: { duration: 0.25 },
-                                }}
-                            >
-                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                                    <Phone className="w-5 h-5 text-blue-400" />
-                                </div>
-                                <div>
-                                    <div className="text-sm text-slate-400">Call us at</div>
-                                    <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
+                        <h2 className="text-2xl font-bold text-white mb-4">Email or call</h2>
+                        <p className="text-slate-300 mb-6">
+                            If you would rather not use the form, reach us directly. To request an ROI
+                            assessment, mention it in your message.
+                        </p>
+                        <dl className="space-y-3">
+                            <div>
+                                <dt className="text-sm text-slate-400">Email</dt>
+                                <dd>
+                                    <a href={`mailto:${SALES_EMAIL}`} className="text-white font-medium underline underline-offset-4 hover:text-blue-400 transition-colors">
+                                        {SALES_EMAIL}
+                                    </a>
+                                </dd>
+                            </div>
+                            <div>
+                                <dt className="text-sm text-slate-400">Phone</dt>
+                                <dd>
+                                    <a href="tel:+15024168342" className="text-white font-medium underline underline-offset-4 hover:text-blue-400 transition-colors">
                                         +1-502-416-8342
-                                    </div>
-                                </div>
-                            </motion.a>
-
-                            <motion.a
-                                href="https://www.linkedin.com/company/catalyst-applied-ai/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-4 p-4 rounded-xl bg-[#0d1425]/50 border border-blue-500/10 group"
-                                whileHover={{
-                                    y: -3,
-                                    borderColor: 'rgba(59, 130, 246, 0.35)',
-                                    transition: { duration: 0.25 },
-                                }}
-                            >
-                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                                    <Linkedin className="w-5 h-5 text-blue-400" />
-                                </div>
-                                <div>
-                                    <div className="text-sm text-slate-400">Follow us on</div>
-                                    <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
-                                        LinkedIn
-                                    </div>
-                                </div>
-                            </motion.a>
-                        </div>
+                                    </a>
+                                </dd>
+                            </div>
+                        </dl>
                     </motion.div>
 
                     {/* Contact Form */}

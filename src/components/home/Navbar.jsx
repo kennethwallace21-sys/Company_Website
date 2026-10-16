@@ -8,7 +8,7 @@ import { offerings, SERVICE_GROUPS, serviceDetailPath } from '@/data/offerings';
 import {
     Menu, X, ChevronDown, ChevronRight,
     Search, GraduationCap, Cpu, Database,
-    Zap, Layout, BarChart3, Users, CalendarCheck, MessageSquare
+    Zap, Layout, BarChart3, Users, MessageSquare
 } from 'lucide-react';
 
 // Built by a function that is only called when SHOW_SERVICES is true, so the menu and the
@@ -41,15 +41,14 @@ const navItems = [
             {
                 heading: 'Products',
                 links: [
-                    { label: 'Agentic AI Assistants', path: '/Products', description: 'AIVA & voice agents', icon: Users },
-                    { label: 'Signals & Intelligence', path: '/Products', description: 'Data narratives', icon: BarChart3 },
-                    { label: 'Custom RAG Systems', path: '/Products', description: 'Secure retrieval', icon: Database },
+                    { label: 'Agentic AI Assistants', path: '/Products#agentic-aiva', description: 'AIVA & voice agents', icon: Users },
+                    { label: 'Signals & Intelligence', path: '/Products#operational-intelligence', description: 'Data narratives', icon: BarChart3 },
+                    { label: 'Custom RAG Systems', path: '/Products#custom-rag', description: 'Secure retrieval', icon: Database },
                 ]
             },
             {
                 heading: 'Get Started',
                 links: [
-                    { label: 'ROI Assessment', path: contactUrl('ROI Assessment'), description: 'Find your fastest payback', icon: CalendarCheck },
                     { label: 'Request a Demo', path: contactUrl('Product demo'), description: 'See a live deployment', icon: MessageSquare },
                 ]
             }
@@ -102,6 +101,8 @@ export default function Navbar({ showNav }) {
     };
 
     const isLinkActive = (path) => location.pathname === path;
+    // On /Contact the form is already on screen, so the Book ROI button would only point back at it.
+    const showBookCta = location.pathname.toLowerCase() !== '/contact';
 
     return (
         <>
@@ -177,22 +178,26 @@ export default function Navbar({ showNav }) {
                                             )}
                                         </div>
                                     ))}
-                                    <div className="w-px h-6 bg-white/10 mx-1" />
-                                    <motion.div
-                                        whileHover={{ scale: 1.02 }}
-                                        whileTap={{ scale: 0.98 }}
-                                        className="relative group/btn"
-                                    >
-                                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full blur opacity-0 group-hover/btn:opacity-40 transition-opacity duration-300" />
-                                        <Button
-                                            asChild
-                                            className="relative bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-full px-5 py-2 text-sm shadow-xl shadow-blue-500/20"
-                                        >
-                                            <Link to={contactUrl('ROI Assessment')} onClick={() => setActiveItem(null)}>
-                                                Book ROI Assessment
-                                            </Link>
-                                        </Button>
-                                    </motion.div>
+                                    {showBookCta && (
+                                        <>
+                                            <div className="w-px h-6 bg-white/10 mx-1" />
+                                            <motion.div
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                                className="relative group/btn"
+                                            >
+                                                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full blur opacity-0 group-hover/btn:opacity-40 transition-opacity duration-300" />
+                                                <Button
+                                                    asChild
+                                                    className="relative bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-full px-5 py-2 text-sm shadow-xl shadow-blue-500/20"
+                                                >
+                                                    <Link to={contactUrl('ROI Assessment')} onClick={() => setActiveItem(null)}>
+                                                        Book ROI Assessment
+                                                    </Link>
+                                                </Button>
+                                            </motion.div>
+                                        </>
+                                    )}
                                 </div>
 
                                 {/* Mobile Menu Button */}
@@ -261,16 +266,18 @@ export default function Navbar({ showNav }) {
                                                 )}
                                             </div>
                                         ))}
-                                        <div className="pt-3">
-                                            <Button
-                                                asChild
-                                                className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl"
-                                            >
-                                                <Link to={contactUrl('ROI Assessment')} onClick={() => setIsMobileMenuOpen(false)}>
-                                                    Book ROI Assessment
-                                                </Link>
-                                            </Button>
-                                        </div>
+                                        {showBookCta && (
+                                            <div className="pt-3">
+                                                <Button
+                                                    asChild
+                                                    className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl"
+                                                >
+                                                    <Link to={contactUrl('ROI Assessment')} onClick={() => setIsMobileMenuOpen(false)}>
+                                                        Book ROI Assessment
+                                                    </Link>
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 </motion.div>
                             )}

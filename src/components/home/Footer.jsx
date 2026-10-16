@@ -145,7 +145,11 @@ export default function Footer() {
                     viewport={{ once: true, margin: '-40px' }}
                     custom={0}
                 >
-                    <motion.div
+                    <motion.a
+                        href="https://www.nvidia.com/en-us/startups/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="NVIDIA Inception Program member"
                         className="flex items-center bg-black rounded-lg overflow-hidden"
                         whileHover={{ scale: 1.04, boxShadow: '0 0 30px rgba(118, 185, 0, 0.15)' }}
                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -163,7 +167,7 @@ export default function Footer() {
                                 loading="lazy"
                             />
                         </div>
-                    </motion.div>
+                    </motion.a>
                 </motion.div>
 
                 {/* Copyright & Legal */}
@@ -174,18 +178,7 @@ export default function Footer() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <p className="text-slate-400 text-sm">
-                        <a
-                            href="https://www.nvidia.com/en-us/startups/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="underline hover:text-slate-200"
-                        >
-                            NVIDIA Inception Program member
-                        </a>{' '}
-                        · Louisville, KY
-                    </p>
-                    <p className="text-slate-500 text-xs mt-1">
+                    <p className="text-slate-500 text-xs">
                         Copyright © {new Date().getFullYear()} Catalyst Applied AI, LLC. All Rights Reserved.
                     </p>
                     <div className="flex justify-center gap-4 mt-2">
