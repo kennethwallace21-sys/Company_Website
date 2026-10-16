@@ -51,3 +51,9 @@ See README "Remotes and deploy reality".
       database). Accept in writing or schedule a D1/KV store. Controls CP-9, AU-12.
 - [x] Old Web3Forms access key neutralized 2026-10-15: the form now requires hCaptcha, so posts carrying the leaked key without a captcha token are rejected; server-side posts were already refused on the free plan. The form is unused by the site.
       public git history).
+
+## Before flipping SHOW_SERVICES back on (from the T024 review, 2026-10-16)
+
+- Owner to confirm the new copy in src/data/offerings.js: the Discovery & Diagnostic description now matches the page subtitle, and the three nav group names (Architecture, Engineering, Automation & Enablement) and six taglines are new.
+- Owner to accept that a tap on a collapsed accordion item navigates immediately (one tap, not two).
+- Run a round 3 review (T027) on a scratch build with the flag on.
