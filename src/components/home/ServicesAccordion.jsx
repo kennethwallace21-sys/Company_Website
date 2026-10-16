@@ -1,48 +1,17 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { InteractiveImageAccordion } from '../ui/interactive-image-accordion';
-import { createPageUrl, contactUrl } from '@/utils';
+import { contactUrl } from '@/utils';
+import { offerings, serviceDetailPath } from '@/data/offerings';
 import { fadeUp } from '@/hooks/useFluidReveal';
 
-// Catalyst Applied AI Services with relevant images and links
-const servicesData = [
-    {
-        id: 1,
-        title: 'Discovery & Diagnostic',
-        imageUrl: '/services/discovery-diagnostic.jpg',
-        linkTo: createPageUrl('ServiceDetail') + '?service=discovery-diagnostic'
-    },
-    {
-        id: 2,
-        title: 'Custom AI Solutions',
-        imageUrl: '/services/custom-ai-solutions.jpg',
-        linkTo: createPageUrl('ServiceDetail') + '?service=custom-ai-solutions'
-    },
-    {
-        id: 3,
-        title: 'Workflow Automation',
-        imageUrl: '/services/workflow-automation.jpg',
-        linkTo: createPageUrl('ServiceDetail') + '?service=workflow-automation'
-    },
-    {
-        id: 4,
-        title: 'Data Engineering',
-        imageUrl: '/services/data-engineering.jpg',
-        linkTo: createPageUrl('ServiceDetail') + '?service=data-engineering'
-    },
-    {
-        id: 5,
-        title: 'AI Tools Implementation',
-        imageUrl: '/services/ai-implementation.jpg',
-        linkTo: createPageUrl('ServiceDetail') + '?service=ai-implementation'
-    },
-    {
-        id: 6,
-        title: 'Training & Enablement',
-        imageUrl: '/services/training-support.jpg',
-        linkTo: createPageUrl('ServiceDetail') + '?service=training-support'
-    },
-];
+// One accordion panel per offering (src/data/offerings.js).
+const servicesData = offerings.map((o) => ({
+    id: o.slug,
+    title: o.title,
+    imageUrl: o.image,
+    linkTo: serviceDetailPath(o.slug),
+}));
 
 export default function ServicesAccordion() {
     return (
@@ -62,7 +31,7 @@ export default function ServicesAccordion() {
                         Production <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">AI Systems</span> for Your Business
                     </>
                 }
-                subtitle="We scope it, build it, and deploy it in your environment. Click any service to learn more."
+                subtitle="We scope it, build it, and deploy it in your environment. Choose any service to learn more."
                 ctaText="Book Your ROI Assessment"
                 ctaHref={contactUrl('ROI Assessment')}
                 defaultActiveIndex={1}

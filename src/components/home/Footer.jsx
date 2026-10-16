@@ -5,6 +5,7 @@ import { createPageUrl } from '@/utils';
 import { Mail, MapPin, Linkedin, Phone } from 'lucide-react';
 import { staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
 import { SHOW_SERVICES } from '@/config/features';
+import { offerings, serviceDetailPath } from '@/data/offerings';
 
 const XIcon = (props) => (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
@@ -73,20 +74,13 @@ export default function Footer() {
                     <motion.div variants={staggerItem}>
                         <h4 className="text-white font-semibold mb-4">Services</h4>
                         <ul className="space-y-2">
-                            {[
-                                { label: 'Discovery & Diagnostic', service: 'discovery-diagnostic' },
-                                { label: 'Custom AI Solutions', service: 'custom-ai-solutions' },
-                                { label: 'Workflow Automation', service: 'workflow-automation' },
-                                { label: 'Data Engineering', service: 'data-engineering' },
-                                { label: 'AI Tools Implementation', service: 'ai-implementation' },
-                                { label: 'Training & Enablement', service: 'training-support' },
-                            ].map(item => (
-                                <li key={item.service}>
+                            {offerings.map(item => (
+                                <li key={item.slug}>
                                     <Link
-                                        to={createPageUrl('ServiceDetail') + `?service=${item.service}`}
+                                        to={serviceDetailPath(item.slug)}
                                         className="text-slate-400 hover:text-blue-400 transition-colors text-sm inline-block hover:translate-x-1 transition-transform duration-200"
                                     >
-                                        {item.label}
+                                        {item.title}
                                     </Link>
                                 </li>
                             ))}

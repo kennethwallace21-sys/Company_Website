@@ -28,7 +28,7 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- SERVICES_HIDDEN: Service Detail Pages. Remove this comment wrapper to restore.
+  <!-- SERVICES_HIDDEN: Service Detail Pages. Remove this comment wrapper to restore. Generated from src/data/offerings.js by scripts/check-offerings.mjs in write mode; do not edit by hand.
   <url>
     <loc>https://www.catalystappliedai.com/ServiceDetail?service=discovery-diagnostic</loc>
     <lastmod>2026-10-14</lastmod>

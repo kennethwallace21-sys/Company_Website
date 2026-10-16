@@ -3,23 +3,26 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 // --- Accordion Item Component ---
-const AccordionItem = ({ item, isActive, onMouseEnter, linkTo }) => {
+// Every item is its own Link (a focusable element without one), so keyboard and
+// touch users can reach every service, not only the one the mouse expanded.
+// Focus expands an item the same way hover does; a tap follows the link.
+const AccordionItem = ({ item, isActive, onActivate, linkTo }) => {
+    const className = `
+        relative block h-[450px] rounded-2xl overflow-hidden cursor-pointer
+        transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
+        focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#060a14]
+    `;
+    const style = {
+        flex: isActive ? '6 1 0%' : '1 1 0%',
+        minWidth: isActive ? '0' : '50px',
+    };
+
     const content = (
-        <div
-            className={`
-                relative h-[450px] rounded-2xl overflow-hidden cursor-pointer
-                transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]
-            `}
-            style={{
-                flex: isActive ? '6 1 0%' : '1 1 0%',
-                minWidth: isActive ? '0' : '50px',
-            }}
-            onMouseEnter={onMouseEnter}
-        >
-            {/* Background Image */}
+        <>
+            {/* Background Image (decorative: the item title is the accessible name) */}
             <img
                 src={item.imageUrl}
-                alt={item.title}
+                alt=""
                 loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
                 style={{
@@ -45,8 +48,9 @@ const AccordionItem = ({ item, isActive, onMouseEnter, linkTo }) => {
                     animate={{ opacity: 0.8, y: 0 }}
                     transition={{ delay: 0.35, duration: 0.4 }}
                     key={item.id + '-hint'}
+                    aria-hidden="true"
                 >
-                    Click to learn more →
+                    Learn more →
                 </motion.div>
             )}
 
@@ -63,18 +67,34 @@ const AccordionItem = ({ item, isActive, onMouseEnter, linkTo }) => {
             >
                 {item.title}
             </span>
-        </div>
+        </>
     );
 
-    if (isActive && linkTo) {
+    if (linkTo) {
         return (
-            <Link to={linkTo} className="group contents">
+            <Link
+                to={linkTo}
+                className={`group ${className}`}
+                style={style}
+                onMouseEnter={onActivate}
+                onFocus={onActivate}
+            >
                 {content}
             </Link>
         );
     }
 
-    return content;
+    return (
+        <div
+            tabIndex={0}
+            className={className}
+            style={style}
+            onMouseEnter={onActivate}
+            onFocus={onActivate}
+        >
+            {content}
+        </div>
+    );
 };
 
 // --- Main Component ---
@@ -146,7 +166,7 @@ export function InteractiveImageAccordion({
                                     key={item.id}
                                     item={item}
                                     isActive={index === activeIndex}
-                                    onMouseEnter={() => setActiveIndex(index)}
+                                    onActivate={() => setActiveIndex(index)}
                                     linkTo={item.linkTo}
                                 />
                             ))}
