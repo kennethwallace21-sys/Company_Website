@@ -1,29 +1,35 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Zap, Target, TrendingUp, Users } from 'lucide-react';
+import { Users, TrendingUp, Database, Server } from 'lucide-react';
 import { fadeLeft, staggerContainer, staggerItem } from '@/hooks/useFluidReveal';
 
 const capabilities = [
     {
-        icon: Zap,
-        title: "Automation",
-        description: "Reducing bottlenecks and streamlining operations"
-    },
-    {
         icon: Users,
-        title: "Customer Experience",
-        description: "Enhancing interactions at scale"
+        title: "Agentic AI Assistants",
+        description: "Carry out multi-step work across your internal systems, with optional voice"
     },
     {
         icon: TrendingUp,
-        title: "Data Intelligence",
-        description: "Turning information into decisions"
+        title: "Signals & Intelligence",
+        description: "Plain-language summaries, trends and exceptions from your operational data"
     },
     {
-        icon: Target,
-        title: "Operational Efficiency",
-        description: "Reducing costs and increasing speed"
+        icon: Database,
+        title: "Custom RAG Systems",
+        description: "Answers from your own documents, with citations to the source"
+    },
+    {
+        icon: Server,
+        title: "Where it runs",
+        description: "Your cloud tenant, AWS GovCloud or Azure Government, on premises, or managed"
     }
+];
+
+const steps = [
+    { title: 'Scope', description: 'Plan, timeline, cost' },
+    { title: 'Build', description: 'Your data, your environment' },
+    { title: 'Train', description: 'Your team, before handover' },
 ];
 
 export default function AboutSection() {
@@ -50,17 +56,17 @@ export default function AboutSection() {
                         custom={0}
                     >
                         <span className="text-blue-400 text-sm font-semibold tracking-widest uppercase">
-                            Who We Are
+                            What we build
                         </span>
                         <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-6 leading-tight">
-                            Empowering <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">AI Solutions</span>
+                            Three products, built on <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">your data</span>
                         </h2>
                         <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                            Catalyst Applied AI builds production AI systems and deploys them inside your environment.
-                            We ship agents, RAG systems, and automations that plug into how your team already works.
+                            Each product is configured for your workflows and deployed in the environment you choose.
+                            Work starts with a short scoping step that ends in a written build plan.
                         </p>
 
-                        {/* Values */}
+                        {/* How an engagement runs */}
                         <motion.div
                             className="grid grid-cols-3 gap-6 mb-8"
                             variants={staggerContainer}
@@ -68,23 +74,21 @@ export default function AboutSection() {
                             whileInView="visible"
                             viewport={{ once: true, margin: '-60px' }}
                         >
-                            {['Innovation', 'Quality', 'Trust'].map((val, i) => (
+                            {steps.map((step) => (
                                 <motion.div
-                                    key={val}
+                                    key={step.title}
                                     variants={staggerItem}
                                     whileHover={{ y: -4, borderColor: 'rgba(59, 130, 246, 0.3)' }}
                                     className="text-center p-4 rounded-xl bg-[#0d1425]/60 border border-blue-500/10 transition-all duration-300"
                                 >
-                                    <div className="text-2xl font-bold text-blue-400">{val}</div>
-                                    <div className="text-sm text-slate-400 mt-1">
-                                        {val === 'Innovation' ? 'Cutting-Edge Solutions' : val === 'Quality' ? 'Excellence in Delivery' : 'Client-Focused Approach'}
-                                    </div>
+                                    <div className="text-2xl font-bold text-blue-400">{step.title}</div>
+                                    <div className="text-sm text-slate-400 mt-1">{step.description}</div>
                                 </motion.div>
                             ))}
                         </motion.div>
                     </motion.div>
 
-                    {/* Right Content - Capabilities */}
+                    {/* Right Content: the three products and where they run */}
                     <motion.div
                         className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                         variants={staggerContainer}

@@ -15,16 +15,24 @@ const allFaqs = [
         category: "General",
         items: [
             {
-                question: "What exactly does Catalyst Applied AI do?",
-                answer: "We build production AI systems and deploy them inside your environment. That includes automating a tedious document review process, extracting intelligence from internal records, and building custom platforms that manage your company's internal knowledge."
+                question: "What does Catalyst Applied AI do?",
+                answer: "We build three kinds of AI systems for enterprise and public sector organizations: assistants that carry out multi-step work (Agentic AI Assistants), plain-language reporting on operational data (Signals & Intelligence), and answers from your own documents with citations (Custom RAG Systems). We can deploy them in your cloud tenant, in AWS GovCloud or Azure Government, on premises, or in a managed environment we operate."
             },
             {
-                question: "What makes you different from a generic software agency?",
-                answer: "We focus on Applied AI. Unlike general agencies, we understand the specific nuances of 'grounded' AI: reducing hallucinations by constraining answers to retrieved sources, keeping your data in an environment you control, and tying every tool we build to a measurable Return on Investment (ROI) target."
+                question: "How does an engagement start?",
+                answer: "With a short scoping step. You tell us the use case, the data involved and where the system has to run, and we return a written build plan with scope, timeline and cost. Pricing is set per engagement from that plan."
+            },
+            {
+                question: "How is this different from a general software firm?",
+                answer: "We build AI systems only, and we build them to run in the environment you choose. Answers are grounded in your own documents and carry citations, and each build is tied to a measurable goal agreed during scoping."
+            },
+            {
+                question: "Who is Catalyst Applied AI?",
+                answer: "Catalyst Applied AI, LLC is based in Louisville, Kentucky, and is a member of the NVIDIA Inception program for startups. We do not publish customer names on this site; ask us what we can share."
             },
             {
                 question: "Do you work with small businesses?",
-                answer: "Yes. While we work with larger enterprises, we also help growing businesses implement AI 'starter' projects that provide immediate value without requiring a multi-million dollar budget."
+                answer: "Yes. Our products are designed for enterprise and public sector teams, and we also take on smaller, well-defined projects for growing businesses."
             }
         ]
     },
@@ -46,32 +54,15 @@ const allFaqs = [
         ]
     },
     {
-        category: "Products",
-        items: [
-            {
-                question: "What are your Agentic AI Assistants?",
-                answer: "Custom autonomous agents (like AIVA for HR) featuring duplex voice capabilities. We build agents that execute multi-step workflows, manage complex tasks, and coordinate with internal systems to reduce repetitive operational overhead."
-            },
-            {
-                question: "What is Signals & Intelligence?",
-                answer: "An operational intelligence system that turns raw enterprise data into actionable narratives, predictive insights, and automated recommendations for executive decision-making."
-            },
-            {
-                question: "What are Custom RAG Systems?",
-                answer: "Tailor-made Retrieval-Augmented Generation systems that connect securely to your proprietary documents. Your team gets grounded answers with citations to your source documents, which reduces but does not eliminate incorrect output."
-            }
-        ]
-    },
-    {
         category: "Security & Deployment",
         items: [
             {
                 question: "Can you deploy in AWS GovCloud, on-premise, or air-gapped environments?",
-                answer: "Yes. We support three deployment models: managed secure cloud, client cloud tenant (including AWS GovCloud and Azure Government), and air-gapped on-premises hardware (such as NVIDIA NIM/DGX). In client-tenant and on-premises deployments, your proprietary data stays in the environment you operate. In the managed option, your data is processed in infrastructure that Catalyst operates under your contract terms; in the other two it stays in the environment you operate."
+                answer: "Yes. We support three deployment models: your own cloud tenant (including AWS GovCloud and Azure Government), on-premises or air-gapped hardware (such as NVIDIA NIM/DGX), and a managed secure cloud that Catalyst operates. In your tenant or on premises, your proprietary data stays in the environment you operate. In the managed option, your data is processed in infrastructure that Catalyst operates under your contract terms."
             },
             {
-                question: "What government registrations and compliance standards do you meet?",
-                answer: "Catalyst is an NVIDIA Inception Program member. We deploy into environments our customers control, including customer-owned AWS GovCloud (US) and Azure Government tenants and on-premises or air-gapped hardware, so the system boundary and its authorization remain with your organization. Tell us which framework applies (for example NIST SP 800-53 or SP 800-171) and we will map controls during scoping."
+                question: "Do you hold FedRAMP, CMMC, SOC 2 or other certifications?",
+                answer: "This site does not claim any certification or authorization. We deploy into environments your organization controls, such as your own AWS GovCloud (US) or Azure Government tenant or on-premises and air-gapped hardware, so the system boundary and its authorization stay with you. Tell us which framework applies (for example NIST SP 800-53 or SP 800-171) and we will map controls to it during scoping."
             },
             {
                 question: "Is my data used to train public models like ChatGPT?",
@@ -80,6 +71,23 @@ const allFaqs = [
             {
                 question: "How do you reduce AI hallucinations?",
                 answer: "We use grounded AI architectures with retrieval verification. Answers are constrained to excerpts from your indexed internal records and carry citations so reviewers can check them against the source. Guardrails reduce incorrect output but cannot eliminate it, so we recommend human review for consequential decisions."
+            }
+        ]
+    },
+    {
+        category: "Products",
+        items: [
+            {
+                question: "What are your Agentic AI Assistants?",
+                answer: "Assistants that take a request and work through the steps across your internal systems, such as AIVA, our HR assistant, with optional two-way voice. Each agent is scoped to the systems and permissions you approve."
+            },
+            {
+                question: "What is Signals & Intelligence?",
+                answer: "Plain-language reporting on your operational data. It reads the records you connect and writes up what changed: summaries, trends, flagged exceptions and suggested next steps for program and operations leaders."
+            },
+            {
+                question: "What are Custom RAG Systems?",
+                answer: "Retrieval-augmented generation over your own documents and records. Your team gets answers that cite the passages they came from, which reduces but does not eliminate incorrect output."
             }
         ]
     }
@@ -118,7 +126,7 @@ export default function FAQ() {
         <div className="min-h-screen bg-[#060a14]">
             <SEOHead
                 title="Frequently Asked Questions"
-                description="Everything you need to know about working with Catalyst Applied AI. Find answers about our services, process, security, and more."
+                description="Answers on deployment models, data handling, certifications, pricing and the three Catalyst Applied AI products."
                 path="/FAQ"
             />
             <Navbar showNav={showNav} />
@@ -134,13 +142,13 @@ export default function FAQ() {
                 >
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6">
                         <HelpCircle className="w-4 h-4" />
-                        Help Center
+                        FAQ
                     </div>
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                        Expertise <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">Explained</span>
+                        Frequently asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-400">questions</span>
                     </h1>
                     <p className="text-slate-400 text-lg max-w-2xl mx-auto mb-10">
-                        Everything you need to know about navigating the AI landscape with Catalyst Applied AI.
+                        Where our systems run, how your data is handled, what we do and do not claim, and how an engagement starts.
                     </p>
 
                     {/* Search Bar */}
@@ -244,11 +252,11 @@ export default function FAQ() {
                         <div className="relative z-10">
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Still have questions?</h2>
                             <p className="text-blue-100 text-lg mb-8 max-w-xl mx-auto">
-                                Our team is ready to help you navigate the AI transformation process with confidence.
+                                Send us your question or describe the system you need, and a person on our team will reply.
                             </p>
                             <Link to={createPageUrl('Contact')}>
                                 <Button className="bg-white text-blue-600 hover:bg-slate-100 px-8 py-6 rounded-2xl text-lg font-bold group">
-                                    Get in Touch
+                                    Contact us
                                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </Button>
                             </Link>

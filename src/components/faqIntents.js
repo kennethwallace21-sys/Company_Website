@@ -21,7 +21,7 @@ export const FALLBACK_TEXT =
     'I do not have a verified answer for that. Send it to our team and a person will reply.';
 
 export const CERTIFICATION_DISCLAIMER =
-    'We do not represent any certification or authorization on this site. Ask us directly and we will tell you exactly what we have and how we work inside your authorized boundary.';
+    'This site does not claim any certification or authorization, such as FedRAMP, CMMC or SOC 2. We deploy into environments where your organization holds the authorization, and we map controls to the framework you name during scoping. Ask us about a specific requirement.';
 
 export const intents = [
     {
@@ -39,7 +39,7 @@ export const intents = [
         id: 'deployment',
         question: 'Can you deploy in AWS GovCloud, on-premises, or air-gapped environments?',
         answer:
-            'We deploy into environments you control: your own cloud tenant (including AWS GovCloud and Azure Government), on-premises hardware, or air-gapped systems. The system is built so your data stays inside the environment you define, which also determines where it is hosted. Tell us your residency and network requirements and we confirm the right model during scoping.',
+            'We deploy into the environment you choose: your own cloud tenant (including AWS GovCloud and Azure Government), on-premises or air-gapped hardware, or a managed environment Catalyst operates. In your tenant or on premises, your data stays in the environment you operate. Tell us your residency and network requirements and we confirm the right model during scoping.',
         keywords: [
             'govcloud', 'gov cloud', 'aws', 'azure', 'airgap', 'airgapped', 'air gap', 'air gapped', 'air-gapped',
             'on-prem', 'on prem', 'onprem', 'on-premise', 'on premise', 'on-premises', 'on premises',
@@ -52,7 +52,7 @@ export const intents = [
         id: 'about',
         question: 'What does Catalyst Applied AI do?',
         answer:
-            'We build production AI systems and deploy them inside your environment. Our three products are **Agentic AI Assistants**, **Signals & Intelligence**, and **Custom RAG Systems**. We focus on measurable business ROI.',
+            'We build three AI products for enterprise and public sector teams: **Agentic AI Assistants** that carry out multi-step work, **Signals & Intelligence** for plain-language reporting on operational data, and **Custom RAG Systems** that answer from your documents with citations. We deploy them in the environment you choose.',
         keywords: [
             'what do you do', 'what you do', 'overview', 'about catalyst', 'who are you', 'service', 'services',
             'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst'
@@ -62,7 +62,7 @@ export const intents = [
         id: 'agents',
         question: 'What are your Agentic AI Assistants?',
         answer:
-            'Custom agents, such as AIVA for HR, that can use duplex voice. They execute multi-step workflows, manage tasks, and coordinate with your internal systems to reduce repetitive operational work.',
+            'Assistants, such as AIVA for HR, that carry out multi-step work across your internal systems, with optional two-way voice. Each one is scoped to the systems and permissions you approve.',
         keywords: [
             'agent', 'agents', 'agentic', 'aiva', 'assistant', 'assistants', 'voice', 'duplex', 'workflow',
             'workflows', 'automate', 'automation', 'chatbot', 'chatbots', 'bots'
@@ -72,7 +72,7 @@ export const intents = [
         id: 'signals',
         question: 'What is Signals & Intelligence?',
         answer:
-            'An operational intelligence system that turns raw enterprise data into narratives, predictive insights, and recommendations for decision-makers.',
+            'Plain-language reporting on your operational data: summaries, trends, flagged exceptions and suggested next steps for program and operations leaders.',
         keywords: [
             'signal', 'signals', 'intelligence', 'narrative', 'narratives', 'analytics', 'dashboard', 'dashboards',
             'predictive', 'insights', 'forecast', 'forecasting'
@@ -82,7 +82,7 @@ export const intents = [
         id: 'rag',
         question: 'What are Custom RAG Systems?',
         answer:
-            'Retrieval-Augmented Generation systems connected to your own documents. They give your team grounded, cited answers; this reduces but does not eliminate errors, so we design in citations and guardrails so people can check the source.',
+            'Retrieval-augmented generation over your own documents. Answers cite the passages they came from so people can check the source. This reduces incorrect answers but does not eliminate them, so we also design in guardrails and recommend human review for consequential decisions.',
         keywords: [
             'rag', 'retrieval', 'knowledge base', 'knowledge', 'document', 'documents', 'vector', 'unstructured',
             'citation', 'citations', 'cited', 'grounded', 'hallucinate', 'hallucination', 'hallucinations',
@@ -94,7 +94,7 @@ export const intents = [
         question: 'What government registrations do you have?',
         contact: true,
         answer:
-            'We do not publish federal registration identifiers on this site. Ask us directly for our SAM.gov status, UEI and CAGE code. We deploy into environments you control where your organization holds the authorization. Tell us the framework, for example NIST SP 800-53 or 800-171, and we map controls during scoping.',
+            'We do not publish federal registration details on this site; ask us directly. Catalyst is a member of the NVIDIA Inception program for startups. We deploy into environments you control, where your organization holds the authorization, and we map controls to the framework you name, for example NIST SP 800-53 or 800-171, during scoping.',
         keywords: [
             'sam gov', 'sam', 'naics', '541715', '541511', 'government', 'federal', 'gsa', 'inception',
             'nvidia', 'registered', 'registration', 'registrations'
@@ -128,7 +128,7 @@ export const intents = [
         id: 'pricing',
         question: 'How much does it cost?',
         answer:
-            'Pricing is scoped per engagement. Contact us and we will size the work and the cost with you.',
+            'Pricing is set per engagement. The scoping step ends in a written plan with scope, timeline and cost.',
         contact: true,
         keywords: [
             'price', 'prices', 'pricing', 'cost', 'costs', 'budget', 'quote', 'rates', 'fee', 'fees', 'expensive',
@@ -140,7 +140,7 @@ export const intents = [
         id: 'start',
         question: 'How do I get started or contact you?',
         answer:
-            'Use the contact page, email sales@catalystappliedai.com, or call +1-502-416-8342.',
+            'Use the contact page, email sales@catalystappliedai.com, or call +1-502-416-8342. Tell us the use case, the data involved and where the system has to run, and we will come back with next steps.',
         contact: true,
         direct: true,
         keywords: [
@@ -156,7 +156,7 @@ export const intents = [
         id: 'timeline',
         question: 'How long does a project take?',
         answer:
-            'Timelines depend on scope and the environment you deploy into. We start with a short scoping step that ends in a concrete build plan, and that plan includes a timeline.',
+            'Timelines depend on scope and the environment you deploy into. We start with a short scoping step that ends in a written build plan, and that plan includes a timeline.',
         contact: true,
         keywords: [
             'timeline', 'timelines', 'how long', 'duration', 'timeframe', 'turnaround', 'weeks', 'months',
@@ -200,7 +200,7 @@ export const intents = [
         id: 'team',
         question: 'Who are you and where are you located?',
         answer:
-            'Catalyst Applied AI is based in Louisville, Kentucky, USA, and works with enterprise and government clients.',
+            'Catalyst Applied AI, LLC is based in Louisville, Kentucky, USA, and builds for enterprise and public sector organizations.',
         keywords: [
             'location', 'located', 'where are you', 'kentucky', 'louisville', 'office', 'headquarters', 'hq', 'team',
             'company', 'founder', 'founders', 'leadership', 'about us'
@@ -210,7 +210,7 @@ export const intents = [
         id: 'references',
         question: 'Do you have case studies or references?',
         answer:
-            'Case studies and references are available on request under NDA.',
+            'We do not publish customer names or case studies on this site. Ask us and we will tell you what we can share and on what terms.',
         contact: true,
         keywords: [
             'case study', 'case studies', 'reference', 'references', 'customer', 'customers', 'client references', 'other clients', 'past clients',

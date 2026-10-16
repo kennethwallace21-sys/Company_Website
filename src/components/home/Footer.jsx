@@ -45,7 +45,7 @@ export default function Footer() {
                             </span>
                         </Link>
                         <p className="text-slate-400 text-sm">
-                            AI that runs where your data lives. Governed. Auditable. Yours.
+                            AI systems built and deployed in the environment you choose.
                         </p>
                         <div role="navigation" aria-label="Social media" className="flex items-center gap-3 mt-4">
                             <a
