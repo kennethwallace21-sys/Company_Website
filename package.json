@@ -10,7 +10,8 @@
         "lint:fix": "eslint . --fix",
         "typecheck": "tsc -p ./jsconfig.json",
         "preview": "vite preview",
-        "test:intents": "node scripts/check-intents.mjs"
+        "test:intents": "node scripts/check-intents.mjs",
+        "test:offerings": "node scripts/check-offerings.mjs"
     },
     "dependencies": {
         "@radix-ui/react-slot": "^1.1.2",

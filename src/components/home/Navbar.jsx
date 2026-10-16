@@ -4,54 +4,36 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { contactUrl } from '@/utils';
 import { SHOW_SERVICES } from '@/config/features';
+import { offerings, SERVICE_GROUPS, serviceDetailPath } from '@/data/offerings';
 import {
     Menu, X, ChevronDown, ChevronRight,
     Search, GraduationCap, Cpu, Database,
-    Zap, Layout, Bot, Box, BarChart3, Users, CalendarCheck, MessageSquare
+    Zap, Layout, BarChart3, Users, CalendarCheck, MessageSquare
 } from 'lucide-react';
 
-// Kept as a standalone constant so it is dropped from the production bundle when SHOW_SERVICES is false.
-const servicesNavItem = {
+// Built by a function that is only called when SHOW_SERVICES is true, so the menu and the
+// offerings data are dropped from the production bundle while Services are hidden.
+// One link per offering, grouped into columns by offering.group (src/data/offerings.js).
+const OFFERING_ICONS = { Search, Layout, Cpu, Database, Zap, GraduationCap };
+
+const servicesNavItem = () => ({
         label: 'Services',
         featured: { label: 'All Services', path: '/#services' },
-        columns: [
-            {
-                heading: 'Architecture',
-                links: [
-                    { label: 'Discovery & Diagnostic', path: '/ServiceDetail?service=discovery-diagnostic', description: 'Scoping engagement', icon: Search },
-                    { label: 'Scoping & Architecture', path: '/ServiceDetail?service=discovery-diagnostic', description: 'Implementation path', icon: Layout },
-                    { label: 'Training & Enablement', path: '/ServiceDetail?service=training-support', description: 'Team upskilling', icon: GraduationCap },
-                ]
-            },
-            {
-                heading: 'Engineering',
-                links: [
-                    { label: 'Custom AI Solutions', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Bespoke AI models', icon: Cpu },
-                    { label: 'Data Engineering', path: '/ServiceDetail?service=data-engineering', description: 'Data pipeline design', icon: Database },
-                    { label: 'LLM Fine-tuning', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Model optimization', icon: Zap },
-                ]
-            },
-            {
-                heading: 'Automation',
-                links: [
-                    { label: 'Workflow Automation', path: '/ServiceDetail?service=workflow-automation', description: 'Process streamlining', icon: Zap },
-                    { label: 'RPA Implementation', path: '/ServiceDetail?service=workflow-automation', description: 'Task automation', icon: Bot },
-                    { label: 'Process Mining', path: '/ServiceDetail?service=workflow-automation', description: 'Efficiency analysis', icon: Box },
-                ]
-            },
-            {
-                heading: 'Intelligence',
-                links: [
-                    { label: 'Predictive Analytics', path: '/ServiceDetail?service=data-engineering', description: 'Future-cast insights', icon: Database },
-                    { label: 'Computer Vision', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Visual data processing', icon: Cpu },
-                    { label: 'Sentiment Analysis', path: '/ServiceDetail?service=custom-ai-solutions', description: 'Automated tone scoring', icon: Search },
-                ]
-            }
-        ]
-};
+        columns: SERVICE_GROUPS.map((group) => ({
+            heading: group,
+            links: offerings
+                .filter((o) => o.group === group)
+                .map((o) => ({
+                    label: o.title,
+                    path: serviceDetailPath(o.slug),
+                    description: o.tagline,
+                    icon: OFFERING_ICONS[o.icon],
+                })),
+        })),
+});
 
 const navItems = [
-    ...(SHOW_SERVICES ? [servicesNavItem] : []),
+    ...(SHOW_SERVICES ? [servicesNavItem()] : []),
     {
         label: 'Products',
         featured: { label: 'Products overview', path: '/Products' },
