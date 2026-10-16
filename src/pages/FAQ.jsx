@@ -28,7 +28,7 @@ const allFaqs = [
             },
             {
                 question: "Who is Catalyst Applied AI?",
-                answer: "Catalyst Applied AI, LLC is based in Louisville, Kentucky, and is a member of the NVIDIA Inception program for startups. We do not publish customer names on this site; ask us what we can share."
+                answer: "Catalyst Applied AI, LLC is based in Louisville, Kentucky, and is a member of the NVIDIA Inception program for startups. We do not list customers or case studies on this site. Contact us to discuss what is possible."
             },
             {
                 question: "Do you work with small businesses?",

@@ -94,7 +94,7 @@ export const intents = [
         question: 'What government registrations do you have?',
         contact: true,
         answer:
-            'We do not publish federal registration details on this site; ask us directly. Catalyst is a member of the NVIDIA Inception program for startups. We deploy into environments you control, where your organization holds the authorization, and we map controls to the framework you name, for example NIST SP 800-53 or 800-171, during scoping.',
+            'This site does not list federal registrations. Contact us with your requirements. Catalyst is a member of the NVIDIA Inception program for startups. We deploy into environments you control, where your organization holds the authorization, and we map controls to the framework you name, for example NIST SP 800-53 or 800-171, during scoping.',
         keywords: [
             'sam gov', 'sam', 'naics', '541715', '541511', 'government', 'federal', 'gsa', 'inception',
             'nvidia', 'registered', 'registration', 'registrations'
@@ -210,7 +210,7 @@ export const intents = [
         id: 'references',
         question: 'Do you have case studies or references?',
         answer:
-            'We do not publish customer names or case studies on this site. Ask us and we will tell you what we can share and on what terms.',
+            'We do not publish customer names or case studies on this site. Contact us to discuss what is possible for your use case.',
         contact: true,
         keywords: [
             'case study', 'case studies', 'reference', 'references', 'customer', 'customers', 'client references', 'other clients', 'past clients',

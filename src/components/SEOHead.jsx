@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 const SITE_URL = 'https://www.catalystappliedai.com';
 const DEFAULT_IMAGE = `${SITE_URL}/og-cover.png`;
 const DEFAULT_DESCRIPTION =
-    'AI assistants, operational reporting and RAG systems for enterprise and public sector teams, deployed in your cloud tenant, AWS GovCloud, on premises or a managed environment.';
+    'AI assistants, operational reporting and RAG systems for enterprise and public sector teams, deployed in your cloud tenant, GovCloud, on premises or managed.';
 
 // Head tags that index.html ships statically for non-JS crawlers. Helmet only
 // removes tags it created itself (marked with data-rh), so once React is

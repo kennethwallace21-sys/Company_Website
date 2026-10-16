@@ -23,7 +23,7 @@ export default function Home() {
         <div className="min-h-screen bg-[#060a14]">
             <SEOHead
                 title={null}
-                description="AI assistants, operational reporting and RAG systems for enterprise and public sector teams, deployed in your cloud tenant, AWS GovCloud, on premises or a managed environment."
+                description="AI assistants, operational reporting and RAG systems for enterprise and public sector teams, deployed in your cloud tenant, GovCloud, on premises or managed."
                 path="/"
             />
             {/* Navbar */}

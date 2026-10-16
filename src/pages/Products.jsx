@@ -74,7 +74,7 @@ export default function Products() {
         <div className="min-h-screen bg-[#060a14] overflow-hidden">
             <SEOHead
                 title="AI Products"
-                description="Agentic AI Assistants, Signals & Intelligence and Custom RAG Systems, deployed in your cloud tenant, AWS GovCloud or Azure Government, on premises, or a managed environment."
+                description="Agentic AI Assistants, Signals & Intelligence and Custom RAG Systems, deployed in your cloud tenant, GovCloud, on premises or managed."
                 path="/Products"
             />
             <Navbar showNav={true} />
