@@ -20,6 +20,7 @@ See README "Remotes and deploy reality".
   accepted as-is (no history rewrite); the key is to be rotated instead.
 - (b) The SAM.gov registration claim is removed from the site until UEI and CAGE are
   available.
+- (e) Owner decision 2026-10-15: the Team page is retired permanently; the former team photos and personal details were removed from the tree. They remain in public git history (see the history-exposure decision above).
 
 ## Contact form status: Worker is the only intake, Resend configured
 
