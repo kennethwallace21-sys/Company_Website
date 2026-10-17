@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Mail, MapPin, Linkedin, Phone } from 'lucide-react';
+import { Mail, MapPin, Linkedin, Instagram, Facebook, Phone } from 'lucide-react';
 import { staggerContainer, staggerItem, scaleUp } from '@/hooks/useFluidReveal';
 import { SHOW_SERVICES } from '@/config/features';
 import { offerings, serviceDetailPath } from '@/data/offerings';
@@ -65,6 +65,24 @@ export default function Footer() {
                                 className="text-slate-300 hover:text-blue-400 transition-colors"
                             >
                                 <XIcon className="w-6 h-6" />
+                            </a>
+                            <a
+                                href="https://www.instagram.com/catalystappliedai/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Instagram"
+                                className="text-slate-300 hover:text-blue-400 transition-colors"
+                            >
+                                <Instagram className="w-6 h-6" />
+                            </a>
+                            <a
+                                href="https://www.facebook.com/profile.php?id=61591671146297"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label="Facebook"
+                                className="text-slate-300 hover:text-blue-400 transition-colors"
+                            >
+                                <Facebook className="w-6 h-6" />
                             </a>
                         </div>
                     </motion.div>
