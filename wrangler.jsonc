@@ -15,6 +15,10 @@
   "compatibility_flags": [
     "nodejs_compat"
   ],
+  // Hourly contact form self-check (scheduled() in src/worker.js); alerts by email.
+  "triggers": {
+    "crons": ["7 * * * *"]
+  },
   // /api/send-email: 5 requests per 60 s per client IP (CF-Connecting-IP), counted per
   // Cloudflare location. src/worker.js falls back to an in-memory Map without it.
   "ratelimits": [

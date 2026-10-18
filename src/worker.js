@@ -73,6 +73,13 @@ export default {
 
         return new Response("Not found", { status: 404 });
     },
+
+    // Hourly contact form self-check: wrangler.jsonc triggers.crons, see runContactSelfCheck.
+    async scheduled(controller, env, ctx) {
+        ctx.waitUntil(runContactSelfCheck(env, controller.scheduledTime).catch((err) => {
+            console.error("Contact self-check crashed:", err?.message || err);
+        }));
+    },
 };
 
 function normalizeRoutePath(pathname) {
@@ -394,6 +401,118 @@ async function verifyTurnstile(body, request, env) {
     } catch (err) {
         console.error("Turnstile verification error:", err?.message || err);
         return verificationUnavailable();
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+// Checks the contact form at its source every hour, so an outage like the bad
+// TURNSTILE_SECRET_KEY of 2026-10-16 reaches the owner within the hour instead of going
+// unnoticed for two days. It runs the same verifyTurnstile a real submission gets, with
+// a made-up token that siteverify must reject, and checks the Resend settings. Problems
+// are emailed to RESEND_TO_EMAIL. A "still working" note also goes out every Monday at
+// 13:00 UTC (and on runs before SELF_CHECK_ANNOUNCE_BEFORE, to confirm the cron is live;
+// delete that constant and its branch once the note has arrived), so a monitor that has
+// stopped running is noticed too. A failure is re-checked once after
+// SELF_CHECK_RETRY_MS (default 5 s; tests set 0) so one siteverify blip is not an alert.
+// Blind spots: a valid secret from another widget, the shipped site key (check:live sees
+// that), and a revoked RESEND_API_KEY (a failed send is only logged; the missing Monday
+// note is the signal).
+const SELF_CHECK_ANNOUNCE_BEFORE = Date.parse("2026-10-18T10:30:00Z");
+
+async function selfCheckTurnstile(env, scheduledTime) {
+    return verifyTurnstile(
+        { "cf-turnstile-response": `self-check-${scheduledTime}` },
+        new Request("https://self-check.invalid/"),
+        env,
+    );
+}
+
+async function runContactSelfCheck(env, scheduledTime) {
+    if (!Number.isFinite(scheduledTime)) {
+        scheduledTime = Date.now();
+    }
+    const problems = [];
+    if (env.TURNSTILE_SECRET_KEY === undefined || env.TURNSTILE_SECRET_KEY === null) {
+        problems.push("TURNSTILE_SECRET_KEY is not set on the Worker, so bot verification is off.");
+    } else {
+        let result = await selfCheckTurnstile(env, scheduledTime);
+        if (!result.ok && result.status !== 403) {
+            const retryMs = Number(env.SELF_CHECK_RETRY_MS ?? 5000);
+            await new Promise((resolve) => setTimeout(resolve, Number.isFinite(retryMs) ? retryMs : 5000));
+            result = await selfCheckTurnstile(env, scheduledTime);
+        }
+        if (result.ok) {
+            problems.push("A made-up Turnstile token was accepted, so verification is not working.");
+        } else if (result.status !== 403) {
+            problems.push("Turnstile verification is failing (TURNSTILE_SECRET_KEY is wrong or blank, or siteverify is unreachable), so every real submission gets a 503. The Worker logs show the exact reason.");
+        }
+    }
+    const missing = ["RESEND_API_KEY", "RESEND_TO_EMAIL", "RESEND_FROM_EMAIL"].filter((name) => !env[name]);
+    if (missing.length > 0) {
+        problems.push(`Email delivery is not configured (${missing.join(", ")} missing), so no submission can be delivered.`);
+    }
+
+    if (problems.length > 0) {
+        console.error(`Contact self-check failed: ${problems.join(" ")}`);
+    } else {
+        console.log("Contact self-check passed.");
+    }
+
+    const when = new Date(scheduledTime);
+    let subject = null;
+    if (problems.length > 0) {
+        subject = "Website alert: the contact form is failing";
+    } else if (scheduledTime < SELF_CHECK_ANNOUNCE_BEFORE) {
+        subject = "Website check: the hourly contact form check is running";
+    } else if (when.getUTCDay() === 1 && when.getUTCHours() === 13) {
+        subject = "Website check: the contact form is working (weekly)";
+    }
+    // Without the Resend settings there is no way to send; the log line above is all we have.
+    if (!subject || missing.length > 0) {
+        return { problems, emailed: false };
+    }
+
+    const lines = problems.length > 0
+        ? [
+            "The hourly check of the contact form at www.catalystappliedai.com found:",
+            "",
+            ...problems.map((p) => `- ${p}`),
+            "",
+            "Fix and verify with the Contact form status section of docs/TODO.md in the website repo, then run npm run check:live.",
+        ]
+        : [
+            "The hourly check of the contact form at www.catalystappliedai.com passed: Turnstile verification and the email settings work.",
+            "",
+            "This note comes every Monday. An alert arrives within the hour if the form breaks.",
+        ];
+    const sent = await sendSelfCheckEmail(env, subject, `${lines.join("\n")}\n\nChecked at ${when.toISOString()}.`);
+    if (!sent.ok) {
+        console.error(`Contact self-check could not send its email: ${sent.error}`);
+    }
+    return { problems, emailed: sent.ok };
+}
+
+async function sendSelfCheckEmail(env, subject, text) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+    try {
+        const res = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${env.RESEND_API_KEY}`,
+            },
+            body: JSON.stringify({ from: env.RESEND_FROM_EMAIL, to: [env.RESEND_TO_EMAIL], subject, text }),
+            signal: controller.signal,
+        });
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            return { ok: false, error: data?.message || `Resend returned ${res.status}` };
+        }
+        return { ok: true };
+    } catch (err) {
+        return { ok: false, error: err?.name === "AbortError" ? "Resend request timed out" : (err?.message || String(err)) };
     } finally {
         clearTimeout(timer);
     }
