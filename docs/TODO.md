@@ -49,6 +49,12 @@ See README "Remotes and deploy reality".
   the secret is wrong or siteverify is down. It sends no email. It cannot tell whether
   the secret belongs to this widget or whether Resend delivers, so then send one real
   message from /Contact and confirm it arrives.
+- The Worker checks itself every hour at :07 (`scheduled()` in `src/worker.js`, cron in
+  `wrangler.jsonc`): it runs the real Turnstile verification with a made-up token that
+  must be rejected and checks the Resend settings. On a problem it emails RESEND_TO_EMAIL
+  ("Website alert: the contact form is failing"); it also sends a "working (weekly)" note
+  every Monday at 13:00 UTC, so a check that has stopped running is noticed. Uses one of
+  the account's Cron Triggers (Workers Free allows 5) and about 24 siteverify calls a day.
 - `.github/workflows/contact-form-monitor.yml` runs the same check against production
   at :11 and :41 every hour (GitHub Actions, free for this public repo). A failed run
   emails whoever last edited its cron line. GitHub pauses schedules in public repos

@@ -182,6 +182,70 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
     console.error = origError;
 }
 
+// 6. Hourly self-check (the scheduled handler). fetch is mocked: siteverify answers as
+//    set below, and Resend calls are recorded instead of sent.
+{
+    const realFetch = globalThis.fetch;
+    const origError = console.error;
+    const origLog = console.log;
+    const logs = [];
+    console.error = (...a) => logs.push(a.join(' '));
+    console.log = () => {};
+    let siteverify = { success: false, 'error-codes': ['invalid-input-response'] };
+    let emails = [];
+    let siteverifyCalls = 0;
+    globalThis.fetch = async (url, init) => {
+        const u = String(url);
+        if (u.includes('siteverify')) { siteverifyCalls += 1; return Response.json(siteverify); }
+        if (u === 'https://api.resend.com/emails') { emails.push(JSON.parse(init.body)); return Response.json({ id: 'email-1' }); }
+        throw new Error(`unexpected fetch ${u}`);
+    };
+    const baseEnv = { TURNSTILE_SECRET_KEY: 'secret-abc', RESEND_API_KEY: 're_test', RESEND_TO_EMAIL: 'to@example.com', RESEND_FROM_EMAIL: 'from@example.com' };
+    const run = async (envOverride, time) => {
+        emails = [];
+        siteverifyCalls = 0;
+        const pending = [];
+        await worker.scheduled({ scheduledTime: time, cron: '7 * * * *' }, { ...baseEnv, ...envOverride }, { waitUntil: (p) => pending.push(p) });
+        await Promise.all(pending);
+        return emails;
+    };
+    const PLAIN_HOUR = Date.parse('2026-10-25T08:07:00Z');
+    const MONDAY_13 = Date.parse('2026-10-19T13:07:00Z');
+    const ANNOUNCE = Date.parse('2026-10-18T08:07:00Z');
+
+    let sent = await run({}, PLAIN_HOUR);
+    check(siteverifyCalls === 1 && sent.length === 0, 'self-check: a healthy hour calls siteverify and sends nothing', `siteverify ${siteverifyCalls}, emails ${sent.length}`);
+
+    siteverify = { success: false, 'error-codes': ['invalid-input-secret'] };
+    sent = await run({}, PLAIN_HOUR);
+    check(sent.length === 1 && sent[0].subject === 'Website alert: the contact form is failing' && sent[0].to[0] === 'to@example.com' && sent[0].from === 'from@example.com' && sent[0].text.includes('TURNSTILE_SECRET_KEY is wrong or blank'), 'self-check: a rejected secret emails an alert to RESEND_TO_EMAIL', sent[0]?.subject);
+
+    siteverify = { success: true };
+    sent = await run({}, PLAIN_HOUR);
+    check(sent.length === 1 && sent[0].text.includes('made-up Turnstile token was accepted'), 'self-check: an accepted made-up token emails an alert', sent[0]?.subject);
+
+    siteverify = { success: false, 'error-codes': ['invalid-input-response'] };
+    sent = await run({ TURNSTILE_SECRET_KEY: undefined }, PLAIN_HOUR);
+    check(sent.length === 1 && siteverifyCalls === 0 && sent[0].text.includes('TURNSTILE_SECRET_KEY is not set'), 'self-check: an unset secret emails an alert', sent[0]?.subject);
+
+    sent = await run({ TURNSTILE_SECRET_KEY: ' \n' }, PLAIN_HOUR);
+    check(sent.length === 1 && siteverifyCalls === 0 && sent[0].subject.includes('failing'), 'self-check: a blank secret emails an alert', sent[0]?.subject);
+
+    const before = logs.length;
+    sent = await run({ RESEND_API_KEY: undefined }, PLAIN_HOUR);
+    check(sent.length === 0 && logs.slice(before).some((l) => l.includes('Email delivery is not configured')), 'self-check: missing Resend settings are logged (no way to email)', logs.at(-1));
+
+    sent = await run({}, MONDAY_13);
+    check(sent.length === 1 && sent[0].subject === 'Website check: the contact form is working (weekly)', 'self-check: Monday 13:00 UTC sends the weekly note', sent[0]?.subject);
+
+    sent = await run({}, ANNOUNCE);
+    check(sent.length === 1 && sent[0].subject === 'Website check: the hourly contact form check is running', 'self-check: runs before the announce time confirm the check is live', sent[0]?.subject);
+
+    globalThis.fetch = realFetch;
+    console.error = origError;
+    console.log = origLog;
+}
+
 for (const r of rows) {
     console.log(`${r.ok ? 'PASS' : 'FAIL'} ${r.name}  (${r.info})`);
 }
