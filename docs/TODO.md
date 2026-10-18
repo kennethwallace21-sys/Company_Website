@@ -50,7 +50,7 @@ See README "Remotes and deploy reality".
   the secret belongs to this widget or whether Resend delivers, so then send one real
   message from /Contact and confirm it arrives.
 - `.github/workflows/contact-form-monitor.yml` runs the same check against production
-  at :17 and :47 every hour (GitHub Actions, free for this public repo). A failed run
+  at :11 and :41 every hour (GitHub Actions, free for this public repo). A failed run
   emails whoever last edited its cron line. GitHub pauses schedules in public repos
   after 60 days without repository activity; re-enable it from the Actions tab.
 - `/api/send-email` is rate limited by the Workers Rate Limiting binding
