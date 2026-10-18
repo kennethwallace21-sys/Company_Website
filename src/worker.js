@@ -411,15 +411,11 @@ async function verifyTurnstile(body, request, env) {
 // unnoticed for two days. It runs the same verifyTurnstile a real submission gets, with
 // a made-up token that siteverify must reject, and checks the Resend settings. Problems
 // are emailed to RESEND_TO_EMAIL. A "still working" note also goes out every Monday at
-// 13:00 UTC (and on runs before SELF_CHECK_ANNOUNCE_BEFORE, to confirm the cron is live;
-// delete that constant and its branch once the note has arrived), so a monitor that has
-// stopped running is noticed too. A failure is re-checked once after
-// SELF_CHECK_RETRY_MS (default 5 s; tests set 0) so one siteverify blip is not an alert.
-// Blind spots: a valid secret from another widget, the shipped site key (check:live sees
-// that), and a revoked RESEND_API_KEY (a failed send is only logged; the missing Monday
-// note is the signal).
-const SELF_CHECK_ANNOUNCE_BEFORE = Date.parse("2026-10-18T10:30:00Z");
-
+// 13:00 UTC, so a monitor that has stopped running is noticed too. A failure is
+// re-checked once after SELF_CHECK_RETRY_MS (default 5 s; tests set 0) so one siteverify
+// blip is not an alert. Blind spots: a valid secret from another widget, the shipped site
+// key (check:live sees that), and a revoked RESEND_API_KEY (a failed send is only logged;
+// the missing Monday note is the signal).
 async function selfCheckTurnstile(env, scheduledTime) {
     return verifyTurnstile(
         { "cf-turnstile-response": `self-check-${scheduledTime}` },
@@ -463,8 +459,6 @@ async function runContactSelfCheck(env, scheduledTime) {
     let subject = null;
     if (problems.length > 0) {
         subject = "Website alert: the contact form is failing";
-    } else if (scheduledTime < SELF_CHECK_ANNOUNCE_BEFORE) {
-        subject = "Website check: the hourly contact form check is running";
     } else if (when.getUTCDay() === 1 && when.getUTCHours() === 13) {
         subject = "Website check: the contact form is working (weekly)";
     }

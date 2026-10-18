@@ -57,13 +57,16 @@ See README "Remotes and deploy reality".
   running is noticed. Uses one of the account's Cron Triggers (Workers Free allows 5) and
   about 24 siteverify calls a day. It cannot see a valid secret from another widget, the
   shipped site key (check:live covers that) or a revoked `RESEND_API_KEY` (a failed send
-  is only logged; a missing Monday note is the signal).
-- [ ] Delete `SELF_CHECK_ANNOUNCE_BEFORE` and its branch in `src/worker.js` once the
-      one-time "the hourly contact form check is running" note has arrived.
-- `.github/workflows/contact-form-monitor.yml` runs the same check against production
-  at :11 and :41 every hour (GitHub Actions, free for this public repo). A failed run
-  emails whoever last edited its cron line. GitHub pauses schedules in public repos
-  after 60 days without repository activity; re-enable it from the Actions tab.
+  is only logged; a missing Monday note is the signal). Verified live 2026-10-18: the
+  first run at 08:07Z emailed its launch note (received 08:07:55Z); that one-time note
+  was then removed. This is the primary monitor.
+- `.github/workflows/contact-form-monitor.yml` runs `check:live` against production
+  from outside Cloudflare, scheduled at :11 and :41 every hour (GitHub Actions, free for
+  this public repo). As of 2026-10-18 its schedule has never fired (manual runs from the
+  Actions tab pass; the workflow is active and re-registering the cron did not help), so
+  treat it as a manual check until a scheduled run shows up. A failed run emails
+  whoever last edited its cron line. GitHub pauses schedules in public repos after 60
+  days without repository activity; re-enable it from the Actions tab.
 - `/api/send-email` is rate limited by the Workers Rate Limiting binding
   `CONTACT_RATE_LIMIT` (5 requests per 60 s per client IP, per Cloudflare location,
   namespace 41018), with the old in-memory Map as the fallback when the binding is

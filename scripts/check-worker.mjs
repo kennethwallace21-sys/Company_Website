@@ -221,7 +221,6 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
     };
     const HEALTHY = { success: false, 'error-codes': ['invalid-input-response'] };
     const PLAIN_HOUR = Date.parse('2026-10-25T08:07:00Z');
-    const ANNOUNCE = Date.parse('2026-10-18T08:07:00Z');
 
     setSiteverify(HEALTHY);
     let sent = await run({}, PLAIN_HOUR);
@@ -273,8 +272,8 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
         check(sent.length === expected && (expected === 0 || sent[0].subject === 'Website check: the contact form is working (weekly)'), `self-check: weekly note only on Monday 13:00 UTC (${label}: ${expected})`, `${sent.length} sent`);
     }
 
-    sent = await run({}, ANNOUNCE);
-    check(sent.length === 1 && sent[0].subject === 'Website check: the hourly contact form check is running', 'self-check: runs before the announce time confirm the check is live', sent[0]?.subject);
+    sent = await run({}, Date.parse('2026-10-18T08:07:00Z'));
+    check(sent.length === 0, 'self-check: a healthy Sunday hour sends nothing (the one-time launch note is gone)', `${sent.length} sent`);
 
     before = logs.length;
     sent = await run({}, Number.NaN);
