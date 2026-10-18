@@ -1,4 +1,4 @@
-# Website open items (updated 2026-07-08)
+# Website open items (updated 2026-10-18)
 
 Deploy pipeline (verified end-to-end 2026-07-07): the live domain is served by a
 Cloudflare **Worker** named `website` (static assets + SPA fallback), auto-built by
@@ -33,8 +33,35 @@ See README "Remotes and deploy reality".
   `RESEND_TO_EMAIL`, `RESEND_FROM_EMAIL`); a valid POST returned 200 with a message id.
 - `src/components/home/ContactSection.jsx` renders Cloudflare Turnstile only when
   `VITE_TURNSTILE_SITE_KEY` is present at build time. The Worker verifies Turnstile
-  only when `TURNSTILE_SECRET_KEY` is set. Turnstile is enforced since 2026-10-15: the public site key ships via .env.production and
-  TURNSTILE_SECRET_KEY is set on the Worker; a POST without a valid token returns 403 (verified live).
+  only when `TURNSTILE_SECRET_KEY` is set. Turnstile is enforced: the public site key
+  ships via .env.production, and the secret is a runtime secret on the `website` Worker
+  (Settings > Variables and Secrets, never a build variable). The only widget is
+  "catalystappliedai.com contact form" (site key `0x4AAAAAAFXypB_E-uPhm5ga`); its
+  hostname `catalystappliedai.com` also covers `www.` (Turnstile authorizes subdomains).
+- Outage 2026-10-16 00:22Z to 2026-10-18 01:02Z (about 49 hours): the Worker held a
+  value that was not the widget's secret, so siteverify answered `invalid-input-secret`
+  and every real submission got a 503 (the form showed the email fallback). A dashboard
+  re-entry at 2026-10-16 01:59Z put in another wrong value; the widget's real secret
+  went in on 2026-10-18. Nothing alerted on it.
+- After any change to `TURNSTILE_SECRET_KEY`, `VITE_TURNSTILE_SITE_KEY` or
+  `src/worker.js`, run `npm run check:live` (or `node scripts/check-live.mjs
+  <preview-url>`). It must print 4/4: a POST with an invalid token gets 403; 503 means
+  the secret is wrong or siteverify is down. It sends no email. It cannot tell whether
+  the secret belongs to this widget or whether Resend delivers, so then send one real
+  message from /Contact and confirm it arrives.
+- `.github/workflows/contact-form-monitor.yml` runs the same check against production
+  at :17 and :47 every hour (GitHub Actions, free for this public repo). A failed run
+  emails whoever last edited its cron line. GitHub pauses schedules in public repos
+  after 60 days without repository activity; re-enable it from the Actions tab.
+- `/api/send-email` is rate limited by the Workers Rate Limiting binding
+  `CONTACT_RATE_LIMIT` (5 requests per 60 s per client IP, per Cloudflare location,
+  namespace 41018), with the old in-memory Map as the fallback when the binding is
+  missing. Cloudflare documents the binding as permissive and eventually consistent:
+  on the 2026-10-18 preview, a 7-request burst inside about 2 s all got through, and
+  sustained requests were refused with 429 within about 30 s. The in-memory Map it
+  replaces refused nothing in the same burst against production (requests land on
+  different isolates). A strict "429 on request 6" needs a zone rate limiting rule or
+  a Durable Object counter; owner decision.
 
 ## P3: Smaller cleanups
 
