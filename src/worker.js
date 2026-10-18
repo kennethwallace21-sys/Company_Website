@@ -76,7 +76,9 @@ export default {
 
     // Hourly contact form self-check: wrangler.jsonc triggers.crons, see runContactSelfCheck.
     async scheduled(controller, env, ctx) {
-        ctx.waitUntil(runContactSelfCheck(env, controller.scheduledTime));
+        ctx.waitUntil(runContactSelfCheck(env, controller.scheduledTime).catch((err) => {
+            console.error("Contact self-check crashed:", err?.message || err);
+        }));
     },
 };
 
@@ -409,20 +411,37 @@ async function verifyTurnstile(body, request, env) {
 // unnoticed for two days. It runs the same verifyTurnstile a real submission gets, with
 // a made-up token that siteverify must reject, and checks the Resend settings. Problems
 // are emailed to RESEND_TO_EMAIL. A "still working" note also goes out every Monday at
-// 13:00 UTC (and on runs before SELF_CHECK_ANNOUNCE_BEFORE, to confirm the cron is live),
-// so a monitor that has stopped running is noticed too.
-const SELF_CHECK_ANNOUNCE_BEFORE = Date.parse("2026-10-18T09:30:00Z");
+// 13:00 UTC (and on runs before SELF_CHECK_ANNOUNCE_BEFORE, to confirm the cron is live;
+// delete that constant and its branch once the note has arrived), so a monitor that has
+// stopped running is noticed too. A failure is re-checked once after
+// SELF_CHECK_RETRY_MS (default 5 s; tests set 0) so one siteverify blip is not an alert.
+// Blind spots: a valid secret from another widget, the shipped site key (check:live sees
+// that), and a revoked RESEND_API_KEY (a failed send is only logged; the missing Monday
+// note is the signal).
+const SELF_CHECK_ANNOUNCE_BEFORE = Date.parse("2026-10-18T10:30:00Z");
 
-async function runContactSelfCheck(env, scheduledTime = Date.now()) {
+async function selfCheckTurnstile(env, scheduledTime) {
+    return verifyTurnstile(
+        { "cf-turnstile-response": `self-check-${scheduledTime}` },
+        new Request("https://self-check.invalid/"),
+        env,
+    );
+}
+
+async function runContactSelfCheck(env, scheduledTime) {
+    if (!Number.isFinite(scheduledTime)) {
+        scheduledTime = Date.now();
+    }
     const problems = [];
     if (env.TURNSTILE_SECRET_KEY === undefined || env.TURNSTILE_SECRET_KEY === null) {
         problems.push("TURNSTILE_SECRET_KEY is not set on the Worker, so bot verification is off.");
     } else {
-        const result = await verifyTurnstile(
-            { "cf-turnstile-response": `self-check-${scheduledTime}` },
-            new Request("https://self-check.invalid/"),
-            env,
-        );
+        let result = await selfCheckTurnstile(env, scheduledTime);
+        if (!result.ok && result.status !== 403) {
+            const retryMs = Number(env.SELF_CHECK_RETRY_MS ?? 5000);
+            await new Promise((resolve) => setTimeout(resolve, Number.isFinite(retryMs) ? retryMs : 5000));
+            result = await selfCheckTurnstile(env, scheduledTime);
+        }
         if (result.ok) {
             problems.push("A made-up Turnstile token was accepted, so verification is not working.");
         } else if (result.status !== 403) {

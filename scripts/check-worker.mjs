@@ -182,8 +182,8 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
     console.error = origError;
 }
 
-// 6. Hourly self-check (the scheduled handler). fetch is mocked: siteverify answers as
-//    set below, and Resend calls are recorded instead of sent.
+// 6. Hourly self-check (the scheduled handler). fetch is mocked: siteverify answers come
+//    from a queue (the last answer repeats), and Resend calls are recorded, not sent.
 {
     const realFetch = globalThis.fetch;
     const origError = console.error;
@@ -191,55 +191,94 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
     const logs = [];
     console.error = (...a) => logs.push(a.join(' '));
     console.log = () => {};
-    let siteverify = { success: false, 'error-codes': ['invalid-input-response'] };
+    let answers = [];
+    let resendStatus = 200;
     let emails = [];
     let siteverifyCalls = 0;
+    const setSiteverify = (...list) => { answers = list; };
     globalThis.fetch = async (url, init) => {
         const u = String(url);
-        if (u.includes('siteverify')) { siteverifyCalls += 1; return Response.json(siteverify); }
-        if (u === 'https://api.resend.com/emails') { emails.push(JSON.parse(init.body)); return Response.json({ id: 'email-1' }); }
+        if (u.includes('siteverify')) {
+            siteverifyCalls += 1;
+            const a = answers.length > 1 ? answers.shift() : answers[0];
+            return a.status ? new Response('upstream', { status: a.status }) : Response.json(a);
+        }
+        if (u === 'https://api.resend.com/emails') {
+            emails.push({ ...JSON.parse(init.body), auth: init.headers.Authorization });
+            return resendStatus === 200 ? Response.json({ id: 'email-1' }) : Response.json({ message: 'resend down' }, { status: resendStatus });
+        }
         throw new Error(`unexpected fetch ${u}`);
     };
-    const baseEnv = { TURNSTILE_SECRET_KEY: 'secret-abc', RESEND_API_KEY: 're_test', RESEND_TO_EMAIL: 'to@example.com', RESEND_FROM_EMAIL: 'from@example.com' };
+    const baseEnv = { TURNSTILE_SECRET_KEY: 'secret-abc', RESEND_API_KEY: 're_test', RESEND_TO_EMAIL: 'to@example.com', RESEND_FROM_EMAIL: 'from@example.com', SELF_CHECK_RETRY_MS: 0 };
+    let results = [];
     const run = async (envOverride, time) => {
         emails = [];
         siteverifyCalls = 0;
         const pending = [];
         await worker.scheduled({ scheduledTime: time, cron: '7 * * * *' }, { ...baseEnv, ...envOverride }, { waitUntil: (p) => pending.push(p) });
-        await Promise.all(pending);
+        results = await Promise.all(pending);
         return emails;
     };
+    const HEALTHY = { success: false, 'error-codes': ['invalid-input-response'] };
     const PLAIN_HOUR = Date.parse('2026-10-25T08:07:00Z');
-    const MONDAY_13 = Date.parse('2026-10-19T13:07:00Z');
     const ANNOUNCE = Date.parse('2026-10-18T08:07:00Z');
 
+    setSiteverify(HEALTHY);
     let sent = await run({}, PLAIN_HOUR);
-    check(siteverifyCalls === 1 && sent.length === 0, 'self-check: a healthy hour calls siteverify and sends nothing', `siteverify ${siteverifyCalls}, emails ${sent.length}`);
+    check(siteverifyCalls === 1 && sent.length === 0, 'self-check: a healthy hour calls siteverify once and sends nothing', `siteverify ${siteverifyCalls}, emails ${sent.length}`);
 
-    siteverify = { success: false, 'error-codes': ['invalid-input-secret'] };
+    setSiteverify({ success: false, 'error-codes': ['invalid-input-secret'] });
     sent = await run({}, PLAIN_HOUR);
-    check(sent.length === 1 && sent[0].subject === 'Website alert: the contact form is failing' && sent[0].to[0] === 'to@example.com' && sent[0].from === 'from@example.com' && sent[0].text.includes('TURNSTILE_SECRET_KEY is wrong or blank'), 'self-check: a rejected secret emails an alert to RESEND_TO_EMAIL', sent[0]?.subject);
+    check(sent.length === 1 && siteverifyCalls === 2 && sent[0].subject === 'Website alert: the contact form is failing' && sent[0].to[0] === 'to@example.com' && sent[0].from === 'from@example.com' && sent[0].auth === 'Bearer re_test' && sent[0].text.includes('TURNSTILE_SECRET_KEY is wrong or blank'), 'self-check: a rejected secret is re-checked once, then emailed to RESEND_TO_EMAIL with the API key', `${sent[0]?.subject}; siteverify ${siteverifyCalls}`);
 
-    siteverify = { success: true };
+    setSiteverify({ success: false, 'error-codes': ['internal-error'] }, HEALTHY);
+    sent = await run({}, PLAIN_HOUR);
+    check(sent.length === 0 && siteverifyCalls === 2, 'self-check: one siteverify blip that clears on the re-check sends nothing', `siteverify ${siteverifyCalls}, emails ${sent.length}`);
+
+    setSiteverify({ status: 502 });
+    sent = await run({}, PLAIN_HOUR);
+    check(sent.length === 1 && siteverifyCalls === 2, 'self-check: siteverify failing on both tries emails an alert', `siteverify ${siteverifyCalls}, emails ${sent.length}`);
+
+    setSiteverify({ success: true });
     sent = await run({}, PLAIN_HOUR);
     check(sent.length === 1 && sent[0].text.includes('made-up Turnstile token was accepted'), 'self-check: an accepted made-up token emails an alert', sent[0]?.subject);
 
-    siteverify = { success: false, 'error-codes': ['invalid-input-response'] };
+    setSiteverify(HEALTHY);
     sent = await run({ TURNSTILE_SECRET_KEY: undefined }, PLAIN_HOUR);
     check(sent.length === 1 && siteverifyCalls === 0 && sent[0].text.includes('TURNSTILE_SECRET_KEY is not set'), 'self-check: an unset secret emails an alert', sent[0]?.subject);
 
     sent = await run({ TURNSTILE_SECRET_KEY: ' \n' }, PLAIN_HOUR);
     check(sent.length === 1 && siteverifyCalls === 0 && sent[0].subject.includes('failing'), 'self-check: a blank secret emails an alert', sent[0]?.subject);
 
-    const before = logs.length;
+    let before = logs.length;
     sent = await run({ RESEND_API_KEY: undefined }, PLAIN_HOUR);
     check(sent.length === 0 && logs.slice(before).some((l) => l.includes('Email delivery is not configured')), 'self-check: missing Resend settings are logged (no way to email)', logs.at(-1));
 
-    sent = await run({}, MONDAY_13);
-    check(sent.length === 1 && sent[0].subject === 'Website check: the contact form is working (weekly)', 'self-check: Monday 13:00 UTC sends the weekly note', sent[0]?.subject);
+    setSiteverify({ success: false, 'error-codes': ['invalid-input-secret'] });
+    resendStatus = 500;
+    before = logs.length;
+    sent = await run({}, PLAIN_HOUR);
+    check(sent.length === 1 && results[0]?.emailed === false && logs.slice(before).some((l) => l.includes('could not send its email')), 'self-check: a failed alert send is reported as not emailed and logged', `emailed ${results[0]?.emailed}`);
+    resendStatus = 200;
+
+    setSiteverify(HEALTHY);
+    const weekly = [
+        ['Mon 13:07Z', '2026-10-19T13:07:00Z', 1],
+        ['Mon 12:07Z', '2026-10-19T12:07:00Z', 0],
+        ['Mon 14:07Z', '2026-10-19T14:07:00Z', 0],
+        ['Tue 13:07Z', '2026-10-20T13:07:00Z', 0],
+    ];
+    for (const [label, iso, expected] of weekly) {
+        sent = await run({}, Date.parse(iso));
+        check(sent.length === expected && (expected === 0 || sent[0].subject === 'Website check: the contact form is working (weekly)'), `self-check: weekly note only on Monday 13:00 UTC (${label}: ${expected})`, `${sent.length} sent`);
+    }
 
     sent = await run({}, ANNOUNCE);
     check(sent.length === 1 && sent[0].subject === 'Website check: the hourly contact form check is running', 'self-check: runs before the announce time confirm the check is live', sent[0]?.subject);
+
+    before = logs.length;
+    sent = await run({}, Number.NaN);
+    check(results.length === 1 && Array.isArray(results[0]?.problems) && results[0].problems.length === 0 && !logs.slice(before).some((l) => l.includes('crashed')), 'self-check: a missing scheduled time falls back to now without crashing', JSON.stringify(results[0]));
 
     globalThis.fetch = realFetch;
     console.error = origError;

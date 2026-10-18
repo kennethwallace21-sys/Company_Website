@@ -52,9 +52,14 @@ See README "Remotes and deploy reality".
 - The Worker checks itself every hour at :07 (`scheduled()` in `src/worker.js`, cron in
   `wrangler.jsonc`): it runs the real Turnstile verification with a made-up token that
   must be rejected and checks the Resend settings. On a problem it emails RESEND_TO_EMAIL
-  ("Website alert: the contact form is failing"); it also sends a "working (weekly)" note
-  every Monday at 13:00 UTC, so a check that has stopped running is noticed. Uses one of
-  the account's Cron Triggers (Workers Free allows 5) and about 24 siteverify calls a day.
+  ("Website alert: the contact form is failing") after one re-check 5 s later; it also
+  sends a "working (weekly)" note every Monday at 13:00 UTC, so a check that has stopped
+  running is noticed. Uses one of the account's Cron Triggers (Workers Free allows 5) and
+  about 24 siteverify calls a day. It cannot see a valid secret from another widget, the
+  shipped site key (check:live covers that) or a revoked `RESEND_API_KEY` (a failed send
+  is only logged; a missing Monday note is the signal).
+- [ ] Delete `SELF_CHECK_ANNOUNCE_BEFORE` and its branch in `src/worker.js` once the
+      one-time "the hourly contact form check is running" note has arrived.
 - `.github/workflows/contact-form-monitor.yml` runs the same check against production
   at :11 and :41 every hour (GitHub Actions, free for this public repo). A failed run
   emails whoever last edited its cron line. GitHub pauses schedules in public repos
