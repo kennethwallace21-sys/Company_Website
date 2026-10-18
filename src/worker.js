@@ -316,22 +316,48 @@ function checkRateLimitInMemory(ip) {
     return entry.count <= RATE_LIMIT_MAX;
 }
 
+// siteverify error codes that mean the visitor's token was bad. Any other failure
+// (a bad secret, siteverify erroring, an unreadable or unexpected reply) is our side.
+const TURNSTILE_TOKEN_ERRORS = new Set(["invalid-input-response", "missing-input-response", "timeout-or-duplicate"]);
+
+function botCheckFailed() {
+    return {
+        ok: false,
+        status: 403,
+        payload: { success: false, error: "Bot verification failed. Please try again." },
+    };
+}
+
+// 503, so the form offers the email fallback and scripts/check-live.mjs reports the
+// outage instead of a healthy-looking 403.
+function verificationUnavailable() {
+    return {
+        ok: false,
+        status: 503,
+        payload: { success: false, error: "Contact verification is temporarily unavailable." },
+    };
+}
+
 async function verifyTurnstile(body, request, env) {
-    // Trimmed because a secret saved with a trailing newline or space (for example
-    // piped into `wrangler secret put`) is rejected by siteverify as invalid-input-secret.
-    const turnstileSecret = typeof env.TURNSTILE_SECRET_KEY === "string" ? env.TURNSTILE_SECRET_KEY.trim() : "";
-    if (!turnstileSecret) {
+    // Turnstile is off only when TURNSTILE_SECRET_KEY is not set at all. A value that is
+    // set but blank (for example from `echo | wrangler secret put`) is a misconfiguration
+    // and fails closed, like a wrong secret.
+    const rawSecret = env.TURNSTILE_SECRET_KEY;
+    if (rawSecret === undefined || rawSecret === null) {
         return { ok: true };
+    }
+    // Trimmed because a secret saved with a trailing newline or space is rejected by
+    // siteverify as invalid-input-secret.
+    const turnstileSecret = typeof rawSecret === "string" ? rawSecret.trim() : "";
+    if (!turnstileSecret) {
+        console.error("TURNSTILE_SECRET_KEY is set but blank or not a string; refusing submissions until it is fixed.");
+        return verificationUnavailable();
     }
 
     // When verification is enforced, a missing token is always a hard 403.
     const token = body?.["cf-turnstile-response"];
     if (!token || typeof token !== "string") {
-        return {
-            ok: false,
-            status: 403,
-            payload: { success: false, error: "Bot verification failed. Please try again." },
-        };
+        return botCheckFailed();
     }
 
     const form = new FormData();
@@ -350,42 +376,24 @@ async function verifyTurnstile(body, request, env) {
             body: form,
             signal: controller.signal,
         });
-        const verifyData = await verifyRes.json().catch(() => ({}));
-        if (verifyData.success) {
+        // null when the body is not JSON or the read is aborted by the timeout.
+        const verifyData = await verifyRes.json().catch(() => null);
+        if (verifyRes.ok && verifyData?.success === true) {
             return { ok: true };
         }
 
-        // Only a rejected token is the visitor's 403. A bad secret, or siteverify itself
-        // failing, is our side: 503, so the form offers the email fallback and the live
-        // check (scripts/check-live.mjs) sees the outage instead of a healthy-looking 403.
-        const errors = Array.isArray(verifyData["error-codes"]) ? verifyData["error-codes"] : [];
-        const serverMisconfigured = errors.includes("invalid-input-secret") || errors.includes("missing-input-secret");
-        const upstreamFailed = !verifyRes.ok || errors.includes("internal-error") || errors.includes("bad-request");
-        if (serverMisconfigured || upstreamFailed) {
-            // Visible in Workers observability logs; a bad TURNSTILE_SECRET_KEY otherwise fails silently.
-            console.error(`Turnstile siteverify rejected the request: HTTP ${verifyRes.status}, error-codes ${JSON.stringify(errors)}`);
+        // Only a rejected token is the visitor's 403; everything else is a logged 503.
+        const errors = Array.isArray(verifyData?.["error-codes"]) ? verifyData["error-codes"] : [];
+        const tokenRejected = verifyRes.ok && errors.length > 0 && errors.every((code) => TURNSTILE_TOKEN_ERRORS.has(code));
+        if (tokenRejected) {
+            return botCheckFailed();
         }
-        const unavailable = serverMisconfigured || upstreamFailed;
-        return {
-            ok: false,
-            status: unavailable ? 503 : 403,
-            payload: {
-                success: false,
-                error: unavailable
-                    ? "Contact verification is temporarily unavailable."
-                    : "Bot verification failed. Please try again.",
-            },
-        };
+        // Visible in Workers observability logs; a bad TURNSTILE_SECRET_KEY otherwise fails silently.
+        console.error(`Turnstile siteverify failed: HTTP ${verifyRes.status}, error-codes ${JSON.stringify(errors)}${verifyData === null ? ", unreadable reply" : ""}`);
+        return verificationUnavailable();
     } catch (err) {
         console.error("Turnstile verification error:", err?.message || err);
-        return {
-            ok: false,
-            status: 503,
-            payload: {
-                success: false,
-                error: "Contact verification is temporarily unavailable.",
-            },
-        };
+        return verificationUnavailable();
     } finally {
         clearTimeout(timer);
     }

@@ -20,7 +20,7 @@
   "ratelimits": [
     {
       "name": "CONTACT_RATE_LIMIT",
-      "namespace_id": "1001",
+      "namespace_id": "41018",
       "simple": {
         "limit": 5,
         "period": 60

@@ -8,25 +8,36 @@
 // switched off the Worker stops at field validation (400).
 //
 // 1. The home page answers 200.
-// 2. The shipped JavaScript carries a production Turnstile site key (0x4...), so the
-//    form renders the widget. A missing or test key means every real visitor fails.
+// 2. The shipped JavaScript carries the site key from .env.production (or, without that
+//    file, any production-format 0x4AAAA... key) and no test key, so the form renders
+//    the right widget. A missing, test or different key fails every real visitor.
 // 3. POST without a token: 403 "Bot verification failed". 400 or 200 means the Worker
 //    has no TURNSTILE_SECRET_KEY, so bot verification is off.
 // 4. POST with an invalid token: 403 "Bot verification failed". 503 means siteverify
-//    rejected TURNSTILE_SECRET_KEY or is unreachable, which also fails every real
-//    visitor (the 2026-10-16 to 2026-10-18 outage looked exactly like this).
+//    rejected TURNSTILE_SECRET_KEY or is failing, which also fails every real visitor
+//    (the 2026-10-16 to 2026-10-18 outage looked exactly like this).
+//
+// What it cannot see: whether the secret belongs to the same widget as the site key
+// (siteverify accepts any valid secret for an invalid token), and whether Resend
+// delivers mail. Only a real submission from /Contact proves those, so after any change
+// to the secret, the site key or the Resend settings, also send one real message.
 //
 // A failing attempt is retried (CHECK_ATTEMPTS, default 3, CHECK_RETRY_MS apart,
 // default 40 s) so one network blip is not an alert; the spacing keeps the POSTs
 // under the endpoint's 5 per 60 s rate limit.
+import { existsSync, readFileSync } from 'node:fs';
 
 const BASE = (process.argv[2] || process.env.CHECK_BASE_URL || 'https://www.catalystappliedai.com').replace(/\/+$/, '');
 const ORIGIN = 'https://www.catalystappliedai.com';
-const ATTEMPTS = Number(process.env.CHECK_ATTEMPTS || 3);
-const RETRY_MS = Number(process.env.CHECK_RETRY_MS || 40000);
+const ATTEMPTS = Math.max(1, Math.floor(Number(process.env.CHECK_ATTEMPTS || 3)) || 1);
+const RETRY_MS = Math.max(0, Number(process.env.CHECK_RETRY_MS || 40000) || 0);
 const BOT_FAILED = 'Bot verification failed. Please try again.';
 const SITE_KEY = /0x4AAAA[A-Za-z0-9_-]{15,}/;
 const TEST_SITE_KEY = /\b[123]x00000000000000000000[A-Z]{2}\b/;
+const ENV_FILE = new URL('../.env.production', import.meta.url);
+const EXPECTED_SITE_KEY = existsSync(ENV_FILE)
+    ? readFileSync(ENV_FILE, 'utf8').match(/^VITE_TURNSTILE_SITE_KEY=(\S+)/m)?.[1] || null
+    : null;
 
 const timeout = () => AbortSignal.timeout(15000);
 
@@ -61,10 +72,10 @@ function judgePost(r, label) {
     return { ok: false, info: `${describe(r)}: unexpected response to the ${label} probe` };
 }
 
-async function shippedSiteKey(html) {
+async function shippedSiteKeys(html) {
     const seen = new Set();
     const queue = [...html.matchAll(/\/assets\/[A-Za-z0-9._-]+\.js/g)].map((m) => m[0]);
-    let key = null;
+    const keys = new Set();
     let testKey = null;
     while (queue.length > 0 && seen.size < 60) {
         const path = queue.shift();
@@ -72,11 +83,21 @@ async function shippedSiteKey(html) {
         seen.add(path);
         const { status, text } = await getText(path);
         if (status !== 200) continue;
-        key = key || text.match(SITE_KEY)?.[0] || null;
+        for (const m of text.matchAll(new RegExp(SITE_KEY.source, 'g'))) keys.add(m[0]);
         testKey = testKey || text.match(TEST_SITE_KEY)?.[0] || null;
         for (const m of text.matchAll(/assets\/[A-Za-z0-9._-]+\.js/g)) queue.push(`/${m[0]}`);
     }
-    return { key, testKey, scanned: seen.size };
+    return { keys: [...keys], testKey, scanned: seen.size };
+}
+
+function judgeSiteKey({ keys, testKey, scanned }) {
+    const shown = keys.map((k) => `${k.slice(0, 10)}...`).join(', ') || 'none';
+    if (testKey) return { ok: false, info: `test key ${testKey} shipped (found ${shown} in ${scanned} files)` };
+    if (EXPECTED_SITE_KEY) {
+        const ok = keys.length === 1 && keys[0] === EXPECTED_SITE_KEY;
+        return { ok, info: ok ? `matches .env.production (${shown}, ${scanned} files)` : `expected ${EXPECTED_SITE_KEY.slice(0, 10)}... from .env.production, found ${shown} in ${scanned} files` };
+    }
+    return { ok: keys.length === 1, info: `${shown} in ${scanned} files (no .env.production to compare)` };
 }
 
 async function attempt() {
@@ -84,12 +105,7 @@ async function attempt() {
     const home = await getText('/');
     rows.push({ name: 'home page answers 200', ok: home.status === 200 && home.text.includes('<div id="root"'), info: `HTTP ${home.status}` });
 
-    const { key, testKey, scanned } = await shippedSiteKey(home.text);
-    rows.push({
-        name: 'shipped JavaScript has a production Turnstile site key',
-        ok: Boolean(key) && !testKey,
-        info: key ? `${key.slice(0, 10)}... in ${scanned} files${testKey ? `; test key ${testKey} also present` : ''}` : `none found in ${scanned} files`,
-    });
+    rows.push({ name: 'shipped JavaScript has the expected Turnstile site key', ...judgeSiteKey(await shippedSiteKeys(home.text)) });
 
     const noToken = judgePost(await post({ name: '', email: 'probe@example.com', message: 'live check' }), 'no-token');
     rows.push({ name: 'POST without a token is refused by the bot check (403)', ...noToken });
@@ -113,6 +129,7 @@ for (let i = 1; i <= ATTEMPTS; i += 1) {
     }
 }
 
+if (rows.length === 0) rows = [{ name: 'checks ran', ok: false, info: 'no checks ran' }];
 console.log(`Live check of ${BASE}`);
 for (const r of rows) {
     console.log(`${r.ok ? 'PASS' : 'FAIL'} ${r.name}  (${r.info})`);

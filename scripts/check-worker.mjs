@@ -139,6 +139,45 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
     }), { TURNSTILE_SECRET_KEY: 'secret-abc' });
     check(res.status === 403, 'turnstile: missing token is 403 without calling siteverify', res.status);
 
+    // Replies that must never pass as success or as a visitor 403.
+    const reply = (status, text) => { globalThis.fetch = async () => new Response(text, { status }); };
+    reply(200, 'not json');
+    before = errors.length;
+    res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 503 && errors.length === before + 1 && errors.at(-1).includes('unreadable reply'), 'turnstile: unreadable 200 reply is 503 and logged', `${res.status}; ${errors.at(-1)}`);
+
+    reply(200, JSON.stringify({ success: 'false' }));
+    res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 503, 'turnstile: a non-boolean success is not accepted (503)', res.status);
+
+    reply(200, JSON.stringify({ success: false, 'error-codes': ['some-new-code'] }));
+    before = errors.length;
+    res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 503 && errors.length === before + 1 && errors.at(-1).includes('some-new-code'), 'turnstile: an unknown error code is 503 and logged', `${res.status}; ${errors.at(-1)}`);
+
+    reply(200, JSON.stringify({ success: false, 'error-codes': ['missing-input-response'] }));
+    res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 403, 'turnstile: missing-input-response is a visitor 403', res.status);
+
+    // A secret that is set but blank or not a string fails closed: no siteverify call,
+    // no email, even for a complete lead without a token.
+    let called = 0;
+    globalThis.fetch = async () => { called += 1; return Response.json({ id: 'should-not-send' }); };
+    const lead = { name: 'Probe Person', email: 'probe@example.com', message: 'A complete message for the probe.' };
+    for (const [label, secret] of [['blank', ' \n'], ['empty', ''], ['non-string', 123]]) {
+        before = errors.length;
+        res = await worker.fetch(new Request(URL_, {
+            method: 'POST',
+            headers: { Origin: ORIGIN, 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.52' },
+            body: JSON.stringify(lead),
+        }), { CONTACT_RATE_LIMIT: allowAll, TURNSTILE_SECRET_KEY: secret, RESEND_API_KEY: 're_test', RESEND_TO_EMAIL: 'to@example.com', RESEND_FROM_EMAIL: 'from@example.com' });
+        check(res.status === 503 && called === 0 && errors.length === before + 1, `turnstile: ${label} secret fails closed (503, nothing sent, logged)`, `${res.status}; fetch calls ${called}`);
+    }
+
+    // Not set at all: Turnstile is off by design, and the request goes on to validation.
+    res = await post({});
+    check(res.status === 400 && called === 0, 'turnstile: unset secret means verification is off (400 at validation, no siteverify call)', res.status);
+
     globalThis.fetch = realFetch;
     console.error = origError;
 }

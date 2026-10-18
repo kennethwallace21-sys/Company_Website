@@ -46,15 +46,22 @@ See README "Remotes and deploy reality".
 - After any change to `TURNSTILE_SECRET_KEY`, `VITE_TURNSTILE_SITE_KEY` or
   `src/worker.js`, run `npm run check:live` (or `node scripts/check-live.mjs
   <preview-url>`). It must print 4/4: a POST with an invalid token gets 403; 503 means
-  the secret is wrong or siteverify is down. It sends no email. Then send one real
-  message from /Contact.
+  the secret is wrong or siteverify is down. It sends no email. It cannot tell whether
+  the secret belongs to this widget or whether Resend delivers, so then send one real
+  message from /Contact and confirm it arrives.
 - `.github/workflows/contact-form-monitor.yml` runs the same check against production
   at :17 and :47 every hour (GitHub Actions, free for this public repo). A failed run
   emails whoever last edited its cron line. GitHub pauses schedules in public repos
   after 60 days without repository activity; re-enable it from the Actions tab.
 - `/api/send-email` is rate limited by the Workers Rate Limiting binding
-  `CONTACT_RATE_LIMIT` (5 requests per 60 s per client IP, per Cloudflare location),
-  with the old in-memory Map as the fallback when the binding is missing.
+  `CONTACT_RATE_LIMIT` (5 requests per 60 s per client IP, per Cloudflare location,
+  namespace 41018), with the old in-memory Map as the fallback when the binding is
+  missing. Cloudflare documents the binding as permissive and eventually consistent:
+  on the 2026-10-18 preview, a 7-request burst inside about 2 s all got through, and
+  sustained requests were refused with 429 within about 30 s. The in-memory Map it
+  replaces refused nothing in the same burst against production (requests land on
+  different isolates). A strict "429 on request 6" needs a zone rate limiting rule or
+  a Durable Object counter; owner decision.
 
 ## P3: Smaller cleanups
 
