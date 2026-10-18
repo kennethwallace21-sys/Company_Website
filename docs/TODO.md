@@ -65,6 +65,15 @@ See README "Remotes and deploy reality".
 
 ## P3: Smaller cleanups
 
+- [x] Dependabot 2026-10-18: react-router 6.30.6 had two moderate advisories
+      (GHSA-wrjc-x8rr-h8h6 open redirect via backslash in Link/useNavigate;
+      GHSA-337j-9hxr-rhxg SSR hydration, not reachable in this client-only SPA) with no
+      6.x fix; upgraded react-router-dom to 7.18.4. `npm audit --omit=dev` is clean.
+- [ ] Dependabot GHSA-rj75-hqrm-r3gf (postcss-selector-parser < 7.1.6, CPU exhaustion
+      on hostile selectors): dev/build-time only, pulled in by tailwindcss 3, which
+      requires the 6.x line, and it only ever parses this repo's own CSS, so it is not
+      reachable by visitors. It clears with a Tailwind v4 migration; until then the
+      alert stays open for the owner to accept or dismiss.
 - [x] Vercel analytics call 404s/console-errors on the domain (not Vercel-hosted);
       removed 2026-07-05.
 - [ ] Mirror the footer social badges onto the product subdomain pages served by
