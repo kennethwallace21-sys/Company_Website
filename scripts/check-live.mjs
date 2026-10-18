@@ -35,8 +35,9 @@ const BOT_FAILED = 'Bot verification failed. Please try again.';
 const SITE_KEY = /0x4AAAA[A-Za-z0-9_-]{15,}/;
 const TEST_SITE_KEY = /\b[123]x00000000000000000000[A-Z]{2}\b/;
 const ENV_FILE = new URL('../.env.production', import.meta.url);
-const EXPECTED_SITE_KEY = existsSync(ENV_FILE)
-    ? readFileSync(ENV_FILE, 'utf8').match(/^VITE_TURNSTILE_SITE_KEY=(\S+)/m)?.[1] || null
+const ENV_FILE_PRESENT = existsSync(ENV_FILE);
+const EXPECTED_SITE_KEY = ENV_FILE_PRESENT
+    ? readFileSync(ENV_FILE, 'utf8').match(/^\s*VITE_TURNSTILE_SITE_KEY\s*=\s*["']?([^"'\s]+)["']?\s*$/m)?.[1] || null
     : null;
 
 const timeout = () => AbortSignal.timeout(15000);
@@ -93,6 +94,7 @@ async function shippedSiteKeys(html) {
 function judgeSiteKey({ keys, testKey, scanned }) {
     const shown = keys.map((k) => `${k.slice(0, 10)}...`).join(', ') || 'none';
     if (testKey) return { ok: false, info: `test key ${testKey} shipped (found ${shown} in ${scanned} files)` };
+    if (ENV_FILE_PRESENT && !EXPECTED_SITE_KEY) return { ok: false, info: `.env.production has no readable VITE_TURNSTILE_SITE_KEY line (found ${shown} in ${scanned} files)` };
     if (EXPECTED_SITE_KEY) {
         const ok = keys.length === 1 && keys[0] === EXPECTED_SITE_KEY;
         return { ok, info: ok ? `matches .env.production (${shown}, ${scanned} files)` : `expected ${EXPECTED_SITE_KEY.slice(0, 10)}... from .env.production, found ${shown} in ${scanned} files` };
