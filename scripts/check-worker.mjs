@@ -2,8 +2,9 @@
 // 1-4: the rate limiter, using a mock Workers Rate Limiting binding. Each request is a
 //      valid-origin POST with an empty body, so a request that passes the limiter
 //      stops at body parsing (400).
-// 5:   Turnstile: siteverify is called with the trimmed secret, and a rejected secret
-//      is logged. global fetch is mocked, so nothing leaves the machine.
+// 5:   Turnstile: siteverify is called with the trimmed secret; a rejected token is a
+//      403, while a rejected secret or a failing siteverify is a logged 503. global
+//      fetch is mocked, so nothing leaves the machine.
 import worker from '../src/worker.js';
 
 const URL_ = 'https://www.catalystappliedai.com/api/send-email';
@@ -88,11 +89,13 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
         seen.push({ url: String(url), secret: init.body.get('secret'), response: init.body.get('response'), remoteip: init.body.get('remoteip') });
         return Response.json(answer);
     };
+    // A permissive limiter keeps these Turnstile cases independent of rate limiting.
+    const allowAll = { async limit() { return { success: true }; } };
     const post = (env) => worker.fetch(new Request(URL_, {
         method: 'POST',
         headers: { Origin: ORIGIN, 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.50' },
         body: JSON.stringify({ name: '', email: 'probe@example.com', message: 'x', 'cf-turnstile-response': 'tok-123' }),
-    }), env);
+    }), { CONTACT_RATE_LIMIT: allowAll, ...env });
 
     let res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc\n' });
     check(seen.length === 1 && seen[0].url === 'https://challenges.cloudflare.com/turnstile/v0/siteverify', 'turnstile: siteverify is called when a token is present', seen[0]?.url);
@@ -106,6 +109,35 @@ const expected7 = [400, 400, 400, 400, 400, 429, 429];
     answer = { success: true };
     res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
     check(res.status === 400, 'turnstile: accepted token proceeds to field validation (400 for empty name)', res.status);
+
+    for (const code of ['internal-error', 'bad-request']) {
+        answer = { success: false, 'error-codes': [code] };
+        const before = errors.length;
+        res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+        check(res.status === 503 && errors.length === before + 1 && errors.at(-1).includes(code), `turnstile: siteverify ${code} is 503 and logged, not a visitor 403`, `${res.status}; ${errors.at(-1)}`);
+    }
+
+    answer = { success: false, 'error-codes': ['timeout-or-duplicate'] };
+    res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 403, 'turnstile: reused token is a visitor 403', res.status);
+
+    globalThis.fetch = async () => new Response('upstream down', { status: 502 });
+    let before = errors.length;
+    res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 503 && errors.length === before + 1 && errors.at(-1).includes('HTTP 502'), 'turnstile: siteverify HTTP 502 is 503 and logged', `${res.status}; ${errors.at(-1)}`);
+
+    globalThis.fetch = async () => { throw new Error('network down'); };
+    before = errors.length;
+    res = await post({ TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 503 && errors.length === before + 1 && errors.at(-1).includes('network down'), 'turnstile: siteverify network failure is 503 and logged', `${res.status}; ${errors.at(-1)}`);
+
+    globalThis.fetch = async () => { throw new Error('siteverify must not be called without a token'); };
+    res = await worker.fetch(new Request(URL_, {
+        method: 'POST',
+        headers: { Origin: ORIGIN, 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.51' },
+        body: JSON.stringify({ name: '', email: 'probe@example.com', message: 'x' }),
+    }), { TURNSTILE_SECRET_KEY: 'secret-abc' });
+    check(res.status === 403, 'turnstile: missing token is 403 without calling siteverify', res.status);
 
     globalThis.fetch = realFetch;
     console.error = origError;

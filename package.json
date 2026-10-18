@@ -12,6 +12,7 @@
         "preview": "vite preview",
         "test:intents": "node scripts/check-intents.mjs",
         "test:worker": "node scripts/check-worker.mjs",
+        "check:live": "node scripts/check-live.mjs",
         "test:offerings": "node scripts/check-offerings.mjs"
     },
     "dependencies": {

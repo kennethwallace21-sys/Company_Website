@@ -1,0 +1,30 @@
+name: Contact form monitor
+
+# Runs scripts/check-live.mjs against production twice an hour. A failed run means
+# the contact form is broken for real visitors (for example siteverify rejecting
+# TURNSTILE_SECRET_KEY, as on 2026-10-16 to 2026-10-18). GitHub sends failure
+# notifications for scheduled runs to the user who last changed the cron line below.
+# GitHub disables schedules in public repositories after 60 days without repository
+# activity; re-enable it from the Actions tab if that happens.
+on:
+  schedule:
+    - cron: "17,47 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: contact-form-monitor
+  cancel-in-progress: false
+
+jobs:
+  live-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check the live contact endpoint
+        run: node scripts/check-live.mjs

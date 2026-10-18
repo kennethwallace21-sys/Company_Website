@@ -355,18 +355,23 @@ async function verifyTurnstile(body, request, env) {
             return { ok: true };
         }
 
+        // Only a rejected token is the visitor's 403. A bad secret, or siteverify itself
+        // failing, is our side: 503, so the form offers the email fallback and the live
+        // check (scripts/check-live.mjs) sees the outage instead of a healthy-looking 403.
         const errors = Array.isArray(verifyData["error-codes"]) ? verifyData["error-codes"] : [];
         const serverMisconfigured = errors.includes("invalid-input-secret") || errors.includes("missing-input-secret");
-        if (serverMisconfigured || !verifyRes.ok) {
+        const upstreamFailed = !verifyRes.ok || errors.includes("internal-error") || errors.includes("bad-request");
+        if (serverMisconfigured || upstreamFailed) {
             // Visible in Workers observability logs; a bad TURNSTILE_SECRET_KEY otherwise fails silently.
             console.error(`Turnstile siteverify rejected the request: HTTP ${verifyRes.status}, error-codes ${JSON.stringify(errors)}`);
         }
+        const unavailable = serverMisconfigured || upstreamFailed;
         return {
             ok: false,
-            status: serverMisconfigured ? 503 : 403,
+            status: unavailable ? 503 : 403,
             payload: {
                 success: false,
-                error: serverMisconfigured
+                error: unavailable
                     ? "Contact verification is temporarily unavailable."
                     : "Bot verification failed. Please try again.",
             },
