@@ -40,7 +40,7 @@ export default function SEOHead({
 }) {
     const fullTitle = title
         ? `${title} | Catalyst Applied AI`
-        : 'Catalyst Applied AI | Production AI Deployed in Your Environment';
+        : 'Catalyst Applied AI | AI Systems Built to Run in Your Environment';
 
     const canonicalUrl = `${SITE_URL}${path}`;
     const isDefaultImage = image === DEFAULT_IMAGE;

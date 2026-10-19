@@ -27,11 +27,19 @@ const CASES = [
     { input: 'Who is this for?', expect: 'about' },
     { input: 'Where does my data go?', expect: 'deployment' },
     { input: 'What is the first step?', expect: 'start' },
-    { input: 'Are you a small business?', expect: 'team' },
+    { input: 'Are you a small business?', expect: 'registrations' },
     { input: 'What is Operational Intelligence?', expect: 'signals' },
     { input: 'Do you offer custom integrations?', expect: 'integrations' },
     { input: 'Do you offer a demo?', expect: 'start' },
     { input: 'Do you offer pricing?', expect: 'pricing' },
+    // Negative cases from the T029 review: new keywords must not steal these.
+    { input: 'Do you sell my data?', expect: 'security' },
+    { input: 'Does the data go to OpenAI?', expect: 'security' },
+    { input: 'Are you a certified small business for SBA 8(a)?', expect: 'registrations' },
+    { input: 'Is Catalyst a small business set aside vendor?', expect: 'registrations' },
+    { input: 'Do you work with small businesses?', not: 'fallback' },
+    // Known and accepted: phrase length decides, so "first step" (2 words) can outrank a
+    // one-word pricing or timeline keyword in a mixed question.
     { input: 'thanks', expect: 'thanks' },
     { input: 'hello', expect: 'greeting' },
     // Every suggested question shown in the chatbot must route to its own answer.

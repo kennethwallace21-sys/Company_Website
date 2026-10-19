@@ -101,7 +101,9 @@ export default function Navbar({ showNav }) {
         return item.columns.flatMap(col => col.links);
     };
 
-    const isLinkActive = (path) => location.pathname === path;
+    // Case-insensitive and trailing-slash tolerant: /faq and /FAQ/ are the same page.
+    const normalizePath = (p) => (p || '').toLowerCase().replace(/\/+$/, '') || '/';
+    const isLinkActive = (path) => normalizePath(location.pathname) === normalizePath(path);
     // On /Contact the form is already on screen, so the Contact us button would only point back at it.
     const showBookCta = location.pathname.toLowerCase() !== '/contact';
 

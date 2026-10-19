@@ -46,7 +46,7 @@ export const intents = [
             'premise', 'premises', 'deploy', 'deployed', 'deployment', 'deployments', 'hosted', 'hosting', 'host',
             'hardware', 'tenant', 'perimeter', 'infrastructure', 'cloud', 'residency', 'dgx', 'nvidia nim',
             'in the us', 'within the us',
-            'where does my data go', 'data go', 'data stored'
+            'where does my data go', 'where is my data', 'data stored'
         ]
     },
     {
@@ -57,7 +57,7 @@ export const intents = [
         keywords: [
             'what do you do', 'what you do', 'overview', 'about catalyst', 'who are you', 'service', 'services',
             'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst',
-            'sell', 'what do you offer', 'who is this for', 'what does catalyst', 'catalyst applied ai do'
+            'what do you sell', 'what we sell', 'what do you offer', 'who is this for', 'what does catalyst', 'catalyst applied ai do'
         ]
     },
     {
@@ -97,10 +97,11 @@ export const intents = [
         question: 'What government registrations do you have?',
         contact: true,
         answer:
-            'This site does not list federal registrations. Contact us with your requirements. Catalyst is a member of the NVIDIA Inception program for startups. We deploy into environments you control, where your organization holds the authorization, and we map controls to the framework you name, for example NIST SP 800-53 or 800-171, during scoping.',
+            'This site does not list federal registrations or small business certifications. Contact us with your requirements. Catalyst is a member of the NVIDIA Inception program for startups. We deploy into environments you control, where your organization holds the authorization, and we map controls to the framework you name, for example NIST SP 800-53 or 800-171, during scoping.',
         keywords: [
             'sam gov', 'sam', 'naics', '541715', '541511', 'government', 'federal', 'gsa', 'inception',
-            'nvidia', 'registered', 'registration', 'registrations'
+            'nvidia', 'registered', 'registration', 'registrations',
+            'small business', 'small businesses', 'sba', '8a', 'set aside'
         ]
     },
     {
@@ -124,7 +125,8 @@ export const intents = [
         keywords: [
             'security', 'secure', 'safe', 'safety', 'privacy', 'private', 'confidential', 'encrypt', 'encrypted', 'encryption', 'in transit', 'at rest',
             'chatgpt', 'openai', 'public model', 'public models', 'leak', 'protect', 'protected', 'least privilege',
-            'access control', 'rbac', 'train on', 'trained on', 'train models'
+            'access control', 'rbac', 'train on', 'trained on', 'train models',
+            'sell my data', 'sell our data', 'data go to', 'share my data', 'share our data'
         ]
     },
     {
@@ -207,8 +209,7 @@ export const intents = [
             'Catalyst Applied AI, LLC is based in Louisville, Kentucky, USA, and builds for enterprise and public sector organizations.',
         keywords: [
             'location', 'located', 'where are you', 'kentucky', 'louisville', 'office', 'headquarters', 'hq', 'team',
-            'company', 'founder', 'founders', 'leadership', 'about us',
-            'small business'
+            'company', 'founder', 'founders', 'leadership', 'about us'
         ]
     },
     {
