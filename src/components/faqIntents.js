@@ -101,7 +101,7 @@ export const intents = [
         keywords: [
             'sam gov', 'sam', 'naics', '541715', '541511', 'government', 'federal', 'gsa', 'inception',
             'nvidia', 'registered', 'registration', 'registrations',
-            'small business', 'small businesses', 'sba', '8a', 'set aside'
+            'small business', 'small businesses', 'sba', '8 a', 'set aside'
         ]
     },
     {

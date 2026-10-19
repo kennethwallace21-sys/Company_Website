@@ -38,6 +38,7 @@ const CASES = [
     { input: 'Are you a certified small business for SBA 8(a)?', expect: 'registrations' },
     { input: 'Is Catalyst a small business set aside vendor?', expect: 'registrations' },
     { input: 'Do you work with small businesses?', not: 'fallback' },
+    { input: 'Are you 8(a) certified?', expect: 'registrations' },
     // Known and accepted: phrase length decides, so "first step" (2 words) can outrank a
     // one-word pricing or timeline keyword in a mixed question.
     { input: 'thanks', expect: 'thanks' },
