@@ -23,6 +23,13 @@ const CASES = [
     { input: 'Can you sign a BAA?', expect: 'compliance' },
     { input: 'Can you give me a sample of your work?', expect: 'references' },
     { input: 'How much storage do you provide?', not: 'pricing' },
+    { input: 'What do you sell?', expect: 'about' },
+    { input: 'Who is this for?', expect: 'about' },
+    { input: 'Where does my data go?', expect: 'deployment' },
+    { input: 'What is the first step?', expect: 'start' },
+    { input: 'Are you a small business?', expect: 'team' },
+    { input: 'What is Operational Intelligence?', expect: 'signals' },
+    { input: 'Do you offer custom integrations?', expect: 'integrations' },
     { input: 'thanks', expect: 'thanks' },
     { input: 'hello', expect: 'greeting' }
 ];

@@ -16,7 +16,7 @@ const allFaqs = [
         items: [
             {
                 question: "What does Catalyst Applied AI do?",
-                answer: "We build three kinds of AI systems for enterprise and public sector organizations: assistants that carry out multi-step work (Agentic AI Assistants), plain-language reporting on operational data (Signals & Intelligence), and answers from your own documents with citations (Custom RAG Systems). We can deploy them in your cloud tenant, in AWS GovCloud or Azure Government, on premises, or in a managed environment we operate."
+                answer: "We build three kinds of AI systems for enterprise and public sector organizations: assistants that carry out multi-step work (Agentic AI Assistants), plain-language reporting on operational data (Operational Intelligence), and answers from your own documents with citations (Custom RAG Systems). We can deploy them in your cloud tenant, in AWS GovCloud or Azure Government, on premises, or in a managed environment we operate."
             },
             {
                 question: "How does an engagement start?",
@@ -82,7 +82,7 @@ const allFaqs = [
                 answer: "Assistants that take a request and work through the steps across your internal systems, such as AIVA, our HR assistant, with optional two-way voice. Each agent is scoped to the systems and permissions you approve."
             },
             {
-                question: "What is Signals & Intelligence?",
+                question: "What is Operational Intelligence?",
                 answer: "Plain-language reporting on your operational data. It reads the records you connect and writes up what changed: summaries, trends, flagged exceptions and suggested next steps for program and operations leaders."
             },
             {

@@ -45,17 +45,19 @@ export const intents = [
             'on-prem', 'on prem', 'onprem', 'on-premise', 'on premise', 'on-premises', 'on premises',
             'premise', 'premises', 'deploy', 'deployed', 'deployment', 'deployments', 'hosted', 'hosting', 'host',
             'hardware', 'tenant', 'perimeter', 'infrastructure', 'cloud', 'residency', 'dgx', 'nvidia nim',
-            'in the us', 'within the us'
+            'in the us', 'within the us',
+            'where does my data go', 'data go', 'data stored'
         ]
     },
     {
         id: 'about',
         question: 'What does Catalyst Applied AI do?',
         answer:
-            'We build three AI products for enterprise and public sector teams: **Agentic AI Assistants** that carry out multi-step work, **Signals & Intelligence** for plain-language reporting on operational data, and **Custom RAG Systems** that answer from your documents with citations. We deploy them in the environment you choose.',
+            'We build three AI products for enterprise and public sector teams: **Agentic AI Assistants** that carry out multi-step work, **Operational Intelligence** for plain-language reporting on operational data, and **Custom RAG Systems** that answer from your documents with citations. We deploy them in the environment you choose.',
         keywords: [
             'what do you do', 'what you do', 'overview', 'about catalyst', 'who are you', 'service', 'services',
-            'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst'
+            'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst',
+            'sell', 'offer', 'what do you offer', 'who is this for'
         ]
     },
     {
@@ -70,12 +72,13 @@ export const intents = [
     },
     {
         id: 'signals',
-        question: 'What is Signals & Intelligence?',
+        question: 'What is Operational Intelligence?',
         answer:
             'Plain-language reporting on your operational data: summaries, trends, flagged exceptions and suggested next steps for program and operations leaders.',
         keywords: [
             'signal', 'signals', 'intelligence', 'narrative', 'narratives', 'analytics', 'dashboard', 'dashboards',
-            'predictive', 'insights', 'forecast', 'forecasting'
+            'predictive', 'insights', 'forecast', 'forecasting',
+            'operational intelligence', 'operational reporting'
         ]
     },
     {
@@ -149,7 +152,8 @@ export const intents = [
             'hire', 'sales', 'book', 'meeting', 'demo', 'consultation', 'rfp', 'rfq', 'rfi', 'solicitation',
             'schedule a demo', 'book a demo', 'request a demo', 'set up a demo', 'schedule a call',
             'capability statement', 'capabilities statement',
-            'roi assessment', 'assessment', 'discovery', 'diagnostic', 'scoping'
+            'roi assessment', 'assessment', 'discovery', 'diagnostic', 'scoping',
+            'first step', 'next step'
         ]
     },
     {
@@ -171,7 +175,7 @@ export const intents = [
         keywords: [
             'integrate', 'integrates', 'integration', 'integrations', 'connect', 'api', 'apis', 'salesforce',
             'database', 'databases', 'crm', 'erp', 'existing system', 'existing systems', 'sso', 'saml', 'okta',
-            'single sign on', 'active directory', 'sharepoint'
+            'single sign on', 'active directory', 'sharepoint', 'custom integrations'
         ]
     },
     {
@@ -203,7 +207,8 @@ export const intents = [
             'Catalyst Applied AI, LLC is based in Louisville, Kentucky, USA, and builds for enterprise and public sector organizations.',
         keywords: [
             'location', 'located', 'where are you', 'kentucky', 'louisville', 'office', 'headquarters', 'hq', 'team',
-            'company', 'founder', 'founders', 'leadership', 'about us'
+            'company', 'founder', 'founders', 'leadership', 'about us',
+            'small business'
         ]
     },
     {

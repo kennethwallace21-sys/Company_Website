@@ -11,7 +11,7 @@ const capabilities = [
     },
     {
         icon: TrendingUp,
-        title: "Signals & Intelligence",
+        title: "Operational Intelligence",
         description: "Plain-language summaries, trends and exceptions from your operational data"
     },
     {
