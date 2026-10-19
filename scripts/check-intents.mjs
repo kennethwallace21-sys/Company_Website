@@ -2,7 +2,7 @@
 // Run with: npm run test:intents
 // matchIntent returns an object ({ id, answer, contact, direct }); the check
 // compares result.id. Use `not:` to assert an id that must NOT be returned.
-import { matchIntent } from '../src/components/faqIntents.js';
+import { matchIntent, intents } from '../src/components/faqIntents.js';
 
 const CASES = [
     { input: 'What security certifications do you hold?', expect: 'compliance' },
@@ -23,8 +23,28 @@ const CASES = [
     { input: 'Can you sign a BAA?', expect: 'compliance' },
     { input: 'Can you give me a sample of your work?', expect: 'references' },
     { input: 'How much storage do you provide?', not: 'pricing' },
+    { input: 'What do you sell?', expect: 'about' },
+    { input: 'Who is this for?', expect: 'about' },
+    { input: 'Where does my data go?', expect: 'deployment' },
+    { input: 'What is the first step?', expect: 'start' },
+    { input: 'Are you a small business?', expect: 'registrations' },
+    { input: 'What is Operational Intelligence?', expect: 'signals' },
+    { input: 'Do you offer custom integrations?', expect: 'integrations' },
+    { input: 'Do you offer a demo?', expect: 'start' },
+    { input: 'Do you offer pricing?', expect: 'pricing' },
+    // Negative cases from the T029 review: new keywords must not steal these.
+    { input: 'Do you sell my data?', expect: 'security' },
+    { input: 'Does the data go to OpenAI?', expect: 'security' },
+    { input: 'Are you a certified small business for SBA 8(a)?', expect: 'registrations' },
+    { input: 'Is Catalyst a small business set aside vendor?', expect: 'registrations' },
+    { input: 'Do you work with small businesses?', not: 'fallback' },
+    { input: 'Are you 8(a) certified?', expect: 'registrations' },
+    // Known and accepted: phrase length decides, so "first step" (2 words) can outrank a
+    // one-word pricing or timeline keyword in a mixed question.
     { input: 'thanks', expect: 'thanks' },
-    { input: 'hello', expect: 'greeting' }
+    { input: 'hello', expect: 'greeting' },
+    // Every suggested question shown in the chatbot must route to its own answer.
+    ...intents.filter((i) => i.question && i.id !== 'meta').map((i) => ({ input: i.question, expect: i.id })),
 ];
 
 const rows = CASES.map(({ input, expect, not }) => {

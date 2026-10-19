@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { contactUrl } from '@/utils';
+import { contactUrl, createPageUrl } from '@/utils';
 import { SHOW_SERVICES } from '@/config/features';
 import { offerings, SERVICE_GROUPS, serviceDetailPath } from '@/data/offerings';
 import {
@@ -42,7 +42,7 @@ const navItems = [
                 heading: 'Products',
                 links: [
                     { label: 'Agentic AI Assistants', path: '/Products#agentic-aiva', description: 'Assistants that carry out tasks', icon: Users },
-                    { label: 'Signals & Intelligence', path: '/Products#operational-intelligence', description: 'Reporting on operational data', icon: BarChart3 },
+                    { label: 'Operational Intelligence', path: '/Products#operational-intelligence', description: 'Reporting on operational data', icon: BarChart3 },
                     { label: 'Custom RAG Systems', path: '/Products#custom-rag', description: 'Cited answers from your documents', icon: Database },
                 ]
             },
@@ -54,6 +54,8 @@ const navItems = [
             }
         ]
     },
+    // Plain link (no dropdown): an item with a path and no columns renders as a link in both menus.
+    { label: 'FAQ', path: createPageUrl('FAQ') },
 ];
 
 
@@ -99,7 +101,9 @@ export default function Navbar({ showNav }) {
         return item.columns.flatMap(col => col.links);
     };
 
-    const isLinkActive = (path) => location.pathname === path;
+    // Case-insensitive and trailing-slash tolerant: /faq and /FAQ/ are the same page.
+    const normalizePath = (p) => (p || '').toLowerCase().replace(/\/+$/, '') || '/';
+    const isLinkActive = (path) => normalizePath(location.pathname) === normalizePath(path);
     // On /Contact the form is already on screen, so the Contact us button would only point back at it.
     const showBookCta = location.pathname.toLowerCase() !== '/contact';
 
@@ -162,6 +166,7 @@ export default function Navbar({ showNav }) {
                                             ) : (
                                                 <Link
                                                     to={item.path}
+                                                    aria-current={isLinkActive(item.path) ? 'page' : undefined}
                                                     className={`relative text-sm font-medium py-2 px-1 mx-3 z-10 block transition-all duration-200 ${isLinkActive(item.path) ? 'text-white' : 'text-slate-300 hover:text-white'}`}
                                                     onClick={() => setActiveItem(null)}
                                                 >
@@ -258,7 +263,8 @@ export default function Navbar({ showNav }) {
                                                 ) : (
                                                     <Link
                                                         to={item.path}
-                                                        className="block w-full text-left text-slate-300 hover:text-blue-400 transition-colors py-3"
+                                                        aria-current={isLinkActive(item.path) ? 'page' : undefined}
+                                                        className={`block w-full text-left transition-colors py-3 ${isLinkActive(item.path) ? 'text-white' : 'text-slate-300 hover:text-blue-400'}`}
                                                         onClick={() => setIsMobileMenuOpen(false)}
                                                     >
                                                         {item.label}

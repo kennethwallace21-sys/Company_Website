@@ -42,17 +42,17 @@ const products = [
         name: 'Agentic AI Assistants',
         tagline: 'Assistants that carry out multi-step work',
         description: 'Assistants that take a request and work through the steps across your internal systems, such as AIVA, our HR assistant, with optional two-way voice. Each agent is scoped to the systems and permissions you approve.',
-        status: 'Available for deployment',
+        status: 'In Development',
         url: null,
         icon: Users,
         hasPreview: false
     },
     {
         id: 'operational-intelligence',
-        name: 'Signals & Intelligence',
+        name: 'Operational Intelligence',
         tagline: 'Plain-language reporting on operational data',
         description: 'Reads your operational data and writes up what changed: summaries, trends, flagged exceptions and suggested next steps, so program and operations leaders can act without building a report by hand.',
-        status: 'Available for deployment',
+        status: 'In Development',
         url: null,
         icon: BarChart3,
         hasPreview: false
@@ -62,7 +62,7 @@ const products = [
         name: 'Custom RAG Systems',
         tagline: 'Cited answers from your documents',
         description: 'Retrieval-augmented generation (RAG) over your own documents and records. Answers cite the passages they came from so reviewers can check them. Deployed in the environment you choose.',
-        status: 'Available for deployment',
+        status: 'In Development',
         url: null,
         icon: Database,
         hasPreview: false
@@ -74,7 +74,7 @@ export default function Products() {
         <div className="min-h-screen bg-[#060a14] overflow-hidden">
             <SEOHead
                 title="AI Products"
-                description="Agentic AI Assistants, Signals & Intelligence and Custom RAG Systems, deployed in your cloud tenant, GovCloud, on premises or managed."
+                description="Agentic AI Assistants, Operational Intelligence and Custom RAG Systems, deployed in your cloud tenant, GovCloud, on premises or managed."
                 path="/Products"
             />
             <Navbar showNav={true} />
@@ -210,7 +210,7 @@ export default function Products() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="aspect-[16/10] w-full bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900 flex items-center justify-center relative overflow-hidden">
+                                        <div className="h-32 sm:h-auto sm:aspect-[16/10] w-full bg-gradient-to-br from-slate-800 via-slate-850 to-slate-900 flex items-center justify-center relative overflow-hidden">
                                             <div className="absolute inset-0 opacity-10">
                                                 <div className="absolute inset-0" style={{
                                                     backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',

@@ -256,10 +256,10 @@ export default function ContactSection() {
                                         tabIndex={-1}
                                         className="text-xl font-bold text-white mb-2 outline-none"
                                     >
-                                        Thank You!
+                                        Message sent
                                     </h3>
                                     <p className="text-slate-400">
-                                        We've received your message and will get back to you shortly.
+                                        We received your message and will reply by email.
                                     </p>
                                 </div>
                             </motion.div>
@@ -326,7 +326,7 @@ export default function ContactSection() {
                                     <Textarea
                                         id="contact-message"
                                         name="message"
-                                        placeholder="Tell us about your project and how we can help..."
+                                        placeholder="What do you need to build, what data is involved, and where must it run (your cloud tenant, GovCloud, on premises, air-gapped)?"
                                         value={formData.message}
                                         onChange={(e) => {
                                             setMessageTouched(true);
@@ -376,7 +376,7 @@ export default function ContactSection() {
                                             </span>
                                         ) : (
                                             <span className="flex items-center gap-2">
-                                                Send Message
+                                                Send message
                                                 <Send className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                                             </span>
                                         )}

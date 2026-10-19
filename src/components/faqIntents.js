@@ -45,17 +45,19 @@ export const intents = [
             'on-prem', 'on prem', 'onprem', 'on-premise', 'on premise', 'on-premises', 'on premises',
             'premise', 'premises', 'deploy', 'deployed', 'deployment', 'deployments', 'hosted', 'hosting', 'host',
             'hardware', 'tenant', 'perimeter', 'infrastructure', 'cloud', 'residency', 'dgx', 'nvidia nim',
-            'in the us', 'within the us'
+            'in the us', 'within the us',
+            'where does my data go', 'where is my data', 'data stored'
         ]
     },
     {
         id: 'about',
         question: 'What does Catalyst Applied AI do?',
         answer:
-            'We build three AI products for enterprise and public sector teams: **Agentic AI Assistants** that carry out multi-step work, **Signals & Intelligence** for plain-language reporting on operational data, and **Custom RAG Systems** that answer from your documents with citations. We deploy them in the environment you choose.',
+            'We build three AI products for enterprise and public sector teams: **Agentic AI Assistants** that carry out multi-step work, **Operational Intelligence** for plain-language reporting on operational data, and **Custom RAG Systems** that answer from your documents with citations. We deploy them in the environment you choose.',
         keywords: [
             'what do you do', 'what you do', 'overview', 'about catalyst', 'who are you', 'service', 'services',
-            'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst'
+            'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst',
+            'what do you sell', 'what we sell', 'what do you offer', 'who is this for', 'what does catalyst', 'catalyst applied ai do'
         ]
     },
     {
@@ -70,12 +72,13 @@ export const intents = [
     },
     {
         id: 'signals',
-        question: 'What is Signals & Intelligence?',
+        question: 'What is Operational Intelligence?',
         answer:
             'Plain-language reporting on your operational data: summaries, trends, flagged exceptions and suggested next steps for program and operations leaders.',
         keywords: [
             'signal', 'signals', 'intelligence', 'narrative', 'narratives', 'analytics', 'dashboard', 'dashboards',
-            'predictive', 'insights', 'forecast', 'forecasting'
+            'predictive', 'insights', 'forecast', 'forecasting',
+            'operational intelligence', 'operational reporting'
         ]
     },
     {
@@ -94,10 +97,11 @@ export const intents = [
         question: 'What government registrations do you have?',
         contact: true,
         answer:
-            'This site does not list federal registrations. Contact us with your requirements. Catalyst is a member of the NVIDIA Inception program for startups. We deploy into environments you control, where your organization holds the authorization, and we map controls to the framework you name, for example NIST SP 800-53 or 800-171, during scoping.',
+            'This site does not list federal registrations or small business certifications. Contact us with your requirements. Catalyst is a member of the NVIDIA Inception program for startups. We deploy into environments you control, where your organization holds the authorization, and we map controls to the framework you name, for example NIST SP 800-53 or 800-171, during scoping.',
         keywords: [
             'sam gov', 'sam', 'naics', '541715', '541511', 'government', 'federal', 'gsa', 'inception',
-            'nvidia', 'registered', 'registration', 'registrations'
+            'nvidia', 'registered', 'registration', 'registrations',
+            'small business', 'small businesses', 'sba', '8 a', 'set aside'
         ]
     },
     {
@@ -121,7 +125,8 @@ export const intents = [
         keywords: [
             'security', 'secure', 'safe', 'safety', 'privacy', 'private', 'confidential', 'encrypt', 'encrypted', 'encryption', 'in transit', 'at rest',
             'chatgpt', 'openai', 'public model', 'public models', 'leak', 'protect', 'protected', 'least privilege',
-            'access control', 'rbac', 'train on', 'trained on', 'train models'
+            'access control', 'rbac', 'train on', 'trained on', 'train models',
+            'sell my data', 'sell our data', 'data go to', 'share my data', 'share our data'
         ]
     },
     {
@@ -149,7 +154,8 @@ export const intents = [
             'hire', 'sales', 'book', 'meeting', 'demo', 'consultation', 'rfp', 'rfq', 'rfi', 'solicitation',
             'schedule a demo', 'book a demo', 'request a demo', 'set up a demo', 'schedule a call',
             'capability statement', 'capabilities statement',
-            'roi assessment', 'assessment', 'discovery', 'diagnostic', 'scoping'
+            'roi assessment', 'assessment', 'discovery', 'diagnostic', 'scoping',
+            'first step', 'next step'
         ]
     },
     {
@@ -171,7 +177,7 @@ export const intents = [
         keywords: [
             'integrate', 'integrates', 'integration', 'integrations', 'connect', 'api', 'apis', 'salesforce',
             'database', 'databases', 'crm', 'erp', 'existing system', 'existing systems', 'sso', 'saml', 'okta',
-            'single sign on', 'active directory', 'sharepoint'
+            'single sign on', 'active directory', 'sharepoint', 'custom integrations'
         ]
     },
     {
