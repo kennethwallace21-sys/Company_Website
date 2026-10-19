@@ -2,7 +2,7 @@
 // Run with: npm run test:intents
 // matchIntent returns an object ({ id, answer, contact, direct }); the check
 // compares result.id. Use `not:` to assert an id that must NOT be returned.
-import { matchIntent } from '../src/components/faqIntents.js';
+import { matchIntent, intents } from '../src/components/faqIntents.js';
 
 const CASES = [
     { input: 'What security certifications do you hold?', expect: 'compliance' },
@@ -30,8 +30,12 @@ const CASES = [
     { input: 'Are you a small business?', expect: 'team' },
     { input: 'What is Operational Intelligence?', expect: 'signals' },
     { input: 'Do you offer custom integrations?', expect: 'integrations' },
+    { input: 'Do you offer a demo?', expect: 'start' },
+    { input: 'Do you offer pricing?', expect: 'pricing' },
     { input: 'thanks', expect: 'thanks' },
-    { input: 'hello', expect: 'greeting' }
+    { input: 'hello', expect: 'greeting' },
+    // Every suggested question shown in the chatbot must route to its own answer.
+    ...intents.filter((i) => i.question && i.id !== 'meta').map((i) => ({ input: i.question, expect: i.id })),
 ];
 
 const rows = CASES.map(({ input, expect, not }) => {

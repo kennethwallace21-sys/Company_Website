@@ -57,7 +57,7 @@ export const intents = [
         keywords: [
             'what do you do', 'what you do', 'overview', 'about catalyst', 'who are you', 'service', 'services',
             'product', 'products', 'offerings', 'capabilities', 'solutions', 'what is catalyst',
-            'sell', 'offer', 'what do you offer', 'who is this for'
+            'sell', 'what do you offer', 'who is this for', 'what does catalyst', 'catalyst applied ai do'
         ]
     },
     {
